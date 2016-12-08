@@ -1,3 +1,3 @@
 import json
-def handler():
+def foo():
     return "hello world"
