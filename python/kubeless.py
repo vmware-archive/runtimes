@@ -2,6 +2,7 @@
 
 import os
 import imp
+import datetime
 
 from multiprocessing import Process, Queue
 import bottle
@@ -26,24 +27,42 @@ func_errors = prom.Counter('function_failures_total',
                            'Number of exceptions in user function',
                            ['method'])
 
-def funcWrap(q, req):
-    if req is None:
-        q.put(func())
-    else:
-        q.put(func(req))
+function_context = {
+    'function-name': func,
+    'timeout': timeout,
+    'runtime': os.getenv('FUNC_RUNTIME'),
+    'memory-limit': os.getenv('FUNC_MEMORY_LIMIT'),
+}
 
-@app.route('/', method=['GET', 'POST'])
+def funcWrap(q, event, c):
+    try:
+        q.put(func(event, c))
+    except Exception as inst:
+        q.put(inst)
+
+@app.route('/', method=['GET', 'POST', 'PATCH', 'DELETE'])
 def handler():
     req = bottle.request
+    content_type = req.get_header('content-type')
+    data = req.body.read()
+    if content_type == 'application/json':
+        data = req.json
+    event = {
+        'data': data,
+        'event-id': req.get_header('event-id'),
+        'event-type': req.get_header('event-type'),
+        'event-time': req.get_header('event-time'),
+        'event-namespace': req.get_header('event-namespace'),
+        'extensions': {
+            'request': req
+        }
+    }
     method = req.method
     func_calls.labels(method).inc()
     with func_errors.labels(method).count_exceptions():
         with func_hist.labels(method).time():
             q = Queue()
-            if method == 'GET':
-                p = Process(target=funcWrap, args=(q,None,))
-            else:
-                p = Process(target=funcWrap, args=(q,bottle.request,))
+            p = Process(target=funcWrap, args=(q, event, function_context))
             p.start()
             p.join(timeout)
             # If thread is still active
@@ -52,7 +71,10 @@ def handler():
                 p.join()
                 return bottle.HTTPError(408, "Timeout while processing the function")
             else:
-                return q.get()
+                res = q.get()
+                if isinstance(res, Exception):
+                    raise res
+                return res
 
 @app.get('/healthz')
 def healthz():

@@ -4,7 +4,7 @@ LABEL maintainer "Bitnami <containers@bitnami.com>"
 
 ENV RACK_ENV="production"
 
-RUN gem install sinatra ruby-kafka --no-rdoc --no-ri 
+RUN gem install sinatra --no-rdoc --no-ri
 
 ADD kubeless.rb /
 
