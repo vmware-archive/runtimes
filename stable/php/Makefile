@@ -47,7 +47,7 @@ get-php-deps-verify:
 
 get-php-deps-update:
 	$(eval TMPDIR := $(shell mktemp -d))
-	sed "s/1\.23/1\.20/" php/composer.json > $(TMPDIR)/composer.json
+	sed "s/1\.23/1\.20/" examples/composer.json > $(TMPDIR)/composer.json
 	kubeless function update get-php-deps --dependencies $(TMPDIR)/composer.json
 
 get-php-deps-update-verify:

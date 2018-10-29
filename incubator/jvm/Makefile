@@ -19,7 +19,7 @@ deploy: get-jvm-java
 test: get-jvm-java-verify
 
 get-jvm-java:
-	kubeless function deploy get-jvm-java --runtime jvm1.8 --from-file jvm/java/test-java-jvm.jar --handler io_ino_Handler.sayHello
+	kubeless function deploy get-jvm-java --runtime jvm1.8 --from-file examples/java/test-java-jvm.jar --handler io_ino_Handler.sayHello
 
 get-jvm-java-verify:
 	kubectl rollout status deployment/get-jvm-java && sleep 2

@@ -29,21 +29,21 @@ deploy: get-ruby get-ruby-deps get-ruby-custom-port timeout-ruby post-ruby
 test: get-ruby-verify get-ruby-deps-verify get-ruby-custom-port-verify timeout-ruby-verify post-ruby-verify
 
 get-ruby:
-	kubeless function deploy get-ruby --runtime ruby2.4 --handler helloget.foo --from-file ruby/helloget.rb
+	kubeless function deploy get-ruby --runtime ruby2.4 --handler helloget.foo --from-file examples/helloget.rb
 
 get-ruby-verify:
 	kubectl rollout status deployment/get-ruby && sleep 2
 	kubeless function call get-ruby |egrep hello.world
 
 get-ruby-deps:
-	kubeless function deploy get-ruby-deps --runtime ruby2.4 --handler hellowithdeps.foo --from-file ruby/hellowithdeps.rb --dependencies ruby/Gemfile
+	kubeless function deploy get-ruby-deps --runtime ruby2.4 --handler hellowithdeps.foo --from-file examples/hellowithdeps.rb --dependencies examples/Gemfile
 
 get-ruby-deps-verify:
 	kubectl rollout status deployment/get-ruby-deps && sleep 2
 	kubeless function call get-ruby-deps |egrep hello.world
 
 get-ruby-custom-port:
-	kubeless function deploy get-ruby-custom-port --runtime ruby2.4 --handler helloget.foo --from-file ruby/helloget.rb --port 8082
+	kubeless function deploy get-ruby-custom-port --runtime ruby2.4 --handler helloget.foo --from-file examples/helloget.rb --port 8082
 
 get-ruby-custom-port-verify:
 	kubectl rollout status deployment/get-ruby-custom-port && sleep 2
@@ -63,7 +63,7 @@ timeout-ruby-verify:
 	echo $(MSG) | egrep "real\s*0m4."
 
 post-ruby:
-	kubeless function deploy post-ruby --runtime ruby2.4 --handler hellowithdata.handler --from-file ruby/hellowithdata.rb
+	kubeless function deploy post-ruby --runtime ruby2.4 --handler hellowithdata.handler --from-file examples/hellowithdata.rb
 
 post-ruby-verify:
 	kubectl rollout status deployment/post-ruby && sleep 2

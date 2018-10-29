@@ -18,21 +18,21 @@ deploy: get-java post-java get-java-deps
 test: get-java-verify post-java-verify get-java-deps-verify
 
 get-java:
-	kubeless function deploy get-java --runtime java1.8 --handler Foo.foo --from-file java/HelloGet.java
+	kubeless function deploy get-java --runtime java1.8 --handler Foo.foo --from-file examples/HelloGet.java
 
 get-java-verify:
 	kubectl rollout status deployment/get-java && sleep 2
 	kubeless function call get-java |egrep Hello.world
 
 post-java:
-	kubeless function deploy post-java --runtime java1.8  --handler Foo.foo --from-file java/HelloWithData.java
+	kubeless function deploy post-java --runtime java1.8  --handler Foo.foo --from-file examples/HelloWithData.java
 
 post-java-verify:
 	kubectl rollout status deployment/post-java && sleep 2
 	kubeless function call post-java --data '{"its": "alive"}'| egrep "its.*alive"
 
 get-java-deps:
-	kubeless function deploy get-java-deps --runtime java1.8 --handler Hello.sayHello --from-file java/HelloWithDeps.java --dependencies java/pom.xml
+	kubeless function deploy get-java-deps --runtime java1.8 --handler Hello.sayHello --from-file examples/HelloWithDeps.java --dependencies examples/pom.xml
 
 get-java-deps-verify:
 	kubectl rollout status deployment/get-java-deps && sleep 2

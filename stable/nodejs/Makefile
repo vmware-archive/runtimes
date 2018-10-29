@@ -27,14 +27,14 @@ get-node-url-zip-verify:
 	kubeless function call get-node-url-zip |egrep hello.world
 
 get-nodejs:
-	kubeless function deploy get-nodejs --runtime nodejs6 --handler helloget.foo --from-file nodejs/helloget.js
+	kubeless function deploy get-nodejs --runtime nodejs6 --handler helloget.foo --from-file examples/helloget.js
 
 get-nodejs-verify:
 	kubectl rollout status deployment/get-node && sleep 2
 	kubeless function call get-nodejs |egrep hello.world
 
 get-nodejs-custom-port:
-	kubeless function deploy get-nodejs-custom-port --runtime nodejs6 --handler helloget.foo --from-file nodejs/helloget.js --port 8083
+	kubeless function deploy get-nodejs-custom-port --runtime nodejs6 --handler helloget.foo --from-file examples/helloget.js --port 8083
 
 get-nodejs-custom-port-verify:
 	kubectl rollout status deployment/get-nodejs-custom-port && sleep 2
@@ -42,7 +42,7 @@ get-nodejs-custom-port-verify:
 	kubeless function call get-nodejs-custom-port |egrep hello.world
 
 get-nodejs-stream:
-	kubeless function deploy get-nodejs-stream --runtime nodejs6 --handler hellostream.foo --from-file nodejs/hellostream.js --dependencies nodejs/package.json
+	kubeless function deploy get-nodejs-stream --runtime nodejs6 --handler hellostream.foo --from-file examples/hellostream.js --dependencies examples/package.json
 
 get-nodejs-stream-verify:
 	kubectl rollout status deployment/get-nodejs-stream && sleep 2
@@ -60,23 +60,23 @@ timeout-nodejs-verify:
 	echo $(MSG) | egrep Request.timeout.exceeded
 
 get-nodejs-deps:
-	kubeless function deploy get-nodejs-deps --runtime nodejs6 --handler helloget.handler --from-file nodejs/hellowithdeps.js --dependencies nodejs/package.json
+	kubeless function deploy get-nodejs-deps --runtime nodejs6 --handler helloget.handler --from-file examples/hellowithdeps.js --dependencies examples/package.json
 
 get-nodejs-deps-verify:
 	kubectl rollout status deployment/get-nodejs-deps && sleep 2
 	kubeless function call get-nodejs-deps --data '{"hello": "world"}' | grep -q 'hello.*world.*date.*UTC'
 
 get-nodejs-multi:
-	cd nodejs; zip helloFunctions.zip *js
-	kubeless function deploy get-nodejs-multi --runtime nodejs6 --handler index.helloGet --from-file nodejs/helloFunctions.zip
-	rm nodejs/helloFunctions.zip
+	cd examples; zip helloFunctions.zip *js
+	kubeless function deploy get-nodejs-multi --runtime nodejs6 --handler index.helloGet --from-file examples/helloFunctions.zip
+	rm examples/helloFunctions.zip
 
 get-nodejs-multi-verify:
 	kubectl rollout status deployment/get-nodejs-multi && sleep 2
 	kubeless function call get-nodejs-multi |egrep hello.world
 
 post-nodejs:
-	kubeless function deploy post-nodejs --runtime nodejs6 --handler hellowithdata.handler --from-file nodejs/hellowithdata.js
+	kubeless function deploy post-nodejs --runtime nodejs6 --handler hellowithdata.handler --from-file examples/hellowithdata.js
 
 post-nodejs-verify:
 	kubectl rollout status deployment/post-nodejs && sleep 2
