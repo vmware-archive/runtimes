@@ -44,6 +44,9 @@ k8s_context_save
 # Run the tests thru bats:
 kubectl create namespace kubeless
 kubectl create -f https://github.com/kubeless/kubeless/releases/download/${KUBELESS_VERSION}/kubeless-${KUBELESS_VERSION}.yaml
+# TODO: Get the latest manifest
+kubectl apply -f ${ROOT_DIR}/kubeless-configmap.yaml
+kubectl set image -n kubeless deployment/kubeless-controller-manager kubeless-function-controller=kubeless/function-controller:latest
 kubectl rollout status -n kubeless deployment/kubeless-controller-manager
 
 # Auto obtain list

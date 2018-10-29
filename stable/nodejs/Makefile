@@ -30,7 +30,7 @@ get-nodejs:
 	kubeless function deploy get-nodejs --runtime nodejs6 --handler helloget.foo --from-file examples/helloget.js
 
 get-nodejs-verify:
-	kubectl rollout status deployment/get-node && sleep 2
+	kubectl rollout status deployment/get-nodejs && sleep 2
 	kubeless function call get-nodejs |egrep hello.world
 
 get-nodejs-custom-port:
