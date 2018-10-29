@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ROOT_DIR=`cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null && pwd`
+
 # Check for some needed tools, install (some) if missing
 which bats > /dev/null || {
    echo "ERROR: 'bats' is required to run these tests," \
@@ -45,8 +47,38 @@ kubectl create -f https://github.com/kubeless/kubeless/releases/download/${KUBEL
 kubectl rollout status -n kubeless deployment/kubeless-controller-manager
 
 # Auto obtain list
-make -C ../stable/php deploy
-make -C ../stable/php test
+# Ballerina
+make -C ${ROOT_DIR}/stable/ballerina deploy
+make -C ${ROOT_DIR}/stable/ballerina test
+# .NET
+make -C ${ROOT_DIR}/stable/dotnetcore deploy
+make -C ${ROOT_DIR}/stable/dotnetcore test
+# Go
+make -C ${ROOT_DIR}/stable/golang deploy
+make -C ${ROOT_DIR}/stable/golang test
+# JAVA
+make -C ${ROOT_DIR}/stable/java deploy
+make -C ${ROOT_DIR}/stable/java test
+# NodeJS
+make -C ${ROOT_DIR}/stable/nodejs deploy
+make -C ${ROOT_DIR}/stable/nodejs test
+# PHP
+make -C ${ROOT_DIR}/stable/php deploy
+make -C ${ROOT_DIR}/stable/php test
+make -C ${ROOT_DIR}/stable/php update
+make -C ${ROOT_DIR}/stable/php update-verify
+# Python
+make -C ${ROOT_DIR}/stable/python deploy
+make -C ${ROOT_DIR}/stable/python test
+make -C ${ROOT_DIR}/stable/python update
+make -C ${ROOT_DIR}/stable/python update-verify
+# Ruby
+make -C ${ROOT_DIR}/stable/ruby deploy
+make -C ${ROOT_DIR}/stable/ruby test
+# JVM
+make -C ${ROOT_DIR}/incubator/jvm deploy
+make -C ${ROOT_DIR}/incubator/jvm test
+
 
 exit_code=$?
 

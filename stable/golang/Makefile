@@ -22,12 +22,14 @@ get-go:
 	kubeless function deploy get-go --runtime go1.10 --handler handler.Foo --from-file golang/helloget.go
 
 get-go-verify:
+	kubectl rollout status deployment/get-go && sleep 2
 	kubeless function call get-go |egrep Hello.world
 
 get-go-custom-port:
 	kubeless function deploy get-go-custom-port --runtime go1.10 --handler helloget.Foo --from-file golang/helloget.go --port 8083
 
 get-go-custom-port-verify:
+	kubectl rollout status deployment/get-go-custom-port && sleep 2
 	kubectl get svc get-go-custom-port -o yaml | grep 'targetPort: 8083'
 	kubeless function call get-go-custom-port |egrep Hello.world
 
@@ -38,6 +40,7 @@ timeout-go:
 	rm -rf $(TMPDIR)
 
 timeout-go-verify:
+	kubectl rollout status deployment/timeout-go && sleep 2
 	$(eval MSG := $(shell kubeless function call timeout-go 2>&1 || true))
 	echo $(MSG) | egrep Request.timeout.exceeded
 
@@ -45,6 +48,7 @@ get-go-deps:
 	kubeless function deploy get-go-deps --runtime go1.10 --handler helloget.Hello --from-file golang/hellowithdeps.go --dependencies golang/Gopkg.toml
 
 get-go-deps-verify:
+	kubectl rollout status deployment/get-go-deps && sleep 2
 	kubeless function call get-go-deps --data '{"hello": "world"}'
 	kubectl logs -l function=get-go-deps | grep -q 'level=info msg=.*hello.*world'
 
@@ -52,6 +56,7 @@ post-go:
 	kubeless function deploy post-go --runtime go1.10 --handler hellowithdata.Handler --from-file golang/hellowithdata.go
 
 post-go-verify:
+	kubectl rollout status deployment/post-go && sleep 2
 	kubeless function call post-go --data '{"it-s": "alive"}'| egrep "it.*alive"
 	# Verify event context
 	logs=`kubectl logs -l function=post-go`; \

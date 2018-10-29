@@ -21,17 +21,20 @@ get-java:
 	kubeless function deploy get-java --runtime java1.8 --handler Foo.foo --from-file java/HelloGet.java
 
 get-java-verify:
+	kubectl rollout status deployment/get-java && sleep 2
 	kubeless function call get-java |egrep Hello.world
 
 post-java:
 	kubeless function deploy post-java --runtime java1.8  --handler Foo.foo --from-file java/HelloWithData.java
 
 post-java-verify:
+	kubectl rollout status deployment/post-java && sleep 2
 	kubeless function call post-java --data '{"its": "alive"}'| egrep "its.*alive"
 
 get-java-deps:
 	kubeless function deploy get-java-deps --runtime java1.8 --handler Hello.sayHello --from-file java/HelloWithDeps.java --dependencies java/pom.xml
 
 get-java-deps-verify:
+	kubectl rollout status deployment/get-java-deps && sleep 2
 	kubeless function call get-java-deps --data '{"hello": "world"}'
 	kubectl logs -l function=get-java-deps | grep -q '.*Hello.*world! Current local time is:'

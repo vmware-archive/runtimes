@@ -23,18 +23,21 @@ get-node-url-zip:
 	kubeless function deploy get-node-url-zip --runtime nodejs6 --handler index.helloGet --from-file https://github.com/kubeless/kubeless/blob/master/examples/nodejs/helloFunctions.zip?raw=true
 
 get-node-url-zip-verify:
+	kubectl rollout status deployment/get-node-url-zip && sleep 2
 	kubeless function call get-node-url-zip |egrep hello.world
 
 get-nodejs:
 	kubeless function deploy get-nodejs --runtime nodejs6 --handler helloget.foo --from-file nodejs/helloget.js
 
 get-nodejs-verify:
+	kubectl rollout status deployment/get-node && sleep 2
 	kubeless function call get-nodejs |egrep hello.world
 
 get-nodejs-custom-port:
 	kubeless function deploy get-nodejs-custom-port --runtime nodejs6 --handler helloget.foo --from-file nodejs/helloget.js --port 8083
 
 get-nodejs-custom-port-verify:
+	kubectl rollout status deployment/get-nodejs-custom-port && sleep 2
 	kubectl get svc get-nodejs-custom-port -o yaml | grep 'targetPort: 8083'
 	kubeless function call get-nodejs-custom-port |egrep hello.world
 
@@ -42,6 +45,7 @@ get-nodejs-stream:
 	kubeless function deploy get-nodejs-stream --runtime nodejs6 --handler hellostream.foo --from-file nodejs/hellostream.js --dependencies nodejs/package.json
 
 get-nodejs-stream-verify:
+	kubectl rollout status deployment/get-nodejs-stream && sleep 2
 	kubeless function call get-nodejs-stream |egrep hello.world
 
 timeout-nodejs:
@@ -51,6 +55,7 @@ timeout-nodejs:
 	rm -rf $(TMPDIR)
 
 timeout-nodejs-verify:
+	kubectl rollout status deployment/timeout-nodejs && sleep 2
 	$(eval MSG := $(shell kubeless function call timeout-nodejs 2>&1 || true))
 	echo $(MSG) | egrep Request.timeout.exceeded
 
@@ -58,6 +63,7 @@ get-nodejs-deps:
 	kubeless function deploy get-nodejs-deps --runtime nodejs6 --handler helloget.handler --from-file nodejs/hellowithdeps.js --dependencies nodejs/package.json
 
 get-nodejs-deps-verify:
+	kubectl rollout status deployment/get-nodejs-deps && sleep 2
 	kubeless function call get-nodejs-deps --data '{"hello": "world"}' | grep -q 'hello.*world.*date.*UTC'
 
 get-nodejs-multi:
@@ -66,12 +72,14 @@ get-nodejs-multi:
 	rm nodejs/helloFunctions.zip
 
 get-nodejs-multi-verify:
+	kubectl rollout status deployment/get-nodejs-multi && sleep 2
 	kubeless function call get-nodejs-multi |egrep hello.world
 
 post-nodejs:
 	kubeless function deploy post-nodejs --runtime nodejs6 --handler hellowithdata.handler --from-file nodejs/hellowithdata.js
 
 post-nodejs-verify:
+	kubectl rollout status deployment/post-nodejs && sleep 2
 	kubeless function call post-nodejs --data '{"it-s": "alive"}'|egrep "it.*alive"
 	# Verify event context
 	logs=`kubectl logs -l function=post-nodejs`; \

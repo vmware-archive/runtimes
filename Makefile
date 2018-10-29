@@ -6,10 +6,10 @@ kubectl:
 	fi
 
 kubeless:
-	@if ! which kubectl >/dev/null; then \
+	@if ! which kubeless >/dev/null; then \
 	wget https://github.com/kubeless/kubeless/releases/download/$$KUBELESS_VERSION/kubeless_linux-amd64.zip; \
 	unzip kubeless_linux-amd64.zip; \
-	sudo mv bundles/kubeless_linux-amd64/kubeless /usr/local/bin/kubectl; \
+	sudo mv bundles/kubeless_linux-amd64/kubeless /usr/local/bin/kubeless; \
 	fi
 
 bootstrap: kubectl kubeless

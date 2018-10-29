@@ -23,12 +23,14 @@ get-ballerina:
 	kubeless function deploy get-ballerina --runtime ballerina0.981.0 --from-file ballerina/helloget.bal --handler helloget.foo
 
 get-ballerina-verify:
+	kubectl rollout status deployment/get-ballerina && sleep 2
 	kubeless function call get-ballerina |egrep Hello.World.Ballerina
 
 get-ballerina-custom-port:
 	kubeless function deploy get-ballerina-custom-port --runtime ballerina0.981.0 --handler helloget.foo --from-file ballerina/helloget.bal --port 8083
 
 get-ballerina-custom-port-verify:
+	kubectl rollout status deployment/get-ballerina-custom-port && sleep 2
 	kubectl get svc get-ballerina-custom-port -o yaml | grep 'targetPort: 8083'
 	kubeless function call get-ballerina-custom-port |egrep Hello.World.Ballerina
 
@@ -36,6 +38,7 @@ get-ballerina-data:
 	kubeless function deploy get-ballerina-data --runtime ballerina0.981.0 --from-file ballerina/hellowithdata.bal --handler hellowithdata.foo
 
 get-ballerina-data-verify:
+	kubectl rollout status deployment/get-ballerina-data && sleep 2
 	kubeless function call get-ballerina-data --data '{"hello":"world"}' |egrep hello
 
 get-ballerina-conf:
@@ -44,4 +47,5 @@ get-ballerina-conf:
 	rm ballerina/bar.zip
 
 get-ballerina-conf-verify:
+	kubectl rollout status deployment/get-ballerina-conf && sleep 2
 	kubeless function call get-ballerina-conf | egrep john

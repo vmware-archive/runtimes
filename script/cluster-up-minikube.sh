@@ -63,7 +63,7 @@ sudo -E ${MINIKUBE_BIN} start --vm-driver=none \
 # Wait til settles
 echo "INFO: Waiting for minikube cluster to be ready ..."
 typeset -i cnt=120
-until kubectl --context=minikube get pods >& /dev/null; do
+until kubectl get pods >& /dev/null; do
     ((cnt=cnt-1)) || exit 1
     sleep 1
 done
