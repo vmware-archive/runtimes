@@ -47,7 +47,7 @@ jobs:
     #   - image: circleci/golang:1.11
     steps:
       - checkout
-      - setup_remote_docker
+      # - setup_remote_docker
       - <<: *exports
       - run: make bootstrap
       - run: make test
