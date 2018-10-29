@@ -42,8 +42,9 @@ workflows:
 jobs:
   test:
     <<: *defaults
-    docker:
-      - image: circleci/golang:1.11
+    machine: true
+    # docker:
+    #   - image: circleci/golang:1.11
     steps:
       - checkout
       - setup_remote_docker
