@@ -47,7 +47,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - make test
+      - run: make test
 #       - <<: *exports
 #       - run: go get -u golang.org/x/lint/golint
 #       - run: make bootstrap
