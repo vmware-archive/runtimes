@@ -50,38 +50,30 @@ kubectl set image -n kubeless deployment/kubeless-controller-manager kubeless-fu
 kubectl rollout status -n kubeless deployment/kubeless-controller-manager
 
 # Auto obtain list
-# Ballerina
-make -C ${ROOT_DIR}/stable/ballerina deploy
-make -C ${ROOT_DIR}/stable/ballerina test
-# .NET
-make -C ${ROOT_DIR}/stable/dotnetcore deploy
-make -C ${ROOT_DIR}/stable/dotnetcore test
-# Go
-make -C ${ROOT_DIR}/stable/golang deploy
-make -C ${ROOT_DIR}/stable/golang test
-# JAVA
-make -C ${ROOT_DIR}/stable/java deploy
-make -C ${ROOT_DIR}/stable/java test
-# NodeJS
-make -C ${ROOT_DIR}/stable/nodejs deploy
-make -C ${ROOT_DIR}/stable/nodejs test
-# PHP
-make -C ${ROOT_DIR}/stable/php deploy
-make -C ${ROOT_DIR}/stable/php test
-make -C ${ROOT_DIR}/stable/php update
-make -C ${ROOT_DIR}/stable/php update-verify
-# Python
-make -C ${ROOT_DIR}/stable/python deploy
-make -C ${ROOT_DIR}/stable/python test
-make -C ${ROOT_DIR}/stable/python update
-make -C ${ROOT_DIR}/stable/python update-verify
-# Ruby
-make -C ${ROOT_DIR}/stable/ruby deploy
-make -C ${ROOT_DIR}/stable/ruby test
-# JVM
-make -C ${ROOT_DIR}/incubator/jvm deploy
-make -C ${ROOT_DIR}/incubator/jvm test
-
+for f in stable/*; do
+    make -C ${ROOT_DIR}/${f} deploy
+done
+# TODO: deploy all incubator
+# for f in incubator/*; do
+#     make -C ${ROOT_DIR}/${f} deploy
+# done
+for f in stable/*; do
+    make -C ${ROOT_DIR}/${f} test
+    # If there are tests to update scenarios run them
+    if grep -e '^update:' ${ROOT_DIR}/${f}/Makefile; then
+        make -C ${ROOT_DIR}/${f} update
+        make -C ${ROOT_DIR}/${f} update-verify
+    fi
+done
+# TODO: test all incubator
+# for f in incubator/*; do
+#     make -C ${ROOT_DIR}/${f} deploy
+    # # If there are tests to update scenarios run them
+    # if grep -e '^update:' ${ROOT_DIR}/${f}/Makefile; then
+    #     make -C ${ROOT_DIR}/${f} update
+    #     make -C ${ROOT_DIR}/${f} update-verify
+    # fi
+# done
 
 exit_code=$?
 
