@@ -43,7 +43,10 @@ k8s_context_save
 kubectl create namespace kubeless
 kubectl create -f https://github.com/kubeless/kubeless/releases/download/${KUBELESS_VERSION}/kubeless-${KUBELESS_VERSION}.yaml
 kubectl rollout status -n kubeless deployment/kubeless-controller-manager
-bats tests/integration-tests.bats
+
+# Auto obtain list
+make -C ../stable/php deploy
+make -C ../stable/php test
 
 exit_code=$?
 

@@ -28,7 +28,7 @@ update: get-python-update get-python-deps-update custom-get-python-update
 update-verify: get-python-update-verify get-python-deps-update-verify custom-get-python-update-verify
 
 get-python:
-	kubeless function deploy get-python --runtime python2.7 --handler helloget.foo --from-file python/helloget.py
+	kubeless function deploy get-python --runtime python2.7 --handler helloget.foo --from-file examples/helloget.py
 
 get-python-verify:
 	kubeless function call get-python |egrep hello.world
@@ -45,13 +45,13 @@ get-python-update-verify:
 
 get-python-deps:
 	cd python && zip hellowithdeps.zip hellowithdeps.py  hellowithdepshelper.py && cd ..
-	kubeless function deploy get-python-deps --runtime python2.7 --handler hellowithdeps.foo --from-file python/hellowithdeps.zip --dependencies python/requirements.txt
+	kubeless function deploy get-python-deps --runtime python2.7 --handler hellowithdeps.foo --from-file examples/hellowithdeps.zip --dependencies python/requirements.txt
 
 get-python-deps-verify:
 	kubeless function call get-python-deps |egrep Google
 
 get-python-custom-port:
-	kubeless function deploy get-python-custom-port --runtime python2.7 --handler helloget.foo --from-file python/helloget.py --port 8081
+	kubeless function deploy get-python-custom-port --runtime python2.7 --handler helloget.foo --from-file examples/helloget.py --port 8081
 
 get-python-custom-port-verify:
 	kubectl get svc get-python-custom-port -o yaml | grep 'targetPort: 8081'
@@ -69,13 +69,13 @@ get-python-deps-update-verify:
 	kubectl exec -it $$pod pip freeze | grep -q "twitter=="
 
 get-python-34:
-	kubeless function deploy get-python --runtime python3.4 --handler helloget.foo --from-file python/helloget.py
+	kubeless function deploy get-python --runtime python3.4 --handler helloget.foo --from-file examples/helloget.py
 
 get-python-34-verify:
 	kubeless function call get-python |egrep hello.world
 
 get-python-36:
-	kubeless function deploy get-python-36 --runtime python3.6 --handler helloget.foo --from-file python/helloget.py
+	kubeless function deploy get-python-36 --runtime python3.6 --handler helloget.foo --from-file examples/helloget.py
 
 get-python-36-verify:
 	kubeless function call get-python-36 |egrep hello.world
@@ -87,7 +87,7 @@ get-python-url-deps-verify:
 	kubeless function call get-python-url-deps |egrep Google	
 
 scheduled-get-python:
-	kubeless function deploy scheduled-get-python --schedule "* * * * *" --runtime python2.7 --handler helloget.foo --from-file python/helloget.py
+	kubeless function deploy scheduled-get-python --schedule "* * * * *" --runtime python2.7 --handler helloget.foo --from-file examples/helloget.py
 
 scheduled-get-python-verify:
 	number="1"; \
@@ -116,7 +116,7 @@ timeout-python-verify:
 	echo $(MSG) | egrep Request.timeout.exceeded
 
 get-python-metadata:
-	kubeless function deploy get-python-metadata --runtime python2.7 --handler helloget.foo --from-file python/helloget.py --env foo:bar,bar=foo --memory 128Mi --label foo:bar,bar=foo,foobar
+	kubeless function deploy get-python-metadata --runtime python2.7 --handler helloget.foo --from-file examples/helloget.py --env foo:bar,bar=foo --memory 128Mi --label foo:bar,bar=foo,foobar
 
 get-python-metadata-verify:
 	kubeless function call get-python-metadata |egrep hello.world
@@ -125,7 +125,7 @@ get-python-metadata-verify:
 
 get-python-secrets:
 	kubectl create secret generic test-secret --from-literal=key=MY_KEY || true
-	kubeless function deploy get-python-secrets --runtime python2.7 --handler helloget.foo --from-file python/helloget.py --secrets test-secret
+	kubeless function deploy get-python-secrets --runtime python2.7 --handler helloget.foo --from-file examples/helloget.py --secrets test-secret
 
 get-python-secrets-verify:
 	$(eval pod := $(shell kubectl get pod -l function=get-python-secrets -o go-template -o custom-columns=:metadata.name --no-headers=true))
@@ -144,7 +144,7 @@ custom-get-python-update-verify:
 	kubeless function call custom-get-python |egrep hello.world.updated
 
 post-python:
-	kubeless function deploy post-python --runtime python2.7 --handler hellowithdata.handler --from-file python/hellowithdata.py
+	kubeless function deploy post-python --runtime python2.7 --handler hellowithdata.handler --from-file examples/hellowithdata.py
 
 post-python-verify:
 	kubeless function call post-python --data '{"it-s": "alive"}'|egrep "it.*alive"
@@ -157,7 +157,7 @@ post-python-verify:
 	echo $$logs | grep -q "event-id.*"
 
 post-python-custom-port:
-	kubeless function deploy post-python-custom-port --runtime python2.7 --handler hellowithdata.handler --from-file python/hellowithdata.py --port 8081
+	kubeless function deploy post-python-custom-port --runtime python2.7 --handler hellowithdata.handler --from-file examples/hellowithdata.py --port 8081
 
 post-python-custom-port-verify:
 	kubectl get svc post-python-custom-port -o yaml | grep 'targetPort: 8081'

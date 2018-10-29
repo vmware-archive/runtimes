@@ -1,6 +1,3 @@
-bats:
-	git clone --depth=1 https://github.com/sstephenson/bats.git
-
 kubectl:
 	@if ! which kubectl >/dev/null; then \
 	KUBECTL_VERSION=$$(wget -qO- https://storage.googleapis.com/kubernetes-release/release/stable.txt); \
@@ -15,7 +12,7 @@ kubeless:
 	sudo mv bundles/kubeless_linux-amd64/kubeless /usr/local/bin/kubectl; \
 	fi
 
-bootstrap: bats kubectl kubeless
+bootstrap: kubectl kubeless
 
 test:
 	./script/integration-tests
