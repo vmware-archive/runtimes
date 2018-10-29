@@ -13,3 +13,13 @@ push-runtime:
 
 build-all: init-image runtime-image
 push-all: push-init push-runtime
+
+# Testing jobs
+deploy: get-jvm-java
+test: get-jvm-java-verify
+
+get-jvm-java:
+	kubeless function deploy get-jvm-java --runtime jvm1.8 --from-file jvm/java/test-java-jvm.jar --handler io_ino_Handler.sayHello
+
+get-jvm-java-verify:
+	kubeless function call get-jvm-java | grep "Hello world"

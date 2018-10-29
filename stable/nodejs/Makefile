@@ -14,3 +14,69 @@ push8:
 # Mandatory jobs
 build-all: build6 build8
 push-all: push6 push8
+
+# Testing jobs
+deploy: get-nodejs get-node-url-zip get-nodejs-custom-port get-nodejs-stream timeout-nodejs get-nodejs-deps get-nodejs-multi post-nodejs
+test: get-nodejs-verify get-node-url-zip-verify get-nodejs-custom-port-verify get-nodejs-stream-verify timeout-nodejs-verify get-nodejs-deps-verify get-nodejs-multi-verify post-nodejs-verify
+
+get-node-url-zip:
+	kubeless function deploy get-node-url-zip --runtime nodejs6 --handler index.helloGet --from-file https://github.com/kubeless/kubeless/blob/master/examples/nodejs/helloFunctions.zip?raw=true
+
+get-node-url-zip-verify:
+	kubeless function call get-node-url-zip |egrep hello.world
+
+get-nodejs:
+	kubeless function deploy get-nodejs --runtime nodejs6 --handler helloget.foo --from-file nodejs/helloget.js
+
+get-nodejs-verify:
+	kubeless function call get-nodejs |egrep hello.world
+
+get-nodejs-custom-port:
+	kubeless function deploy get-nodejs-custom-port --runtime nodejs6 --handler helloget.foo --from-file nodejs/helloget.js --port 8083
+
+get-nodejs-custom-port-verify:
+	kubectl get svc get-nodejs-custom-port -o yaml | grep 'targetPort: 8083'
+	kubeless function call get-nodejs-custom-port |egrep hello.world
+
+get-nodejs-stream:
+	kubeless function deploy get-nodejs-stream --runtime nodejs6 --handler hellostream.foo --from-file nodejs/hellostream.js --dependencies nodejs/package.json
+
+get-nodejs-stream-verify:
+	kubeless function call get-nodejs-stream |egrep hello.world
+
+timeout-nodejs:
+	$(eval TMPDIR := $(shell mktemp -d))
+	printf 'module.exports = { foo: function (event, context) { while(true) {} } }\n' > $(TMPDIR)/hello-loop.js
+	kubeless function deploy timeout-nodejs --runtime nodejs6 --handler helloget.foo  --from-file $(TMPDIR)/hello-loop.js --timeout 4
+	rm -rf $(TMPDIR)
+
+timeout-nodejs-verify:
+	$(eval MSG := $(shell kubeless function call timeout-nodejs 2>&1 || true))
+	echo $(MSG) | egrep Request.timeout.exceeded
+
+get-nodejs-deps:
+	kubeless function deploy get-nodejs-deps --runtime nodejs6 --handler helloget.handler --from-file nodejs/hellowithdeps.js --dependencies nodejs/package.json
+
+get-nodejs-deps-verify:
+	kubeless function call get-nodejs-deps --data '{"hello": "world"}' | grep -q 'hello.*world.*date.*UTC'
+
+get-nodejs-multi:
+	cd nodejs; zip helloFunctions.zip *js
+	kubeless function deploy get-nodejs-multi --runtime nodejs6 --handler index.helloGet --from-file nodejs/helloFunctions.zip
+	rm nodejs/helloFunctions.zip
+
+get-nodejs-multi-verify:
+	kubeless function call get-nodejs-multi |egrep hello.world
+
+post-nodejs:
+	kubeless function deploy post-nodejs --runtime nodejs6 --handler hellowithdata.handler --from-file nodejs/hellowithdata.js
+
+post-nodejs-verify:
+	kubeless function call post-nodejs --data '{"it-s": "alive"}'|egrep "it.*alive"
+	# Verify event context
+	logs=`kubectl logs -l function=post-nodejs`; \
+	echo $$logs | grep -q "it.*alive" && \
+	echo $$logs | grep -q "event-time.*UTC" && \
+	echo $$logs | grep -q "event-type.*application/json" && \
+	echo $$logs | grep -q "event-namespace.*cli.kubeless.io" && \
+	echo $$logs | grep -q "event-id.*"

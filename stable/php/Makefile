@@ -13,3 +13,56 @@ php-cs-fixer:
 # Mandatory jobs
 build-all: build
 push-all: push
+
+# Testing jobs
+deploy: get-php get-php-update-verify get-php-deps post-php timeout-php
+test: get-php-verify get-php-deps-verify post-php-verify timeout-php-verify
+update: get-php-update get-php-deps-update
+update-verify: get-php-update-verify get-php-deps-update-verify
+
+get-php:
+	kubeless function deploy get-php --runtime php7.2 --handler helloget.foo --from-file php/helloget.php
+
+get-php-update:
+	$(eval TMPDIR := $(shell mktemp -d))
+	printf '<?php\n function foo() { return "hello world updated"; } \n' > $(TMPDIR)/hello-updated.php
+	kubeless function update get-php --from-file $(TMPDIR)/hello-updated.php
+	rm -rf $(TMPDIR)
+
+get-php-update-verify:
+	kubeless function call get-php | egrep "hello.world.updated"
+
+get-php-verify:
+	kubeless function call get-php | egrep "hello world"
+
+get-php-deps:
+	kubeless function deploy get-php-deps --runtime php7.2 --handler hellowithdeps.foo --from-file php/hellowithdeps.php --dependencies php/composer.json
+
+get-php-deps-verify:
+	kubeless function call get-php-deps &> /dev/null
+	kubectl logs -l function=get-php-deps | egrep "Hello"
+
+get-php-deps-update:
+	$(eval TMPDIR := $(shell mktemp -d))
+	sed "s/1\.23/1\.20/" php/composer.json > $(TMPDIR)/composer.json
+	kubeless function update get-php-deps --dependencies $(TMPDIR)/composer.json
+
+get-php-deps-update-verify:
+	$(eval pod := $(shell kubectl get pod -l function=get-php-deps -o go-template -o custom-columns=:metadata.name --no-headers=true))
+	kubectl exec -it $(pod) cat /kubeless/composer.json | egrep "1.20"
+
+post-php:
+	kubeless function deploy post-php --runtime php7.2 --handler hellowithdata.foo --from-file php/hellowithdata.php
+
+post-php-verify:
+	kubeless function call post-php --data '{"it-s": "alive"}'| egrep "it.*alive"
+
+timeout-php:
+	$(eval TMPDIR := $(shell mktemp -d))
+	printf '<?php\n function foo() { while(1) {} } \n' > $(TMPDIR)/hello-loop.php
+	kubeless function deploy timeout-php --runtime php7.2 --handler helloget.foo  --from-file $(TMPDIR)/hello-loop.php --timeout 4
+	rm -rf $(TMPDIR)
+
+timeout-php-verify:
+	$(eval MSG := $(shell kubeless function call timeout-php 2>&1 || true))
+	echo $(MSG) | egrep Request.timeout.exceeded
