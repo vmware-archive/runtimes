@@ -1,5 +1,12 @@
-bootstrap:
+bats:
 	git clone --depth=1 https://github.com/sstephenson/bats.git
+
+bootstrap: bats
+	@if ! which kubectl >/dev/null; then \
+	KUBECTL_VERSION=$$(wget -qO- https://storage.googleapis.com/kubernetes-release/release/stable.txt); \
+	sudo wget -q -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$$KUBECTL_VERSION/bin/$$(go env GOOS)/$$(go env GOARCH)/kubectl; \
+	sudo chmod +x /usr/local/bin/kubectl; \
+	fi
 
 test:
 	./script/integration-tests
