@@ -1,10 +1,6 @@
 version: 2
 
 ## Definitions
-build_allways: &build_allways
-  filters:
-    tags:
-      only: /.*/
 defaults: &defaults
   environment:
     KUBELESS_VERSION: v1.0.0-alpha.8
@@ -21,8 +17,7 @@ workflows:
   version: 2
   kubeless:
     jobs:
-      - test:
-          <<: *build_allways
+      - stable/php
 jobs:
   stable/php:
     machine: true
