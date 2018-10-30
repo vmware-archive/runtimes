@@ -12,7 +12,9 @@ run_test: &run_test
     - run: |
         # Determine if running the tests are necessary
         if [[ -n "$CIRCLE_PULL_REQUEST" ]]; then
-          # If the build is a pull request and the runtime is not affected omit the build
+          # If the build is a pull request 
+          # and the runtime is not affected
+          # we omit the build
           if !git diff master --name-only | grep ${CIRCLE_JOB}; then
             circleci step halt
           fi
@@ -35,6 +37,7 @@ workflows:
       - stable/python
       - stable/ruby
       - incubator/jvm
+      - incubator/nodejs_distroless
 jobs:
   stable/ballerina:
     machine: true
@@ -69,6 +72,10 @@ jobs:
     <<: *defaults
     <<: *run_test
   incubator/jvm:
+    machine: true
+    <<: *defaults
+    <<: *run_test
+  incubator/nodejs_distroless:
     machine: true
     <<: *defaults
     <<: *run_test
