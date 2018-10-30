@@ -11,7 +11,7 @@ kubeless:
 	git clone https://github.com/kubeless/kubeless; \
 	cd kubeless/; \
 	make bootstrap; \
-	export KUBECFG_JPATH=$$GOPATH/src/github.com/kubeless/kubeless/ksonnet-lib"; \
+	export KUBECFG_JPATH=$$GOPATH/src/github.com/kubeless/kubeless/ksonnet-lib; \
 	make all-yaml; \
 	make binary; \
 	sudo mv $$GOPATH/bin/kubeless /usr/local/bin/
