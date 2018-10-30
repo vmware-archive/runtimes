@@ -17,7 +17,15 @@ workflows:
   version: 2
   kubeless:
     jobs:
+      - stable/ballerina
+      - stable/dotnetcore
+      - stable/golang
+      - stable/java
+      - stable/nodejs
       - stable/php
+      - stable/python
+      - stable/ruby
+      - incubator/jvm
 jobs:
   stable/ballerina:
     machine: true
