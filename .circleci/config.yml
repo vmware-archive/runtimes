@@ -31,7 +31,6 @@ workflows:
 jobs:
   test:
     <<: *defaults
-    environment:
       RUNTIME_TARGET: stable/php
     machine: true
     <<: *run_test
