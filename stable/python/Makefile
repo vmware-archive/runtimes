@@ -47,7 +47,7 @@ get-python-update-verify:
 
 get-python-deps:
 	cd examples && zip hellowithdeps.zip hellowithdeps.py  hellowithdepshelper.py && cd ..
-	kubeless function deploy get-python-deps --runtime python2.7 --handler hellowithdeps.foo --from-file examples/hellowithdeps.zip --dependencies python/requirements.txt
+	kubeless function deploy get-python-deps --runtime python2.7 --handler hellowithdeps.foo --from-file examples/hellowithdeps.zip --dependencies examples/requirements.txt
 
 get-python-deps-verify:
 	kubectl rollout status deployment/get-python-deps && sleep 2

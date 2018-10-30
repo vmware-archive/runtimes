@@ -58,7 +58,7 @@ timeout-ruby:
 
 timeout-ruby-verify:
 	kubectl rollout status deployment/timeout-ruby && sleep 2
-	$(eval MSG := $(shell { time kubeless function call timeout-ruby; } 2>&1 || true))
+	$(eval MSG := $(shell kubeless function call timeout-ruby 2>&1 || true))
 	echo $(MSG) | egrep Request.timeout.exceeded
 	echo $(MSG) | egrep "real\s*0m4."
 

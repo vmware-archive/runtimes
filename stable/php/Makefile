@@ -41,7 +41,7 @@ get-php-deps:
 	kubeless function deploy get-php-deps --runtime php7.2 --handler hellowithdeps.foo --from-file examples/hellowithdeps.php --dependencies examples/composer.json
 
 get-php-deps-verify:
-	kubectl rollout status deployment/get-php-deps && sleep 5
+	kubectl rollout status deployment/get-php-deps && sleep 10
 	kubeless function call get-php-deps &> /dev/null
 	kubectl logs -l function=get-php-deps | egrep "Hello"
 
@@ -51,7 +51,7 @@ get-php-deps-update:
 	kubeless function update get-php-deps --dependencies $(TMPDIR)/composer.json
 
 get-php-deps-update-verify:
-	kubectl rollout status deployment/get-php-deps && sleep 5
+	kubectl rollout status deployment/get-php-deps && sleep 10
 	$(eval pod := $(shell kubectl get pod -l function=get-php-deps -o go-template -o custom-columns=:metadata.name --no-headers=true))
 	kubectl exec -it $(pod) cat /kubeless/composer.json | egrep "1.20"
 
@@ -59,7 +59,7 @@ post-php:
 	kubeless function deploy post-php --runtime php7.2 --handler hellowithdata.foo --from-file examples/hellowithdata.php
 
 post-php-verify:
-	kubectl rollout status deployment/post-php && sleep 5
+	kubectl rollout status deployment/post-php && sleep 10
 	kubeless function call post-php --data '{"it-s": "alive"}'| egrep "it.*alive"
 
 timeout-php:
@@ -69,6 +69,6 @@ timeout-php:
 	rm -rf $(TMPDIR)
 
 timeout-php-verify:
-	kubectl rollout status deployment/timeout-php && sleep 5
+	kubectl rollout status deployment/timeout-php && sleep 10
 	$(eval MSG := $(shell kubeless function call timeout-php 2>&1 || true))
 	echo $(MSG) | egrep Request.timeout.exceeded
