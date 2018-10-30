@@ -15,7 +15,7 @@ run_test: &run_test
           # If the build is a pull request 
           # and the runtime is not affected
           # we omit the build
-          if !git diff master --name-only | grep ${CIRCLE_JOB}; then
+          if ! git diff master --name-only | grep ${CIRCLE_JOB}; then
             circleci step halt
           fi
         fi
