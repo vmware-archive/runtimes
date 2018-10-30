@@ -19,7 +19,39 @@ workflows:
     jobs:
       - stable/php
 jobs:
+  stable/ballerina:
+    machine: true
+    <<: *defaults
+    <<: *run_test
+  stable/dotnetcore:
+    machine: true
+    <<: *defaults
+    <<: *run_test
+  stable/golang:
+    machine: true
+    <<: *defaults
+    <<: *run_test
+  stable/java:
+    machine: true
+    <<: *defaults
+    <<: *run_test
+  stable/nodejs:
+    machine: true
+    <<: *defaults
+    <<: *run_test
   stable/php:
+    machine: true
+    <<: *defaults
+    <<: *run_test
+  stable/python:
+    machine: true
+    <<: *defaults
+    <<: *run_test
+  stable/ruby:
+    machine: true
+    <<: *defaults
+    <<: *run_test
+  incubator/jvm:
     machine: true
     <<: *defaults
     <<: *run_test
