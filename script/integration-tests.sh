@@ -13,6 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+set -e
+
+target=${1:?}
 
 ROOT_DIR=`cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null && pwd`
 
@@ -49,31 +52,12 @@ kubectl apply -f ${ROOT_DIR}/kubeless-configmap.yaml
 kubectl set image -n kubeless deployment/kubeless-controller-manager kubeless-function-controller=kubeless/function-controller:latest
 kubectl rollout status -n kubeless deployment/kubeless-controller-manager
 
-# Auto obtain list
-for f in stable/*; do
-    make -C ${ROOT_DIR}/${f} deploy
-done
-# TODO: deploy all incubator
-# for f in incubator/*; do
-#     make -C ${ROOT_DIR}/${f} deploy
-# done
-for f in stable/*; do
-    make -C ${ROOT_DIR}/${f} test
-    # If there are tests to update scenarios run them
-    if grep -e '^update:' ${ROOT_DIR}/${f}/Makefile; then
-        make -C ${ROOT_DIR}/${f} update
-        make -C ${ROOT_DIR}/${f} update-verify
-    fi
-done
-# TODO: test all incubator
-# for f in incubator/*; do
-#     make -C ${ROOT_DIR}/${f} deploy
-    # # If there are tests to update scenarios run them
-    # if grep -e '^update:' ${ROOT_DIR}/${f}/Makefile; then
-    #     make -C ${ROOT_DIR}/${f} update
-    #     make -C ${ROOT_DIR}/${f} update-verify
-    # fi
-# done
+make -C ${ROOT_DIR}/${target} deploy
+make -C ${ROOT_DIR}/${target} test
+if grep -e '^update:' ${ROOT_DIR}/${target}/Makefile; then
+    make -C ${ROOT_DIR}/${target} update
+    make -C ${ROOT_DIR}/${target} update-verify
+fi
 
 exit_code=$?
 

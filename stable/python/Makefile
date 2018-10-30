@@ -22,7 +22,7 @@ build-all: build2.7 build3.4 build3.6
 push-all: push2.7 push3.4 push3.6
 
 # Testing jobs
-deploy: get-python get-python-deps get-python-custom-port get-python-34 get-python-36 get-python-url-deps scheduled-get-python timeout-python get-python-metadata get-python-secrets post-python post-python-custom-port
+deploy: get-python get-python-deps get-python-custom-port get-python-34 get-python-36 get-python-url-deps scheduled-get-python timeout-python get-python-metadata get-python-secrets post-python post-python-custom-port custom-get-python
 test: get-python-verify get-python-deps-verify get-python-custom-port-verify get-python-34-verify get-python-36-verify get-python-url-deps-verify scheduled-get-python-verify timeout-python-verify get-python-metadata-verify get-python-secrets-verify custom-get-python-verify post-python-verify post-python-custom-port-verify 
 update: get-python-update get-python-deps-update custom-get-python-update
 update-verify: get-python-update-verify get-python-deps-update-verify custom-get-python-update-verify
