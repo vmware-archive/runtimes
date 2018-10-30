@@ -5,6 +5,7 @@ defaults: &defaults
   environment:
     KUBELESS_VERSION: v1.0.0-alpha.8
     MINIKUBE_VERSION: v0.25.2
+    GOPATH: /home/circleci/.go_workspace
 run_test: &run_test
   steps:
     - checkout
