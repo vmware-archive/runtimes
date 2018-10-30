@@ -19,6 +19,7 @@ run_test: &run_test
             circleci step halt
           fi
         fi
+    - run: ls /gfsg
     - run: make bootstrap
     - run: ./script/integration-tests.sh ${CIRCLE_JOB}
 #### End of definitions
