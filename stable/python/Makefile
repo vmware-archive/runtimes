@@ -24,8 +24,6 @@ push-all: push2.7 push3.4 push3.6
 # Testing jobs
 deploy: get-python get-python-deps get-python-custom-port get-python-34 get-python-36 get-python-url-deps scheduled-get-python timeout-python get-python-metadata get-python-secrets post-python post-python-custom-port custom-get-python
 test: get-python-verify get-python-deps-verify get-python-custom-port-verify get-python-34-verify get-python-36-verify get-python-url-deps-verify scheduled-get-python-verify timeout-python-verify get-python-metadata-verify get-python-secrets-verify custom-get-python-verify post-python-verify post-python-custom-port-verify 
-update: get-python-update get-python-deps-update custom-get-python-update
-update-verify: get-python-update-verify get-python-deps-update-verify custom-get-python-update-verify
 
 get-python:
 	kubeless function deploy get-python --runtime python2.7 --handler helloget.foo --from-file examples/helloget.py
@@ -34,16 +32,6 @@ get-python-verify:
 	kubectl rollout status deployment/get-python && sleep 2
 	kubeless function call get-python |egrep hello.world
 	kubeless function top --function get-python --out yaml |egrep total_calls.*[1-100000]
-
-get-python-update:
-	$(eval TMPDIR := $(shell mktemp -d))
-	printf 'def foo(event, context):\n%4sreturn "hello world updated"\n' > $(TMPDIR)/hello-updated.py
-	kubeless function update get-python --from-file $(TMPDIR)/hello-updated.py
-	rm -rf $(TMPDIR)
-
-get-python-update-verify:
-	kubectl rollout status deployment/get-python && sleep 2
-	kubeless function call get-python |egrep hello.world.updated
 
 get-python-deps:
 	cd examples && zip hellowithdeps.zip hellowithdeps.py  hellowithdepshelper.py && cd ..
@@ -60,18 +48,6 @@ get-python-custom-port-verify:
 	kubectl rollout status deployment/get-python-custom-port && sleep 2
 	kubectl get svc get-python-custom-port -o yaml | grep 'targetPort: 8081'
 	kubeless function call get-python-custom-port |egrep hello.world
-
-get-python-deps-update:
-	$(eval TMPDIR := $(shell mktemp -d))
-	printf 'bs4\ntwitter\n' > $(TMPDIR)/requirements.txt
-	kubeless function update get-python-deps --dependencies $(TMPDIR)/requirements.txt
-	rm -rf $(TMPDIR)
-
-get-python-deps-update-verify:
-	kubectl rollout status deployment/get-python-deps && sleep 2
-	pod=`kubectl get pod -l function=get-python-deps -o go-template -o custom-columns=:metadata.name --no-headers=true`; \
-	echo "Checking updated deps of $$pod"; \
-	kubectl exec -it $$pod pip freeze | grep -q "twitter=="
 
 get-python-34:
 	kubeless function deploy get-python-34 --runtime python3.4 --handler helloget.foo --from-file examples/helloget.py
@@ -148,13 +124,6 @@ custom-get-python:
 custom-get-python-verify:
 	kubectl rollout status deployment/custom-get-python && sleep 2
 	kubeless function call custom-get-python |egrep hello.world
-
-custom-get-python-update:
-	kubeless function update --runtime-image kubeless/get-python-example@sha256:174beab98e6fa454e21121302395375e90a324e9276367296aab0eb5b4aa8922 custom-get-python
-
-custom-get-python-update-verify:
-	kubectl rollout status deployment/custom-get-python && sleep 2
-	kubeless function call custom-get-python |egrep hello.world.updated
 
 post-python:
 	kubeless function deploy post-python --runtime python2.7 --handler hellowithdata.handler --from-file examples/hellowithdata.py

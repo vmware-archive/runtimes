@@ -46,7 +46,3 @@ kubectl rollout status -n kubeless deployment/kubeless-controller-manager
 
 make -C ${ROOT_DIR}/${target} deploy
 make -C ${ROOT_DIR}/${target} test
-if grep -e '^update:' ${ROOT_DIR}/${target}/Makefile; then
-    make -C ${ROOT_DIR}/${target} update
-    make -C ${ROOT_DIR}/${target} update-verify
-fi

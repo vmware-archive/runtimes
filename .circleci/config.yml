@@ -9,6 +9,14 @@ defaults: &defaults
 run_test: &run_test
   steps:
     - checkout
+    - run: |
+      # Determine if running the tests are necessary
+      if [[ -n "$CIRCLE_PULL_REQUEST" ]]; then
+        # If the build is a pull request and the runtime is not affected omit the build
+        if !git diff master --name-only | grep ${CIRCLE_JOB}; then
+          circleci step halt
+        fi
+      fi
     - run: make bootstrap
     - run: ./script/integration-tests.sh ${CIRCLE_JOB}
 

@@ -17,21 +17,9 @@ push-all: push
 # Testing jobs
 deploy: get-php get-php-deps post-php timeout-php
 test: get-php-verify get-php-deps-verify post-php-verify timeout-php-verify
-update: get-php-update get-php-deps-update
-update-verify: get-php-update-verify get-php-deps-update-verify
 
 get-php:
 	kubeless function deploy get-php --runtime php7.2 --handler helloget.foo --from-file examples/helloget.php
-
-get-php-update:
-	$(eval TMPDIR := $(shell mktemp -d))
-	printf '<?php\n function foo() { return "hello world updated"; } \n' > $(TMPDIR)/hello-updated.php
-	kubeless function update get-php --from-file $(TMPDIR)/hello-updated.php
-	rm -rf $(TMPDIR)
-
-get-php-update-verify:
-	kubectl rollout status deployment/get-php && sleep 2
-	kubeless function call get-php | egrep "hello.world.updated"
 
 get-php-verify:
 	kubectl rollout status deployment/get-php && sleep 2
@@ -44,16 +32,6 @@ get-php-deps-verify:
 	kubectl rollout status deployment/get-php-deps && sleep 2
 	kubeless function call get-php-deps &> /dev/null
 	kubectl logs -l function=get-php-deps | egrep "Hello"
-
-get-php-deps-update:
-	$(eval TMPDIR := $(shell mktemp -d))
-	sed "s/1\.23/1\.20/" examples/composer.json > $(TMPDIR)/composer.json
-	kubeless function update get-php-deps --dependencies $(TMPDIR)/composer.json
-
-get-php-deps-update-verify:
-	kubectl rollout status deployment/get-php-deps && sleep 2
-	$(eval pod := $(shell kubectl get pod -l function=get-php-deps -o go-template -o custom-columns=:metadata.name --no-headers=true))
-	kubectl exec -it $(pod) cat /kubeless/composer.json | egrep "1.20"
 
 post-php:
 	kubeless function deploy post-php --runtime php7.2 --handler hellowithdata.foo --from-file examples/hellowithdata.php
