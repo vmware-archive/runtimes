@@ -37,14 +37,6 @@ kubectl get nodes || {
 kubectl get clusterrolebinding kube-dns-admin >& /dev/null || \
     kubectl create clusterrolebinding kube-dns-admin --serviceaccount=kube-system:default --clusterrole=cluster-admin
 
-# Prep: load test library, save current k8s default context (and restore it at exit),
-# as kubeless doesn't support --context
-export TEST_CONTEXT=minikube
-source script/libtest.bash
-trap k8s_context_restore 0
-k8s_context_save
-
-# Run the tests thru bats:
 kubectl create namespace kubeless
 kubectl create -f https://github.com/kubeless/kubeless/releases/download/${KUBELESS_VERSION}/kubeless-${KUBELESS_VERSION}.yaml
 # TODO: Get the latest manifest
