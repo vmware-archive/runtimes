@@ -60,7 +60,6 @@ timeout-ruby-verify:
 	kubectl rollout status deployment/timeout-ruby && sleep 2
 	$(eval MSG := $(shell kubeless function call timeout-ruby 2>&1 || true))
 	echo $(MSG) | egrep Request.timeout.exceeded
-	echo $(MSG) | egrep "real\s*0m4."
 
 post-ruby:
 	kubeless function deploy post-ruby --runtime ruby2.4 --handler hellowithdata.handler --from-file examples/hellowithdata.rb

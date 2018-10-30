@@ -71,7 +71,6 @@ done
 sudo -E ${MINIKUBE_BIN} update-context
 
 # Enable Nginx Ingress
-echo "INFO: Enabling ingress addon to minikube..."
 sudo -E ${MINIKUBE_BIN} config set WantUpdateNotification false
 
 # Give some time for the cluster to become healthy

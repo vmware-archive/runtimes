@@ -38,10 +38,10 @@ kubectl get clusterrolebinding kube-dns-admin >& /dev/null || \
     kubectl create clusterrolebinding kube-dns-admin --serviceaccount=kube-system:default --clusterrole=cluster-admin
 
 kubectl create namespace kubeless
-kubectl create -f https://github.com/kubeless/kubeless/releases/download/${KUBELESS_VERSION}/kubeless-${KUBELESS_VERSION}.yaml
-# TODO: Get the latest manifest
+kubectl create -f ${GOPATH}/src/github.com/kubeless/kubeless/kubeless.yaml
 kubectl apply -f ${ROOT_DIR}/kubeless-configmap.yaml
-kubectl set image -n kubeless deployment/kubeless-controller-manager kubeless-function-controller=kubeless/function-controller:latest
+# TODO: Avoid restarting the controller to reload the configmap
+kubectl delete pods -n kubeless --all
 kubectl rollout status -n kubeless deployment/kubeless-controller-manager
 
 make -C ${ROOT_DIR}/${target} deploy
@@ -50,24 +50,3 @@ if grep -e '^update:' ${ROOT_DIR}/${target}/Makefile; then
     make -C ${ROOT_DIR}/${target} update
     make -C ${ROOT_DIR}/${target} update-verify
 fi
-
-exit_code=$?
-
-# Just showing remaining k8s objects
-kubectl get all --all-namespaces
-
-if [ ${exit_code} -ne 0 -o -n "${TRAVIS_DUMP_LOGS}" ]; then
-    echo "INFO: Build ERRORed, dumping logs: ##"
-    for ns in kubeless default; do
-        echo "### LOGs: namespace: ${ns} ###"
-        kubectl get pod -n ${ns} -oname|xargs -I@ sh -xc "kubectl logs -n ${ns} @|sed 's|^|@: |'"
-    done
-    echo "INFO: Description"
-    kubectl describe pod -l created-by=kubeless
-    echo "INFO: LOGs: pod: kube-dns ###"
-    kubectl logs -n kube-system -l k8s-app=kube-dns -c kubedns
-    echo "INFO: LOGs: END"
-fi
-[ ${exit_code} -eq 0 ] && echo "INFO: $0: SUCCESS" || echo "ERROR: $0: FAILED"
-exit ${exit_code}
-# vim: sw=4 ts=4 et si

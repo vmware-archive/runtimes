@@ -6,11 +6,14 @@ kubectl:
 	fi
 
 kubeless:
-	@if ! which kubeless >/dev/null; then \
-	wget https://github.com/kubeless/kubeless/releases/download/$$KUBELESS_VERSION/kubeless_linux-amd64.zip; \
-	unzip kubeless_linux-amd64.zip; \
-	sudo mv bundles/kubeless_linux-amd64/kubeless /usr/local/bin/kubeless; \
-	fi
+	mkdir -p $$GOPATH/src/github.com/kubeless/; \
+	cd $$GOPATH/src/github.com/kubeless/; \
+	git clone https://github.com/kubeless/kubeless; \
+	cd kubeless/; \
+	make bootstrap; \
+	make all-yaml; \
+	make binary; \
+	sudo mv $$GOPATH/bin/kubeless /usr/local/bin/
 
 bootstrap: kubectl kubeless
 
