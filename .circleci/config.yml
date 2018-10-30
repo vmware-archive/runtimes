@@ -9,16 +9,12 @@ defaults: &defaults
   environment:
     KUBELESS_VERSION: v1.0.0-alpha.8
     MINIKUBE_VERSION: v0.25.2
-exports: &exports
-  # It is not possible to resolve env vars in the environment section:
-  # https://discuss.circleci.com/t/using-environment-variables-in-config-yml-not-working/14237
-  run: echo "export PATH=$(pwd)/bats/libexec:$PATH" >> $BASH_ENV
 run_test: &run_test
   steps:
     - checkout
     - <<: *exports
     - run: make bootstrap
-    - run: ./script/integration-tests.sh ${RUNTIME_TARGET}
+    - run: ./script/integration-tests.sh ${CIRCLE_JOB}
 
 #### End of definitions
 
@@ -29,8 +25,7 @@ workflows:
       - test:
           <<: *build_allways
 jobs:
-  test:
-    <<: *defaults
-      RUNTIME_TARGET: stable/php
+  stable/php:
     machine: true
+    <<: *defaults
     <<: *run_test
