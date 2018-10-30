@@ -12,7 +12,6 @@ defaults: &defaults
 run_test: &run_test
   steps:
     - checkout
-    - <<: *exports
     - run: make bootstrap
     - run: ./script/integration-tests.sh ${CIRCLE_JOB}
 
