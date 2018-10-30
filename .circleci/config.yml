@@ -21,7 +21,6 @@ run_test: &run_test
         fi
     - run: make bootstrap
     - run: ./script/integration-tests.sh ${CIRCLE_JOB}
-
 #### End of definitions
 
 workflows:
