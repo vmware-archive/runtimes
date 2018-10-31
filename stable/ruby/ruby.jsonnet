@@ -1,0 +1,20 @@
+{
+  ID: 'ruby',
+  compiled: false,
+  versions:
+   [ { name: 'ruby23',
+       version: '2.3',
+       runtimeImage: 'kubeless/ruby@sha256:67870b57adebc4dc749a8a19795da801da2d05fc6e8324168ac1b227bb7c77f7',
+       initImage: 'bitnami/ruby:2.3' },
+     { name: 'ruby24',
+       version: '2.4',
+       runtimeImage: 'kubeless/ruby@sha256:aaa9c7f3dfd4f866a527c04171c32dae2efa420d770a6af9c517771137ab4011',
+       initImage: 'bitnami/ruby:2.4' },
+     { name: 'ruby25',
+       version: '2.5',
+       runtimeImage: 'kubeless/ruby@sha256:577e35724996ba340ff0a18366bce99586b0be58e4d27fa3e8038f977caf1559',
+       initImage: 'bitnami/ruby:2.5' },
+   ],
+  depName: 'Gemfile',
+  fileNameSuffix: '.rb',
+}
