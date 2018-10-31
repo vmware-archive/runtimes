@@ -4,12 +4,26 @@
   versions:
     [ { name: 'node6',
        version: '6',
-       runtimeImage: 'kubeless/nodejs@sha256:556ff930c7a609d1ad90322d41c8b562cb42313898486fed9674fb2647e4b42f',
-       initImage: 'node:6.10' },
+       images: [{
+        phase: "installation",
+        image: "kubeless/nodejs@sha256:2ef1993578ef9e92fc32f9c978cd19c0f43b23d3205bafa8fb9a91d37c66466e",
+        command: "/kubeless-npm-install.sh"
+       }, {
+        phase: "runtime",
+        image: "kubeless/nodejs@sha256:2ef1993578ef9e92fc32f9c978cd19c0f43b23d3205bafa8fb9a91d37c66466e"
+       }],
+      },
      { name: 'node8',
        version: '8',
-       runtimeImage: 'kubeless/nodejs@sha256:5c9c5e36f9845f2cf8e9e0d55993796d82e34a2b8c0f8a508c9d3c04b2041076',
-       initImage: 'node:8' },
+       images: [{
+        phase: "installation",
+        image: "kubeless/nodejs@sha256:424add88dc2a7fdc45012593159794d59a6ea4aafadfffb632d21ae53b1d262b",
+        command: "/kubeless-npm-install.sh"
+       }, {
+        phase: "runtime",
+        image: "kubeless/nodejs@sha256:424add88dc2a7fdc45012593159794d59a6ea4aafadfffb632d21ae53b1d262b"
+       }],
+     },
     ],
   depName: 'package.json',
   fileNameSuffix: '.js'

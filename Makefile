@@ -12,7 +12,9 @@ kubeless:
 	cd kubeless/; \
 	make bootstrap; \
 	export KUBECFG_JPATH=$$GOPATH/src/github.com/kubeless/kubeless/ksonnet-lib; \
-	make all-yaml; \
+	# TODO: REMOVE WHEN THE CODE IS IN MASTER
+	git checkout origin/splitRuntimes; \
+	kubecfg show -J $$HOME/project -o yaml kubeless.jsonnet > kubeless.yaml; \
 	make binary; \
 	sudo mv $$GOPATH/bin/kubeless /usr/local/bin/
 
