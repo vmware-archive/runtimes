@@ -21,4 +21,6 @@
       initImage: "python3.6",
     },
   ],
+  depName: "requirements.txt",
+  fileNameSuffix: ".py",
 }
