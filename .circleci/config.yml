@@ -9,14 +9,13 @@ defaults: &defaults
 run_test: &run_test
   steps:
     - checkout
-    - run: ls /gfsg
     - run: |
         # Determine if running the tests are necessary
         if [[ -n "$CIRCLE_PULL_REQUEST" ]]; then
           # If the build is a pull request 
           # and the runtime is not affected
           # we omit the build
-          if ! git diff master --name-only | grep ${CIRCLE_JOB}; then
+          if ! git diff origin/master --name-only | grep ${CIRCLE_JOB}; then
             circleci step halt
           fi
         fi
