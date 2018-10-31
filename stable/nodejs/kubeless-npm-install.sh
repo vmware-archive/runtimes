@@ -2,6 +2,7 @@
 
 set -e
 
+export HOME="/tmp"
 registry=${NPM_REGISTRY:-"https://registry.npmjs.org"}
 scope="${NPM_SCOPE:-""}"
 

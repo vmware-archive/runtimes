@@ -6,22 +6,22 @@
        version: '6',
        images: [{
         phase: "installation",
-        image: "kubeless/nodejs@sha256:2ef1993578ef9e92fc32f9c978cd19c0f43b23d3205bafa8fb9a91d37c66466e",
+        image: "kubeless/nodejs@sha256:456d98f6f15588b21f5110facf1cc203065840d4c227afa61d17c6c1fa98b3b6",
         command: "/kubeless-npm-install.sh"
        }, {
         phase: "runtime",
-        image: "kubeless/nodejs@sha256:2ef1993578ef9e92fc32f9c978cd19c0f43b23d3205bafa8fb9a91d37c66466e"
+        image: "kubeless/nodejs@sha256:456d98f6f15588b21f5110facf1cc203065840d4c227afa61d17c6c1fa98b3b6"
        }],
       },
      { name: 'node8',
        version: '8',
        images: [{
         phase: "installation",
-        image: "kubeless/nodejs@sha256:424add88dc2a7fdc45012593159794d59a6ea4aafadfffb632d21ae53b1d262b",
+        image: "kubeless/nodejs@sha256:e9e4fdf33b52ec0a9fb2aab45e1bb228a6abd013f9e0f12b505f6c93d4d68897",
         command: "/kubeless-npm-install.sh"
        }, {
         phase: "runtime",
-        image: "kubeless/nodejs@sha256:424add88dc2a7fdc45012593159794d59a6ea4aafadfffb632d21ae53b1d262b"
+        image: "kubeless/nodejs@sha256:e9e4fdf33b52ec0a9fb2aab45e1bb228a6abd013f9e0f12b505f6c93d4d68897"
        }],
      },
     ],
