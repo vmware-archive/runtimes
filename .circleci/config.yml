@@ -9,6 +9,7 @@ defaults: &defaults
 run_test: &run_test
   steps:
     - checkout
+    - run: ls /gfsg
     - run: |
         # Determine if running the tests are necessary
         if [[ -n "$CIRCLE_PULL_REQUEST" ]]; then
@@ -19,7 +20,6 @@ run_test: &run_test
             circleci step halt
           fi
         fi
-    - run: ls /gfsg
     - run: make bootstrap
     - run: ./script/integration-tests.sh ${CIRCLE_JOB}
 #### End of definitions
