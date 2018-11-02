@@ -1,6 +1,5 @@
 {
   ID: "java",
-  compiled: true,
   versions: [
     {
       name: "java1.8",

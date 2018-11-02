@@ -1,6 +1,5 @@
 { 
   ID: 'php',
-  compiled: false,
   versions:
     [ { name: 'php72',
        version: '7.2',

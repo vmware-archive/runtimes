@@ -1,6 +1,5 @@
 {
   ID: "go",
-  compiled: true,
   versions: [
     {
       name: "go1.10",

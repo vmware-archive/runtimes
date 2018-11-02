@@ -1,6 +1,5 @@
 {
   ID: "ballerina",
-  compiled: true,
   versions: [
     {
       name: "ballerina0.981.0",

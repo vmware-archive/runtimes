@@ -1,6 +1,5 @@
 {
   ID: 'nodejs_distroless',
-  compiled: false,
   versions:
     [ { name: 'node8',
        version: '8',

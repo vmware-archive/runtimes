@@ -1,6 +1,5 @@
 {
   ID: 'jvm',
-  compiled: true,
   versions:
    [ { name: 'jvm1.8',
        version: '1.8',
