@@ -6,7 +6,7 @@ Each runtime is composed at least by the following files:
 
 - One or more Dockerfiles. These Dockerfiles are used to build the different images required by the runtime. More than one Dockerfile is required if more than one version is supported.
 - A Makefile to automate the task of building, pushing and testing the runtime.
-- A Jsonnet manifest with the information related to the runtime.
+- A manifest with the information related to the runtime.
 - A `examples/` folder with different examples of the runtime.
 
 If you want to extend it and make another language available it is necessary to change the following components:
@@ -24,7 +24,7 @@ The first step is to create the different docker images required to run, compile
   - KUBELESS_FUNC_NAME: Name of the function. Useful in case it's necessary to substitute a place holder in the source file with the function name to execute.
 - Runtime. This is the phase that contains the information related to the execution time of the function. It's important to set here the environment variables required to load dependencies added in the `installation`. For example, for NodeJS functions, it's necessary to point the `NODE_PATH` environment variable to the installation volume.
 
-All the information related to the different phases is specified in the Jsonnet manifest (explained in the next section).
+All the information related to the different phases is specified in the [Jsonnet](https://jsonnet.org) manifest (explained in the next section). Jsonnet is a templating language that will be used to merge all the different manifest (one per runtime) in the root one.
 
 As a proposed convention, the file names used for a runtime are:
 
@@ -33,7 +33,7 @@ As a proposed convention, the file names used for a runtime are:
 
 To make the runtime easier to maintain, each runtime should contain a `Makefile` with a task for building and pushing any of the images included in the runtime.
 
-The information about the different phases are specified in the Jsonnet manifest that should be present in the runtime folder (explained in the step 3).
+The information about the different phases are specified in the [Jsonnet](https://jsonnet.org) manifest that should be present in the runtime folder (explained in the step 3).
 
 ## 2. Runtime image requirements
 
