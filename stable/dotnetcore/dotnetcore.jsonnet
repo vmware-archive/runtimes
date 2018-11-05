@@ -12,7 +12,7 @@
         phase: "runtime",
         image: "allantargino/kubeless-dotnetcore@sha256:1699b07d9fc0276ddfecc2f823f272d96fd58bbab82d7e67f2fd4982a95aeadc",
         env: {
-          DOTNETCORE_HOME: "$KUBELESS_INSTALL_VOLUME/packages",
+          DOTNETCORE_HOME: "$(KUBELESS_INSTALL_VOLUME)/packages",
         },
       }],
     }

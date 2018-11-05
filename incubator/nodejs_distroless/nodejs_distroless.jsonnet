@@ -9,7 +9,10 @@
         command: "/kubeless-npm-install.sh"
        }, {
         phase: "runtime",
-        image: "henrike42/kubeless/runtimes/nodejs/distroless:0.0.2"
+        image: "henrike42/kubeless/runtimes/nodejs/distroless:0.0.2",
+        env: {
+          NODE_PATH: "$(KUBELESS_INSTALL_VOLUME)/node_modules",
+        },
        }],
      },
     ],
