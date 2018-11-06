@@ -62,6 +62,5 @@ post-go-verify:
 	# Verify event context
 	logs=`kubectl logs -l function=post-go`; \
 	echo $$logs | grep -q "it.*alive" && \
-	echo $$logs | grep -q "UTC" && \
 	echo $$logs | grep -q "application/json" && \
 	echo $$logs | grep -q "cli.kubeless.io"

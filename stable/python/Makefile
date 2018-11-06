@@ -22,8 +22,8 @@ build-all: build2.7 build3.4 build3.6
 push-all: push2.7 push3.4 push3.6
 
 # Testing jobs
-deploy: get-python get-python-deps get-python-custom-port get-python-34 get-python-36 get-python-url-deps scheduled-get-python timeout-python get-python-metadata get-python-secrets post-python post-python-custom-port custom-get-python
-test: get-python-verify get-python-deps-verify get-python-custom-port-verify get-python-34-verify get-python-36-verify get-python-url-deps-verify scheduled-get-python-verify timeout-python-verify get-python-metadata-verify get-python-secrets-verify custom-get-python-verify post-python-verify post-python-custom-port-verify 
+deploy: get-python get-python-deps get-python-custom-port get-python-34 get-python-36 get-python-url-deps scheduled-get-python timeout-python get-python-secrets post-python post-python-custom-port custom-get-python
+test: get-python-verify get-python-deps-verify get-python-custom-port-verify get-python-34-verify get-python-36-verify get-python-url-deps-verify scheduled-get-python-verify timeout-python-verify get-python-secrets-verify custom-get-python-verify post-python-verify post-python-custom-port-verify 
 
 get-python:
 	kubeless function deploy get-python --runtime python2.7 --handler helloget.foo --from-file examples/helloget.py
@@ -100,15 +100,6 @@ timeout-python-verify:
 	$(eval MSG := $(shell kubeless function call timeout-python 2>&1 || true))
 	echo $(MSG) | egrep Request.timeout.exceeded
 
-get-python-metadata:
-	kubeless function deploy get-python-metadata --runtime python2.7 --handler helloget.foo --from-file examples/helloget.py --env foo:bar,bar=foo --memory 128Mi --label foo:bar,bar=foo,foobar
-
-get-python-metadata-verify:
-	kubectl rollout status deployment/get-python-metadata && sleep 2
-	kubeless function call get-python-metadata |egrep hello.world
-	kubectl get po -o jsonpath='{.items[0].spec.containers[0].env}' -l function=get-python-metadata | grep "name:foo value:bar"
-	kubectl get po -o jsonpath='{.items[0].spec.containers[0].env}' -l function=get-python-metadata | grep "name:bar value:foo"
-
 get-python-secrets:
 	kubectl create secret generic test-secret --from-literal=key=MY_KEY || true
 	kubeless function deploy get-python-secrets --runtime python2.7 --handler helloget.foo --from-file examples/helloget.py --secrets test-secret
@@ -134,7 +125,7 @@ post-python-verify:
 	# Verify event context
 	logs=`kubectl logs -l function=post-python`; \
 	echo $$logs | grep -q "it.*alive" && \
-	echo $$logs | grep -q "event-time.*UTC" && \
+	echo $$logs | grep -q "event-time.*Z" && \
 	echo $$logs | grep -q "event-type.*application/json" && \
 	echo $$logs | grep -q "event-namespace.*cli.kubeless.io" && \
 	echo $$logs | grep -q "event-id.*"
