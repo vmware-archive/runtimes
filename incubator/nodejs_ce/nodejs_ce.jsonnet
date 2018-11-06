@@ -9,7 +9,7 @@
         command: "/kubeless-npm-install.sh"
        }, {
         phase: "runtime",
-        image: "andresmgot/nodejs-ce@sha256:0c27a5e9ddd22f4f9ea50be0660c9595e0a98783d5201bf223a338de57b2a8a5",
+        image: "andresmgot/nodejs-ce@sha256:708c265d22a8a1599e05da844d26bc63e2f66f859ffecd2fcb541ecac9c66780",
         env: {
           NODE_PATH: "$(KUBELESS_INSTALL_VOLUME)/node_modules",
         },
