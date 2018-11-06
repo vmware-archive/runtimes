@@ -39,9 +39,6 @@ kubectl get clusterrolebinding kube-dns-admin >& /dev/null || \
 
 kubectl create namespace kubeless
 kubectl create -f ${GOPATH}/src/github.com/kubeless/kubeless/kubeless.yaml
-kubectl apply -f ${ROOT_DIR}/kubeless-configmap.yaml
-# TODO: Avoid restarting the controller to reload the configmap
-kubectl delete pods -n kubeless --all
 kubectl rollout status -n kubeless deployment/kubeless-controller-manager
 
 make -C ${ROOT_DIR}/${target} deploy
