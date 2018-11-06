@@ -15,7 +15,7 @@ deploy: post-nodejs-ce
 test: post-nodejs-ce-verify
 
 post-nodejs-ce:
-	kubeless function deploy post-nodejs-ce --runtime nodejs_ce8 --handler helloget.handler --from-file ../../stable/nodejs/examples/hellowithdata.js
+	kubeless function deploy post-nodejs-ce --runtime nodejsCE8 --handler helloget.handler --from-file ../../stable/nodejs/examples/hellowithdata.js
 
 post-nodejs-ce-verify:
 	sleep 2

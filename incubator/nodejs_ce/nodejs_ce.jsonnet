@@ -1,11 +1,11 @@
 {
-  ID: 'nodejs_ce',
+  ID: 'nodejsCE',
   versions:
     [ { name: 'node8',
        version: '8',
        images: [{
         phase: "installation",
-        image: "kubeless/nodejs@sha256:424add88dc2a7fdc45012593159794d59a6ea4aafadfffb632d21ae53b1d262b",
+        image: "kubeless/nodejs@sha256:456d98f6f15588b21f5110facf1cc203065840d4c227afa61d17c6c1fa98b3b6",
         command: "/kubeless-npm-install.sh"
        }, {
         phase: "runtime",
