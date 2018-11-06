@@ -72,6 +72,12 @@ func handle(ctx context.Context, w http.ResponseWriter, r *http.Request) ([]byte
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	if r.Method == "OPTIONS" {
+  	w.Header().Set("Access-Control-Allow-Methods", r.Header.Get("access-control-request-method"))
+  	w.Header().Set("Access-Control-Allow-Headers", r.Header.Get("access-control-request-headers"))
+  	return
+	}
 	proxyUtils.Handler(w, r, handle)
 }
 
