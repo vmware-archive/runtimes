@@ -16,8 +16,8 @@ build-all: build6 build8
 push-all: push6 push8
 
 # Testing jobs
-deploy: get-nodejs get-node-url-zip get-nodejs-custom-port get-nodejs-stream timeout-nodejs get-nodejs-deps get-nodejs-multi post-nodejs
-test: get-nodejs-verify get-node-url-zip-verify get-nodejs-custom-port-verify get-nodejs-stream-verify timeout-nodejs-verify get-nodejs-deps-verify get-nodejs-multi-verify post-nodejs-verify
+deploy: get-nodejs get-node-url-zip get-nodejs-custom-port get-nodejs-stream timeout-nodejs get-nodejs-deps get-nodejs-multi post-nodejs get-nodejs-extra-conf
+test: get-nodejs-verify get-node-url-zip-verify get-nodejs-custom-port-verify get-nodejs-stream-verify timeout-nodejs-verify get-nodejs-deps-verify get-nodejs-multi-verify post-nodejs-verify get-nodejs-extra-conf-verify
 
 get-node-url-zip:
 	kubeless function deploy get-node-url-zip --runtime nodejs6 --handler index.helloGet --from-file https://github.com/kubeless/kubeless/blob/master/examples/nodejs/helloFunctions.zip?raw=true
@@ -88,3 +88,11 @@ post-nodejs-verify:
 	echo $$logs | grep -q "event-type.*application/json" && \
 	echo $$logs | grep -q "event-namespace.*cli.kubeless.io" && \
 	echo $$logs | grep -q "event-id.*"
+
+get-nodejs-extra-conf:
+	kubeless function deploy nodejs-extra-conf --env NPM_CONFIG_EXTRA='foo:bar' --runtime nodejs6 --handler helloget.foo --from-file examples/helloget.js
+
+get-nodejs-extra-conf-verify:
+	kubectl rollout status deployment/nodejs-extra-conf && sleep 2
+	$(eval POD := $(shell kubectl get po -l function=nodejs-extra-conf -o jsonpath="{.items[0].metadata.name}" 2>&1 || true))
+	kubectl exec $(POD) -- npm config list | grep foo:bar
