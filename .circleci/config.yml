@@ -37,6 +37,7 @@ workflows:
       - stable/ruby
       - incubator/jvm
       - incubator/nodejs_distroless
+      - incubator/nodejs_ce
 jobs:
   stable/ballerina:
     machine: true
@@ -75,6 +76,10 @@ jobs:
     <<: *defaults
     <<: *run_test
   incubator/nodejs_distroless:
+    machine: true
+    <<: *defaults
+    <<: *run_test
+  incubator/nodejs_ce:
     machine: true
     <<: *defaults
     <<: *run_test

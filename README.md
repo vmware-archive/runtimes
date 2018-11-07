@@ -4,7 +4,7 @@ Use this repository to submit official Runtimes for Kubeless. Runtimes are the d
 
 # Where to find us
 
-For general Kubeless or runtime discussions join the Kubeless (#kubeless) room in the Kubernetes.
+For general Kubeless or runtime discussions join the [Kubeless (#kubeless) channel in the Kubernetes Slack](https://kubernetes.slack.com/messages/kubeless).
 
 For issues and support you can use this repository or the one for the [Kubeless core](https://github.com/kubeless/kubeless).
 
