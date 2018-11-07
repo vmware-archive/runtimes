@@ -1,6 +1,7 @@
 ﻿using Kubeless.Core.Interfaces;
 using Kubeless.Functions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,13 @@ namespace Kubeless.Core.Handlers
 {
     public class DefaultParameterHandler : IParameterHandler
     {
+        private readonly IConfiguration configuration;
+
+        public DefaultParameterHandler(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
         public (Event, Context) GetFunctionParameters(HttpRequest request)
         {
             var _event = GetEvent(request);
@@ -42,12 +50,12 @@ namespace Kubeless.Core.Handlers
 
         private Context GetContext()
         {
-            var moduleName = Environment.GetEnvironmentVariable("MOD_NAME");
-            var functionName = Environment.GetEnvironmentVariable("FUNC_HANDLER");
-            var functionPort = Environment.GetEnvironmentVariable("FUNC_PORT");
-            var timeout = Environment.GetEnvironmentVariable("FUNC_TIMEOUT");
-            var runtime = Environment.GetEnvironmentVariable("FUNC_RUNTIME");
-            var memoryLimit = Environment.GetEnvironmentVariable("FUNC_MEMORY_LIMIT");
+            var moduleName = configuration["MOD_NAME"];
+            var functionName = configuration["FUNC_HANDLER"];
+            var functionPort = configuration["FUNC_PORT"];
+            var timeout = configuration["FUNC_TIMEOUT"];
+            var runtime = configuration["FUNC_RUNTIME"];
+            var memoryLimit = configuration["FUNC_MEMORY_LIMIT"];
 
             return new Context(moduleName, functionName, functionPort, timeout, runtime, memoryLimit);
         }

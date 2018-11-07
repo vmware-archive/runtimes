@@ -13,12 +13,14 @@ namespace Kubeless.Functions
 
         public Context(string moduleName, string functionName, string functionPort, string timeout, string runtime, string memoryLimit)
         {
-            ModuleName = moduleName ?? throw new ArgumentNullException(nameof(moduleName));
-            FunctionName = functionName ?? throw new ArgumentNullException(nameof(functionName));
-            FunctionPort = functionPort ?? throw new ArgumentNullException(nameof(functionPort));
-            Timeout = timeout ?? throw new ArgumentNullException(nameof(timeout));
-            Runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
-            MemoryLimit = memoryLimit ?? throw new ArgumentNullException(nameof(memoryLimit));
+            ModuleName = moduleName;
+            FunctionName = functionName;
+            FunctionPort = functionPort;
+            Timeout = timeout;
+            Runtime = runtime;
+            MemoryLimit = memoryLimit;
         }
+
+        public Context() { }
     }
 }

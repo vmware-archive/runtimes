@@ -1,0 +1,4 @@
+*.md
+functions
+src/Kubeless.Core.Tests
+src/Kubeless.WebAPI.Tests
