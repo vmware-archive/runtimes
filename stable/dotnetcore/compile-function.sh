@@ -5,9 +5,9 @@ PROJECT_MOUNT=$1
 echo Mount $PROJECT_MOUNT
 
 # detect language
-if [[ -s $PROJECT_MOUNT/*cs* ]]; then
+if [[ -s $PROJECT_MOUNT/module.cs ]]; then
 	LANGUAGE=cs;
-elif [[ -s $PROJECT_MOUNT/*fs* ]]; then
+elif [[ -s $PROJECT_MOUNT/module.fs ]]; then
 	LANGUAGE=fs;
 else
 	LANGUAGE=vb;
