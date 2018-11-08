@@ -1,6 +1,6 @@
 # Testing jobs
-deploy: get-dotnetcore get-dotnetcore-dependency
-test: get-dotnetcore-verify get-dotnetcore-dependency-verify
+deploy: get-dotnetcore get-dotnetcore-dependency post-dotnetcore
+test: get-dotnetcore-verify get-dotnetcore-dependency-verify post-dotnetcore-verify
 
 get-dotnetcore:
 	kubeless function deploy get-dotnetcore --runtime dotnetcore2.1 --handler module.handler --from-file examples/helloget.cs
