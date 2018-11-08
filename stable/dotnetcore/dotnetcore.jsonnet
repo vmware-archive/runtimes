@@ -2,8 +2,8 @@
   ID: "dotnetcore",
   versions: [
     {
-      name: "dotnetcore2.0",
-      version: "2.0",
+      name: "dotnetcore2.1",
+      version: "2.1",
       images: [{
         phase: "compilation",
         image: "allantargino/aspnetcore-build@sha256:36123cf0279b87c5d27d69558062678a5353cc6db238af46bd5c0e508109f659",
