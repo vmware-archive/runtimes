@@ -29,16 +29,16 @@ post-dotnetcore-verify:
 # NET Core 2.0
 
 get-dotnetcore20:
-	kubeless function deploy get-dotnetcore --runtime dotnetcore2.0 --handler module.handler --from-file examples/helloget.cs
+	kubeless function deploy get-dotnetcore20 --runtime dotnetcore2.0 --handler module.handler --from-file examples/helloget.cs
 
 get-dotnetcore-verify20:
-	kubectl rollout status deployment/get-dotnetcore && sleep 2
-	kubeless function call get-dotnetcore |egrep hello.world
-	kubeless function top --function get-dotnetcore --out yaml |egrep "Function does not expose metrics" 
+	kubectl rollout status deployment/get-dotnetcore20 && sleep 2
+	kubeless function call get-dotnetcore20 |egrep hello.world
+	kubeless function top --function get-dotnetcore20 --out yaml |egrep "Function does not expose metrics" 
 
 get-dotnetcore-dependency20:
-	kubeless function deploy get-dotnetcore-dependency --runtime dotnetcore2.0 --handler module.handler --from-file examples/dependency-yaml.cs --dependencies examples/dependency-yaml.csproj
+	kubeless function deploy get-dotnetcore-dependency20 --runtime dotnetcore2.0 --handler module.handler --from-file examples/dependency-yaml.cs --dependencies examples/dependency-yaml.csproj
 
 get-dotnetcore-dependency-verify20:
-	kubectl rollout status deployment/get-dotnetcore-dependency && sleep 2
-	kubeless function call get-dotnetcore-dependency |egrep Name:\ Michael
+	kubectl rollout status deployment/get-dotnetcore-dependency20 && sleep 2
+	kubeless function call get-dotnetcore-dependency20 |egrep Name:\ Michael
