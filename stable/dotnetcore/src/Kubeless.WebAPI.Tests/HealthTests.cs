@@ -9,9 +9,8 @@ namespace Kubeless.WebAPI.Tests
 {
     public class HealthTests
     {
-        [InlineData("cs", "helloget", "helloget", "foo")]
-        [InlineData("cs", "async-get", "asyncget", "foo")]
-        [InlineData("cs", "dependency-json", "module", "handler")]
+        [InlineData("cs", "helloget", "module", "handler")]
+        [InlineData("cs", "hellowithdata", "module", "handler")]
         [InlineData("cs", "dependency-yaml", "module", "handler")]
         [Theory]
         public async Task PerformHealthCheck(string language, string functionFileName, string moduleName, string functionHandler)

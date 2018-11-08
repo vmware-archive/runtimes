@@ -11,18 +11,21 @@ namespace Kubeless.WebAPI.Tests
 {
     public class InvokeTests
     {
-        [InlineData("GET", "cs", "helloget", "helloget", "foo")]
+        [InlineData("GET", "cs", "helloget", "module", "handler")]
         [InlineData("GET", "cs", "hellowithdata", "module", "handler")]
-        [InlineData("GET", "cs", "dependency-json", "module", "handler")]
         [InlineData("GET", "cs", "dependency-yaml", "module", "handler")]
-        [InlineData("POST", "cs", "helloget", "helloget", "foo")]
+        [InlineData("POST", "cs", "helloget", "module", "handler")]
         [InlineData("POST", "cs", "hellowithdata", "module", "handler")]
-        [InlineData("PUT", "cs", "helloget", "helloget", "foo")]
+        [InlineData("POST", "cs", "dependency-yaml", "module", "handler")]
+        [InlineData("PUT", "cs", "helloget", "module", "handler")]
         [InlineData("PUT", "cs", "hellowithdata", "module", "handler")]
-        [InlineData("PATCH", "cs", "helloget", "helloget", "foo")]
+        [InlineData("PUT", "cs", "dependency-yaml", "module", "handler")]
+        [InlineData("PATCH", "cs", "helloget", "module", "handler")]
         [InlineData("PATCH", "cs", "hellowithdata", "module", "handler")]
-        [InlineData("DELETE", "cs", "helloget", "helloget", "foo")]
+        [InlineData("PATCH", "cs", "dependency-yaml", "module", "handler")]
+        [InlineData("DELETE", "cs", "helloget", "module", "handler")]
         [InlineData("DELETE", "cs", "hellowithdata", "module", "handler")]
+        [InlineData("DELETE", "cs", "dependency-yaml", "module", "handler")]
         [Theory]
         public async Task InvokeFunctionsThroughAPI(string httpMethod, string language, string functionFileName, string moduleName, string functionHandler)
         {
