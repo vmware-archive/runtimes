@@ -1,35 +1,38 @@
 ﻿using Kubeless.Core.Interfaces;
 using Kubeless.Core.Models;
 using Microsoft.Extensions.Configuration;
-using System;
+using System.IO;
 
 namespace Kubeless.WebAPI.Utils
 {
     public class FunctionFactory
     {
-        public static IFunctionSettings BuildFunctionSettings(IConfiguration configuration)
+        private static readonly string BASE_PATH = VariablesUtils.GetEnvVar("BASE_PATH", "/kubeless/");
+        private static readonly string PUBLISH_PATH = VariablesUtils.GetEnvVar("PUBLISH_PATH", "publish/");
+        private static readonly string PACKAGES_PATH = VariablesUtils.GetEnvVar("PACKAGES_PATH", "packages/");
+
+        public static IFunction GetFunction(IConfiguration configuration)
         {
-            var moduleName = Environment.GetEnvironmentVariable("MOD_NAME");
-            if (string.IsNullOrEmpty(moduleName))
-                throw new ArgumentNullException("MOD_NAME");
+            var moduleName = configuration.GetNotNullConfiguration("MOD_NAME");
+            var functionHandler = configuration.GetNotNullConfiguration("FUNC_HANDLER");
+            var publishPath = Path.Combine(BASE_PATH, PUBLISH_PATH);
 
-            var functionHandler = Environment.GetEnvironmentVariable("FUNC_HANDLER");
-            if (string.IsNullOrEmpty(moduleName))
-                throw new ArgumentNullException("FUNC_HANDLER");
-
-            var assemblyPathConfiguration = configuration["Compiler:FunctionAssemblyPath"];
-            if (string.IsNullOrEmpty(assemblyPathConfiguration))
-                throw new ArgumentNullException("Compiler:FunctionAssemblyPath");
-            var assemblyPath = string.Concat(assemblyPathConfiguration, "project", ".dll");
-            var assembly = new BinaryContent(assemblyPath);
-
-            return new FunctionSettings(moduleName, functionHandler, assembly);
+            return new CompiledFunction(moduleName, functionHandler, publishPath);
         }
 
-        public static IFunction BuildFunction(IConfiguration configuration)
+        public static int GetFunctionTimeout(IConfiguration configuration)
         {
-            var settings = BuildFunctionSettings(configuration);
-            return new Function(settings);
+            var timeoutSeconds = configuration.GetNotNullConfiguration("FUNC_TIMEOUT");
+            var milisecondsInSecond = 1000;
+
+            return int.Parse(timeoutSeconds) * milisecondsInSecond;
+        }
+
+        public static string GetFunctionReferencesPath(IConfiguration configuration)
+        {
+            var referencesPath = Path.Combine(BASE_PATH, PACKAGES_PATH);
+
+            return referencesPath;
         }
     }
 }

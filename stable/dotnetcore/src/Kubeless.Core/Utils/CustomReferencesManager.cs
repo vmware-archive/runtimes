@@ -3,17 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Kubeless.Core.Invoker
+namespace Kubeless.Core.Utils
 {
     public class CustomReferencesManager
     {
-        private static readonly string directory = Environment.GetEnvironmentVariable("DOTNETCORE_HOME");
-
-        public IEnumerable<string> GetReferences()
+        public IEnumerable<string> GetReferences(string referencesPath)
         {
-            if (Directory.Exists(directory))
+            if (Directory.Exists(referencesPath))
                 return Directory
-                    .EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories)
+                    .EnumerateFiles(referencesPath, "*.dll", SearchOption.AllDirectories)
                     .ApplyFilterForNetStandard();
             else
                 return new List<string>();

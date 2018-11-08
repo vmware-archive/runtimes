@@ -9,23 +9,27 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace kubeless_netcore_runtime
+namespace Kubeless.WebAPI
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args)
+        public static IWebHostBuilder CreateWebHostBuilder(params string[] args)
         {
-            var port = VariablesUtils.GetEnvironmentVariable("FUNC_PORT", "8080");
+            var port = VariablesUtils.GetEnvVar("FUNC_PORT", "8080");
 
             return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseUrls($"http://*:{port}")
-                .Build();
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    logging.AddConsole(options => options.IncludeScopes = true);
+                    logging.AddDebug();
+                });
         }
     }
 }

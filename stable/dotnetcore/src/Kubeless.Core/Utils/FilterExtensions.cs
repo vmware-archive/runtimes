@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace Kubeless.Core.Utils
 {
-    public static class IEnumerableExtensions
+    public static class FilterExtensions
     {
         private static Regex targetPattern = new Regex(@"lib\\(.+)\\.*\.dll");
         private static Regex versionPattern = new Regex(@"netstandard(\d\.\d)");
@@ -38,7 +38,6 @@ namespace Kubeless.Core.Utils
                        Version = decimal.Parse(versionPattern.Match(assembly).Groups[1].Value)
                    };
         }
-
 
         public class NetstandardAssembly
         {

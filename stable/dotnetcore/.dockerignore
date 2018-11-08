@@ -1,0 +1,10 @@
+*.md
+*.sln
+examples
+Makefile
+OWNERS
+src/Kubeless.Core.Tests
+src/Kubeless.WebAPI.Tests
+Dockerfile
+Dockerfile.init
+dotnetcore.jsonnet

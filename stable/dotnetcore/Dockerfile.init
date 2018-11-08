@@ -1,8 +1,8 @@
-FROM microsoft/aspnetcore-build:2.1.300-preview1
+FROM microsoft/dotnet:2.1-sdk
 
 WORKDIR /app
 
-RUN dotnet new library -n project -o .
+RUN dotnet new classlib -n project -o .
 RUN dotnet add package Kubeless.Functions
 RUN dotnet restore
 

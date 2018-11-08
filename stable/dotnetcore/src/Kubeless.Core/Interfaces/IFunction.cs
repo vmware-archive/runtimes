@@ -2,8 +2,8 @@
 {
     public interface IFunction
     {
-        IFunctionSettings FunctionSettings { get; }
-
-        bool IsCompiled(); //TODO: Change to IsValid?
+        string ModuleName { get; }
+        string FunctionHandler { get; }
+        string FunctionFile { get; }
     }
 }

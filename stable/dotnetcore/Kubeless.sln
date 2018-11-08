@@ -9,7 +9,30 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kubeless.Core", "src\Kubele
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kubeless.Core.Tests", "src\Kubeless.Core.Tests\Kubeless.Core.Tests.csproj", "{CFD979AE-406B-4C1C-BD4F-E9065AA5AF39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kubeless.Functions", "src\Kubeless.Functions\Kubeless.Functions.csproj", "{43FD8D4B-30FD-4F50-A604-085F7CE6303E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kubeless.Functions", "src\Kubeless.Functions\Kubeless.Functions.csproj", "{43FD8D4B-30FD-4F50-A604-085F7CE6303E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kubeless.WebAPI.Tests", "src\Kubeless.WebAPI.Tests\Kubeless.WebAPI.Tests.csproj", "{3A6F8EB0-F598-4A02-920D-48EAB8475179}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{34726F86-409F-4426-9451-BBCF7E715292}"
+	ProjectSection(SolutionItems) = preProject
+		examples\dependency-yaml.cs = examples\dependency-yaml.cs
+		examples\dependency-yaml.csproj = examples\dependency-yaml.csproj
+		examples\fibonacci.cs = examples\fibonacci.cs
+		examples\fibonacci.csproj = examples\fibonacci.csproj
+		examples\helloget.cs = examples\helloget.cs
+		examples\helloget.csproj = examples\helloget.csproj
+		examples\hellowithdata.cs = examples\hellowithdata.cs
+		examples\hellowithdata.csproj = examples\hellowithdata.csproj
+		examples\timeout.cs = examples\timeout.cs
+		examples\timeout.csproj = examples\timeout.csproj
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{CCBE6752-398A-4934-B276-9557032BF32E}"
+	ProjectSection(SolutionItems) = preProject
+		compile-function.sh = compile-function.sh
+		Dockerfile = Dockerfile
+		Dockerfile.init = Dockerfile.init
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +56,10 @@ Global
 		{43FD8D4B-30FD-4F50-A604-085F7CE6303E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43FD8D4B-30FD-4F50-A604-085F7CE6303E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43FD8D4B-30FD-4F50-A604-085F7CE6303E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A6F8EB0-F598-4A02-920D-48EAB8475179}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A6F8EB0-F598-4A02-920D-48EAB8475179}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A6F8EB0-F598-4A02-920D-48EAB8475179}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A6F8EB0-F598-4A02-920D-48EAB8475179}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
