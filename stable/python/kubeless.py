@@ -7,11 +7,17 @@ import datetime
 from multiprocessing import Process, Queue
 import bottle
 import prometheus_client as prom
+from cheroot import wsgi
+from cheroot.ssl.builtin import BuiltinSSLAdapter
+import ssl
 
 mod = imp.load_source('function',
                       '/kubeless/%s.py' % os.getenv('MOD_NAME'))
 func = getattr(mod, os.getenv('FUNC_HANDLER'))
 func_port = os.getenv('FUNC_PORT', 8080)
+
+certfile = os.getenv('CERT_FILE_PATH')
+keyfile = os.getenv('KEY_FILE_PATH')
 
 timeout = float(os.getenv('FUNC_TIMEOUT', 180))
 
@@ -33,6 +39,19 @@ function_context = {
     'runtime': os.getenv('FUNC_RUNTIME'),
     'memory-limit': os.getenv('FUNC_MEMORY_LIMIT'),
 }
+
+
+class SSLCherryPyServer(bottle.ServerAdapter):
+     def run(self, handler):
+        server = wsgi.Server((self.host, self.port), handler)
+        server.ssl_adapter = BuiltinSSLAdapter(certfile, keyfile)
+        server.ssl_adapter.context.options |= ssl.OP_NO_TLSv1
+        server.ssl_adapter.context.options |= ssl.OP_NO_TLSv1_1
+        try:
+            server.start()
+        finally:
+            server.stop()
+
 
 def funcWrap(q, event, c):
     try:
@@ -95,4 +114,8 @@ if __name__ == '__main__':
         app,
         [logging.StreamHandler(stream=sys.stdout)],
         requestlogger.ApacheFormatter())
-    bottle.run(loggedapp, server='cherrypy', host='0.0.0.0', port=func_port)
+
+    # Enable TLS termination if env vars set
+    server = SSLCherryPyServer if certfile and keyfile else 'cherrypy'
+
+    bottle.run(loggedapp, server=server, host='0.0.0.0', port=func_port)
