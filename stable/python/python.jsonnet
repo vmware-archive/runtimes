@@ -46,6 +46,21 @@
         },
       }],
     },
+    {
+      name: "python37",
+      version: "3.7",
+      images: [{
+        phase: "installation",
+        image: "python:3.7",
+        command: "pip install --prefix=$KUBELESS_INSTALL_VOLUME -r $KUBELESS_DEPS_FILE"
+      }, {
+        phase: "runtime",
+        image: "mbeacom/python-37@sha256:00bc8f1c6ca6ba7ca69ac3085f1d9c95a11f1faede7f8952fe30d10349b10d23",
+        env: {
+          PYTHONPATH: "$(KUBELESS_INSTALL_VOLUME)/lib/python3.7/site-packages:$(KUBELESS_INSTALL_VOLUME)",
+        },
+      }],
+    },
   ],
   depName: "requirements.txt",
   fileNameSuffix: ".py",
