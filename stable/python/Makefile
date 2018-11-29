@@ -21,7 +21,7 @@ push3.6:
 	docker push kubeless/python:3.6$$RUNTIME_TAG_MODIFIER
 
 push3.7:
-	docker push mbeacom/python:3.7$$RUNTIME_TAG_MODIFIER
+	docker push kubeless/python:3.7$$RUNTIME_TAG_MODIFIER
 
 # Mandatory jobs
 build-all: build2.7 build3.4 build3.6 build3.7
