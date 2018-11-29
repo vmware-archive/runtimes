@@ -8,6 +8,9 @@ build3.4:
 build3.6:
 	docker build -t kubeless/python:3.6$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.6 .
 
+build3.7:
+	docker build -t kubeless/python:3.7$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.7 .
+
 push2.7:
 	docker push kubeless/python:2.7$$RUNTIME_TAG_MODIFIER
 
@@ -17,13 +20,16 @@ push3.4:
 push3.6:
 	docker push kubeless/python:3.6$$RUNTIME_TAG_MODIFIER
 
+push3.7:
+	docker push kubeless/python:3.7$$RUNTIME_TAG_MODIFIER
+
 # Mandatory jobs
-build-all: build2.7 build3.4 build3.6
-push-all: push2.7 push3.4 push3.6
+build-all: build2.7 build3.4 build3.6 build3.7
+push-all: push2.7 push3.4 push3.6 push3.7
 
 # Testing jobs
-deploy: get-python get-python-deps get-python-custom-port get-python-34 get-python-36 get-python-url-deps scheduled-get-python timeout-python get-python-secrets post-python post-python-custom-port custom-get-python
-test: get-python-verify get-python-deps-verify get-python-custom-port-verify get-python-34-verify get-python-36-verify get-python-url-deps-verify scheduled-get-python-verify timeout-python-verify get-python-secrets-verify custom-get-python-verify post-python-verify post-python-custom-port-verify 
+deploy: get-python get-python-deps get-python-custom-port get-python-34 get-python-36 get-python-37 get-python-url-deps scheduled-get-python timeout-python get-python-secrets post-python post-python-custom-port custom-get-python
+test: get-python-verify get-python-deps-verify get-python-custom-port-verify get-python-34-verify get-python-36-verify get-python-37-verify get-python-url-deps-verify scheduled-get-python-verify timeout-python-verify get-python-secrets-verify custom-get-python-verify post-python-verify post-python-custom-port-verify
 
 get-python:
 	kubeless function deploy get-python --runtime python2.7 --handler helloget.foo --from-file examples/helloget.py
@@ -63,12 +69,19 @@ get-python-36-verify:
 	kubectl rollout status deployment/get-python-36 && sleep 2
 	kubeless function call get-python-36 |egrep hello.world
 
+get-python-37:
+	kubeless function deploy get-python-37 --runtime python3.7 --handler helloget.foo --from-file examples/helloget.py
+
+get-python-37-verify:
+	kubectl rollout status deployment/get-python-37 && sleep 2
+	kubeless function call get-python-37 |egrep hello.world
+
 get-python-url-deps:
 	kubeless function deploy get-python-url-deps --runtime python2.7 --handler helloget.foo --from-file https://raw.githubusercontent.com/kubeless/kubeless/v1.0.0-alpha.1/examples/python/hellowithdeps.py --dependencies https://raw.githubusercontent.com/kubeless/kubeless/v1.0.0-alpha.1/examples/python/requirements.txt
 
 get-python-url-deps-verify:
 	kubectl rollout status deployment/get-python-url-deps && sleep 2
-	kubeless function call get-python-url-deps |egrep Google	
+	kubeless function call get-python-url-deps |egrep Google
 
 scheduled-get-python:
 	kubeless function deploy scheduled-get-python --schedule "* * * * *" --runtime python2.7 --handler helloget.foo --from-file examples/helloget.py
