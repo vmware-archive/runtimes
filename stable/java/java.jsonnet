@@ -6,11 +6,11 @@
       version: "1.8",
       images: [{
         phase: "compilation",
-        image: "kubeless/java-init@sha256:a14d846bfe53f359f706a260b95f0a9a755883b053dbd17b724e7a3cdff5bae6",
+        image: "kubeless/java-init@sha256:36cc37836437aaa5ac82f49ba20781d45bd5efcd9e2d022fcaae487a058572c2",
         command: "/compile-function.sh"
        }, {
         phase: "runtime",
-        image: "kubeless/java@sha256:d2a59e50e8181174ad3c6096cd5d3ce82f46b7e22a6f3a109b0816787e7190d9"
+        image: "kubeless/java@sha256:2dbc44c0e2467a27558776edb2aed85055361e2f0b74443800851ee658576a88"
       }],
     }
   ],
