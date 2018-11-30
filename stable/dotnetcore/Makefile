@@ -1,6 +1,6 @@
 # Testing jobs
-deploy: get-dotnetcore get-dotnetcore-dependency post-dotnetcore get-dotnetcore20 get-dotnetcore-dependency20
-test: get-dotnetcore-verify get-dotnetcore-dependency-verify post-dotnetcore-verify get-dotnetcore-verify20 get-dotnetcore-dependency-verify20
+deploy: get-dotnetcore get-dotnetcore-dependency post-dotnetcore get-dotnetcore-namespaced get-dotnetcore20 get-dotnetcore-dependency20
+test: get-dotnetcore-verify get-dotnetcore-dependency-verify post-dotnetcore-verify get-dotnetcore-namespaced-verify get-dotnetcore-verify20 get-dotnetcore-dependency-verify20
 
 # .NET Core 2.1
 
@@ -25,6 +25,13 @@ post-dotnetcore:
 post-dotnetcore-verify:
 	kubectl rollout status deployment/post-dotnetcore && sleep 2
 	kubeless function call post-dotnetcore --data '{"it-s": "alive"}'|egrep "it.*alive"
+	
+get-dotnetcore-namespaced:
+	kubeless function deploy get-dotnetcore-namespaced --runtime dotnetcore2.1 --handler module.handler --from-file examples/namespaced-helloget.cs
+
+get-dotnetcore-namespaced-verify:
+	kubectl rollout status deployment/get-dotnetcore-namespaced && sleep 2
+	kubeless function call get-dotnetcore-namespaced |egrep hello.world
 
 # NET Core 2.0
 
