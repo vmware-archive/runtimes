@@ -12,6 +12,7 @@ namespace Kubeless.WebAPI.Tests
         [InlineData("cs", "helloget", "module", "handler")]
         [InlineData("cs", "hellowithdata", "module", "handler")]
         [InlineData("cs", "dependency-yaml", "module", "handler")]
+        [InlineData("cs", "namespaced-helloget", "module", "handler")]
         [Theory]
         public async Task PerformHealthCheck(string language, string functionFileName, string moduleName, string functionHandler)
         {
