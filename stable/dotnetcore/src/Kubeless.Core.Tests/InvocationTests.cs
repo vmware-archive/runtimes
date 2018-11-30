@@ -9,6 +9,7 @@ namespace Kubeless.Core.Tests
     public class InvocationTests
     {
         [InlineData("cs", "helloget", "module", "handler")]
+        [InlineData("cs", "namespaced-helloget", "module", "handler")]
         [InlineData("cs", "dependency-yaml", "module", "handler")]
         [Theory]
         public void InvokeRegularFunction(string language, string functionFileName, string moduleName, string functionHandler)

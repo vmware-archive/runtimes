@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{
 		examples\helloget.csproj = examples\helloget.csproj
 		examples\hellowithdata.cs = examples\hellowithdata.cs
 		examples\hellowithdata.csproj = examples\hellowithdata.csproj
+		examples\namespaced-helloget.cs = examples\namespaced-helloget.cs
+		examples\namespaced-helloget.csproj = examples\namespaced-helloget.csproj
 		examples\timeout.cs = examples\timeout.cs
 		examples\timeout.csproj = examples\timeout.csproj
 	EndProjectSection

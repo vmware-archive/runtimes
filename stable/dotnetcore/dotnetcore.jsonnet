@@ -25,7 +25,7 @@
         command: "/app/compile-function.sh $KUBELESS_INSTALL_VOLUME"
        }, {
         phase: "runtime",
-        image: "allantargino/kubeless-dotnetcore@sha256:b49d38fe20b5646d96e5f1024975c5a24ff2be86331e704287897ea019b1f8aa",
+        image: "allantargino/kubeless-dotnetcore@sha256:6d6c659807881e9dac7adde305867163ced5711ef77a3a76e50112bca1ba14cf",
         env: {
           DOTNETCORE_HOME: "$(KUBELESS_INSTALL_VOLUME)/packages",
         },
