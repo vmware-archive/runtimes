@@ -24,9 +24,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="..\..\examples\.vs\namespaced-helloget\v15\Server\sqlite3\**" />
-    <None Remove="..\..\examples\obj\**" />
-  </ItemGroup>
-
 </Project>
