@@ -19,6 +19,8 @@ run_test: &run_test
             circleci step halt
           fi
         fi
+    # go build creates files under /usr/local/go where the running user doesn't have permissions to write
+    - run: sudo chown -R circleci:circleci /usr/local/go/
     - run: make bootstrap
     - run: ./script/integration-tests.sh ${CIRCLE_JOB}
 #### End of definitions
