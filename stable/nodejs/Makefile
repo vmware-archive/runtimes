@@ -82,7 +82,7 @@ post-nodejs-verify:
 	kubectl rollout status deployment/post-nodejs && sleep 2
 	kubeless function call post-nodejs --data '{"it-s": "alive"}'|egrep "it.*alive"
 	# Verify event context
-	logs=`kubectl logs -l function=post-nodejs`; \
+	logs=`kubectl logs --tail=1000 -l function=post-nodejs`; \
 	echo $$logs | grep -q "it.*alive" && \
 	echo $$logs | grep -q "event-time.*Z" && \
 	echo $$logs | grep -q "event-type.*application/json" && \

@@ -21,4 +21,4 @@ call=`curl -k -H "Authorization: Bearer $token" \
 kubectl delete clusterrolebinding nodejs_ce_verify-admin
 
 echo $call | grep foo
-kubectl logs -l function=${funcName} | grep "eventID: '123'" 
+kubectl logs --tail=1000 -l function=${funcName} | grep "eventID: '123'" 

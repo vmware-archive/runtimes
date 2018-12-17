@@ -31,7 +31,7 @@ get-php-deps:
 get-php-deps-verify:
 	kubectl rollout status deployment/get-php-deps && sleep 2
 	kubeless function call get-php-deps &> /dev/null
-	kubectl logs -l function=get-php-deps | egrep "Hello"
+	kubectl logs --tail=1000 -l function=get-php-deps | egrep "Hello"
 
 post-php:
 	kubeless function deploy post-php --runtime php7.2 --handler hellowithdata.foo --from-file examples/hellowithdata.php

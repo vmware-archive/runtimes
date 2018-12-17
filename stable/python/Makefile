@@ -136,7 +136,7 @@ post-python-verify:
 	kubectl rollout status deployment/post-python && sleep 2
 	kubeless function call post-python --data '{"it-s": "alive"}'|egrep "it.*alive"
 	# Verify event context
-	logs=`kubectl logs -l function=post-python`; \
+	logs=`kubectl logs --tail=1000 -l function=post-python`; \
 	echo $$logs | grep -q "it.*alive" && \
 	echo $$logs | grep -q "event-time.*Z" && \
 	echo $$logs | grep -q "event-type.*application/json" && \
