@@ -37,4 +37,4 @@ get-java-deps:
 get-java-deps-verify:
 	kubectl rollout status deployment/get-java-deps && sleep 2
 	kubeless function call get-java-deps --data '{"hello": "world"}'
-	kubectl logs -l function=get-java-deps | grep -q '.*Hello.*world! Current local time is:'
+	kubectl logs --tail=1000 -l function=get-java-deps | grep -q '.*Hello.*world! Current local time is:'

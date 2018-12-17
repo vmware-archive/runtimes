@@ -51,7 +51,7 @@ get-go-deps:
 get-go-deps-verify:
 	kubectl rollout status deployment/get-go-deps && sleep 2
 	kubeless function call get-go-deps --data '{"hello": "world"}'
-	kubectl logs -l function=get-go-deps | grep -q 'level=info msg=.*hello.*world'
+	kubectl logs --tail=1000 -l function=get-go-deps | grep -q 'level=info msg=.*hello.*world'
 
 post-go:
 	kubeless function deploy post-go --runtime go1.10 --handler hellowithdata.Handler --from-file examples/hellowithdata.go
@@ -60,7 +60,7 @@ post-go-verify:
 	kubectl rollout status deployment/post-go && sleep 2
 	kubeless function call post-go --data '{"it-s": "alive"}'| egrep "it.*alive"
 	# Verify event context
-	logs=`kubectl logs -l function=post-go`; \
+	logs=`kubectl logs --tail=1000 -l function=post-go`; \
 	echo $$logs | grep -q "it.*alive" && \
 	echo $$logs | grep -q "application/json" && \
 	echo $$logs | grep -q "cli.kubeless.io"
