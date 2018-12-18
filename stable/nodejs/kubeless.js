@@ -79,7 +79,7 @@ function modExecute(handler, req, res, end) {
     try {
         let data = req.body;
         if (req.body.length > 0) {
-            if (req.get('content-type') === 'application/json') {
+            if (req.get('content-type').includes('application/json')) {
                 data = JSON.parse(req.body.toString('utf-8'))
             } else {
                 data = req.body.toString('utf-8')
