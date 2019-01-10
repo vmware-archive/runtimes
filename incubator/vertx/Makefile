@@ -1,7 +1,12 @@
 init-image:
+	cp -r ../../stable/java/function .
+	cp -r ../../stable/java/params .
+	cp ../../stable/java/Dockerfile.init .
 	docker build -f Dockerfile.init -t oscardovao/vertx-init:1.8 .
 
 runtime-image:
+	cp -r ../../stable/java/function .
+	cp -r ../../stable/java/params .
 	docker build -f Dockerfile -t oscardovao/vertx:1.8 .
 
 push-init:
@@ -18,13 +23,15 @@ deploy: get-java-vertx post-java-vertx get-java-deps-vertx
 test: get-java-vertx-verify post-java-vertx-verify get-java-deps-vertx-verify
 
 get-java-vertx:
+	cp -r ../../stable/java/examples .
 	kubeless function deploy get-java-vertx --runtime vertx1.8 --handler Foo.foo --from-file examples/HelloGet.java
 
 get-java-vertx-verify:
 	kubectl rollout status deployment/get-java-vertx && sleep 2
-	kubeless function call get-java-vertx |egrep Hello.world
+	kubeless function call get-java-vertx | egrep Hello.world
 
 post-java-vertx:
+	cp -r ../../stable/java/examples .
 	kubeless function deploy post-java-vertx --runtime vertx1.8  --handler Foo.foo --from-file examples/HelloWithData.java
 
 post-java-vertx-verify:
@@ -32,6 +39,7 @@ post-java-vertx-verify:
 	kubeless function call post-java-vertx --data '{"its": "alive"}'| egrep "its.*alive"
 
 get-java-deps-vertx:
+	cp -r ../../stable/java/examples .
 	kubeless function deploy get-java-deps-vertx --runtime vertx1.8 --handler Hello.sayHello --from-file examples/HelloWithDeps.java --dependencies examples/pom.xml
 
 get-java-deps-vertx-verify:
