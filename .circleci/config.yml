@@ -40,7 +40,7 @@ workflows:
       - incubator/jvm
       - incubator/nodejs_distroless
       - incubator/nodejs_ce
-      - incubator/verxt
+      - incubator/vertx
 jobs:
   stable/ballerina:
     machine: true
@@ -86,7 +86,7 @@ jobs:
     machine: true
     <<: *defaults
     <<: *run_test
-  incubator/verxt:
+  incubator/vertx:
     machine: true
     <<: *defaults
     <<: *run_test
