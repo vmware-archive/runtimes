@@ -12,6 +12,7 @@ local ruby = import "./stable/ruby/ruby.jsonnet";
 local jvm = import "./incubator/jvm/jvm.jsonnet";
 local nodejs_distroless = import "./incubator/nodejs_distroless/nodejs_distroless.jsonnet";
 local nodejs_ce = import "./incubator/nodejs_ce/nodejs_ce.jsonnet";
+local vertx = import "./incubator/vertx/vertx.jsonnet";
 
 [ 
   # Stable
@@ -27,4 +28,5 @@ local nodejs_ce = import "./incubator/nodejs_ce/nodejs_ce.jsonnet";
   jvm,
   nodejs_distroless,
   nodejs_ce,
+  vertx,
 ]
