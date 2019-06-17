@@ -81,6 +81,8 @@ function modExecute(handler, req, res, end) {
         if (req.body.length > 0) {
             if (req.is('application/json')) {
                 data = JSON.parse(req.body.toString('utf-8'))
+            } else if (req.is('multipart/form-data')) {
+                data = req.body
             } else {
                 data = req.body.toString('utf-8')
             }
