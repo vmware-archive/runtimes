@@ -16,7 +16,7 @@ const bodySizeLimit = Number(process.env.REQ_MB_LIMIT || '1');
 const app = express();
 app.use(morgan('combined'));
 const bodParserOptions = {
-    type: req => !req.is('multipart/form-data'),
+    type: req => !req.is('multipart/*'),
     limit: `${bodySizeLimit}mb`,
 };
 app.use(bodyParser.raw(bodParserOptions));
@@ -78,7 +78,7 @@ function modExecute(handler, req, res, end) {
 
     try {
         let data = req.body;
-        if (!req.is('multipart/form-data') && req.body.length > 0) {
+        if (!req.is('multipart/*') && req.body.length > 0) {
             if (req.is('application/json')) {
                 data = JSON.parse(req.body.toString('utf-8'))
             } else {
