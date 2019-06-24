@@ -6,7 +6,7 @@
       version: "1.8",
       images: [{
         phase: "compilation",
-        image: "kubeless/java-init@sha256:4743974058eca859188beded53e99358f4be963ce0f0b5e39ad6cd631334f779",
+        image: "kubeless/java-init@sha256:1bf287669347a879f8c71f06426cfc8402f17439b2793259a06ef6dfd051b5ee",
         command: "/compile-function.sh"
        }, {
         phase: "runtime",
