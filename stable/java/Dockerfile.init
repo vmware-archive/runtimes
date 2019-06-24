@@ -1,6 +1,6 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:8-jdk
 
-RUN apk add --no-cache maven
+RUN apt update && apt install maven -y
 
 COPY . /usr/src/myapp
 COPY compile-function.sh /

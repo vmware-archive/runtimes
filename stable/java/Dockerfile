@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM bitnami/java:1.8
 
 USER 1000
 
