@@ -2,7 +2,7 @@
 
 set -e
 
-if [ -f "/kubeless/pom.xml" ]; then
+if [ -s "/kubeless/pom.xml" ]; then
   mv /kubeless/pom.xml /kubeless/function-pom.xml
 fi
 
