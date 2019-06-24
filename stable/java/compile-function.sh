@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
-if [[ -s /kubeless/pom.xml ]]; then
+if [ -f "/kubeless/pom.xml" ]; then
   mv /kubeless/pom.xml /kubeless/function-pom.xml
 fi
 
