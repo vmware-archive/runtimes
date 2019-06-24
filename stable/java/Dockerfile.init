@@ -1,6 +1,6 @@
-FROM openjdk:8-jdk-alpine
+FROM bitnami/java:1.8
 
-RUN apk add --no-cache maven
+RUN install_packages maven
 
 COPY . /usr/src/myapp
 COPY compile-function.sh /
