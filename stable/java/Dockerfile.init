@@ -1,6 +1,6 @@
-FROM bitnami/java:1.8
+FROM openjdk:8-jdk
 
-RUN install_packages maven
+RUN apt update && apt install maven -y
 
 COPY . /usr/src/myapp
 COPY compile-function.sh /
