@@ -5,6 +5,7 @@ const multer = require('multer');
 // Empty configuration for this example. File will be stored in memory.
 const upload = multer({});
 
+// The request should send the file with this name.
 const FILENAME = 'file';
 const MULTIPART_TYPE = 'multipart/*';
 
