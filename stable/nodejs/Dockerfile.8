@@ -1,6 +1,6 @@
 FROM node:8
 
-RUN apt-get update &&  apt-get install git
+RUN apt-get update &&  apt-get install git && apt-get install
 
 ADD lib/helper.js kubeless_rt/lib/
 ADD kubeless.js kubeless_rt/
