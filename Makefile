@@ -6,17 +6,15 @@ kubectl:
 	fi
 
 kubeless:
-	mkdir -p $$GOPATH/src/github.com/kubeless/; \
-	cd $$GOPATH/src/github.com/kubeless/; \
-	git clone https://github.com/kubeless/kubeless; \
-	cd kubeless/; \
-	make bootstrap; \
-	export KUBECFG_JPATH=$$GOPATH/src/github.com/kubeless/kubeless/ksonnet-lib; \
-	kubecfg show -J $$HOME/project -o yaml kubeless.jsonnet > kubeless.yaml; \
-	make binary; \
-	sudo mv $$GOPATH/bin/kubeless /usr/local/bin/
+	export BUILD_NUM=`curl -s https://circleci.com/api/v1.1/project/github/kubeless/kubeless/tree/master\?limit\=20\&offset\=5\&filter\=completed | jq '.[] | select(.workflows.job_name == "build") | .build_num' | head -n 1`; \
+	export KUBELESS_BIN_URL=`curl -s https://circleci.com/api/v1.1/project/github/kubeless/kubeless/$$BUILD_NUM/artifacts | jq -r '.[] | select(.path == "home/circleci/.go_workspace/bin/kubeless") | .url'`; \
+	curl -LO $$KUBELESS_BIN_URL; \
+	chmod +x kubeless; \
+	sudo mv kubeless /usr/local/bin; \
+	export KUBELESS_YML_URL=`curl -s https://circleci.com/api/v1.1/project/github/kubeless/kubeless/$$BUILD_NUM/artifacts | jq -r '.[] | select(.path == "home/circleci/.go_workspace/src/github.com/kubeless/kubeless/build-manifests/kubeless.yaml") | .url'`; \
+	curl -LO $$KUBELESS_YML_URL
 
 bootstrap: kubectl kubeless
-
+ 
 test:
 	./script/integration-tests
