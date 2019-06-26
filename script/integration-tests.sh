@@ -19,13 +19,6 @@ target=${1:?}
 
 ROOT_DIR=`cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null && pwd`
 
-# Check for some needed tools, install (some) if missing
-which bats > /dev/null || {
-   echo "ERROR: 'bats' is required to run these tests," \
-        "install it from https://github.com/sstephenson/bats"
-   exit 255
-}
-
 # Start a k8s cluster (minikube, dind) if not running
 kubectl get nodes || {
     cluster_up=./script/cluster-up-minikube.sh
@@ -38,7 +31,7 @@ kubectl get clusterrolebinding kube-dns-admin >& /dev/null || \
     kubectl create clusterrolebinding kube-dns-admin --serviceaccount=kube-system:default --clusterrole=cluster-admin
 
 kubectl create namespace kubeless
-kubectl create -f ${GOPATH}/src/github.com/kubeless/kubeless/kubeless.yaml
+kubectl create -f ${ROOT_DIR}/kubeless.yaml
 kubectl rollout status -n kubeless deployment/kubeless-controller-manager
 
 make -C ${ROOT_DIR}/${target} deploy
