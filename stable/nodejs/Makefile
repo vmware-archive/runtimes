@@ -98,7 +98,7 @@ get-nodejs-extra-conf-verify:
 	kubectl exec $(POD) -- npm config list | grep foo:bar
 
 nodejs-multipart:
-	kubeless function deploy hello-multipart --runtime nodejs6 --handler hello-multipart.handler --from-file examples/hello-multipart.js --dependencies examples/package.json
+	kubeless function deploy hello-multipart --runtime nodejs6 --handler hello-multipart.handler --from-file examples/hello-multipart.js --dependencies examples/multipart-package.json
 
 nodejs-multipart-verify:
 	$(eval IP := $(shell minikube ip))
@@ -107,5 +107,5 @@ nodejs-multipart-verify:
   		--header "Content-Type:multipart/form-data" \
   		--header "Authorization: Bearer $(TOKEN)" \
  		-F "prop=This is a normal prop" \
- 		-F "file=@resources/input.txt" \
+ 		-F "file=@examples/resources/input.txt" \
   		$(IP):8443/api/v1/namespaces/default/services/hello-multipart:http-function-port/proxy/ |egrep hello.world

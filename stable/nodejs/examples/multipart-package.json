@@ -1,0 +1,7 @@
+{
+    "name": "hello-multipart",
+    "version": "0.0.1",
+    "dependencies": {
+        "multer": "^1.4.1"
+    }
+}
