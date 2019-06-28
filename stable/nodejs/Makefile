@@ -101,7 +101,7 @@ nodejs-multipart:
 	kubeless function deploy hello-multipart --runtime nodejs6 --handler hello-multipart.handler --from-file examples/hello-multipart.js --dependencies examples/multipart-package.json
 
 start-proxy:
-	kubectl proxy && sleep 2
+	kubectl proxy & sleep 2
 
 nodejs-multipart-verify: start-proxy
 	kubectl rollout status deployment/hello-multipart && sleep 2
