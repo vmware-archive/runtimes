@@ -1,22 +1,29 @@
 
 
-build:
+build72:
 	env GOOS=linux GOARCH=amd64 go build $$GOPATH/src/github.com/kubeless/kubeless/pkg/function-proxy/proxy.go
-	docker build -t kubeless/php:7.2$$RUNTIME_TAG_MODIFIER .
+	docker build -t kubeless/php:7.2$$RUNTIME_TAG_MODIFIER -f Dockerfile.7.2 .
 
-push:
+push72:
 	docker push kubeless/php:7.2$$RUNTIME_TAG_MODIFIER
+
+build73:
+	env GOOS=linux GOARCH=amd64 go build $$GOPATH/src/github.com/kubeless/kubeless/pkg/function-proxy/proxy.go
+	docker build -t kubeless/php:7.3$$RUNTIME_TAG_MODIFIER -f Dockerfile.7.3 .
+
+push73:
+	docker push kubeless/php:7.3$$RUNTIME_TAG_MODIFIER
 
 php-cs-fixer:
 	docker run -it --rm -v $${PWD}:/wd -w /wd shouldbee/php-cs-fixer fix Controller.php || true
 
 # Mandatory jobs
-build-all: build
-push-all: push
+build-all: build72 build73
+push-all: push72 push73
 
 # Testing jobs
-deploy: get-php get-php-deps post-php timeout-php
-test: get-php-verify get-php-deps-verify post-php-verify timeout-php-verify
+deploy: get-php get-php-deps post-php timeout-php get-php-73
+test: get-php-verify get-php-deps-verify post-php-verify timeout-php-verify get-php-73-verify
 
 get-php:
 	kubeless function deploy get-php --runtime php7.2 --handler helloget.foo --from-file examples/helloget.php
@@ -24,6 +31,13 @@ get-php:
 get-php-verify:
 	kubectl rollout status deployment/get-php && sleep 2
 	kubeless function call get-php | egrep "hello world"
+
+get-php-73:
+	kubeless function deploy get-php-73 --runtime php7.3 --handler helloget.foo --from-file examples/helloget.php
+
+get-php-73-verify:
+	kubectl rollout status deployment/get-php-73 && sleep 2
+	kubeless function call get-php-73 | egrep "hello world"
 
 get-php-deps:
 	kubeless function deploy get-php-deps --runtime php7.2 --handler hellowithdeps.foo --from-file examples/hellowithdeps.php --dependencies examples/composer.json
