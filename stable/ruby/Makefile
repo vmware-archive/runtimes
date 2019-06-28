@@ -25,8 +25,8 @@ build-all: build2.4 build2.5 build2.6
 push-all: push2.4 push2.5 push2.6
 
 # Testing jobs
-deploy: get-ruby get-ruby-deps get-ruby-custom-port timeout-ruby post-ruby
-test: get-ruby-verify get-ruby-deps-verify get-ruby-custom-port-verify timeout-ruby-verify post-ruby-verify
+deploy: get-ruby get-ruby-deps get-ruby-custom-port timeout-ruby post-ruby get-ruby26
+test: get-ruby-verify get-ruby-deps-verify get-ruby-custom-port-verify timeout-ruby-verify post-ruby-verify get-ruby26-verify
 
 get-ruby:
 	kubeless function deploy get-ruby --runtime ruby2.4 --handler helloget.foo --from-file examples/helloget.rb
@@ -34,6 +34,13 @@ get-ruby:
 get-ruby-verify:
 	kubectl rollout status deployment/get-ruby && sleep 2
 	kubeless function call get-ruby |egrep hello.world
+
+get-ruby26:
+	kubeless function deploy get-ruby26 --runtime ruby2.6 --handler helloget.foo --from-file examples/helloget.rb
+
+get-ruby-verify:
+	kubectl rollout status deployment/get-ruby26 && sleep 2
+	kubeless function call get-ruby26 |egrep hello.world
 
 get-ruby-deps:
 	kubeless function deploy get-ruby-deps --runtime ruby2.4 --handler hellowithdeps.foo --from-file examples/hellowithdeps.rb --dependencies examples/Gemfile
