@@ -38,7 +38,7 @@ get-ruby-verify:
 get-ruby26:
 	kubeless function deploy get-ruby26 --runtime ruby2.6 --handler helloget.foo --from-file examples/helloget.rb
 
-get-ruby-verify:
+get-ruby26-verify:
 	kubectl rollout status deployment/get-ruby26 && sleep 2
 	kubeless function call get-ruby26 |egrep hello.world
 
