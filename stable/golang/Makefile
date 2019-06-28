@@ -2,25 +2,39 @@ init-image:
 	git clone https://github.com/kubeless/kubeless || true
 	docker build -f Dockerfile.init -t kubeless/go-init:1.10 .
 
+init-image-1.11:
+	git clone https://github.com/kubeless/kubeless || true
+	docker build -f Dockerfile.1.11.init -t kubeless/go-init:1.11 .
+
+init-image-1.12:
+	git clone https://github.com/kubeless/kubeless || true
+	docker build -f Dockerfile.1.12.init -t kubeless/go-init:1.12 .
+
 runtime-image:
 	docker build -f Dockerfile -t kubeless/go:1.10 .
 
 push-init:
 	docker push kubeless/go-init:1.10
 
+push-init-1.11:
+	docker push kubeless/go-init:1.11
+
+push-init-1.12:
+	docker push kubeless/go-init:1.12
+
 push-runtime:
 	docker push kubeless/go:1.10
 
 # Mandatory jobs
-build-all: init-image runtime-image
-push-all: push-init push-runtime
+build-all: init-image runtime-image init-image-1.11 init-image-1.12
+push-all: push-init push-runtime push-init-1.11 push-init-1.12
 
 # Testing jobs
 deploy: get-go get-go-custom-port timeout-go get-go-deps post-go
 test: get-go-verify get-go-custom-port-verify timeout-go-verify get-go-deps-verify post-go-verify
 
 get-go:
-	kubeless function deploy get-go --runtime go1.10 --handler handler.Foo --from-file examples/helloget.go
+	kubeless function deploy get-go --runtime go1.12 --handler handler.Foo --from-file examples/helloget.go
 
 get-go-verify:
 	kubectl rollout status deployment/get-go && sleep 2
