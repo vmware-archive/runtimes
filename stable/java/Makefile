@@ -37,7 +37,7 @@ get-java-verify:
 	kubeless function call get-java |egrep Hello.world
 
 get-java-11:
-	kubeless function deploy get-java-11 --runtime java1.11 --handler Foo.foo --from-file examples/HelloGet.java
+	kubeless function deploy get-java-11 --runtime java11 --handler Foo.foo --from-file examples/HelloGet.java
 
 get-java-11-verify:
 	kubectl rollout status deployment/get-java-11 && sleep 2
