@@ -83,7 +83,7 @@ get-nodejs-deps:
 
 get-nodejs-deps-verify:
 	kubectl rollout status deployment/get-nodejs-deps && sleep 2
-	kubeless function call get-nodejs-deps --data '{"hello": "world"}' | grep -q 'hello.*world.*date.*UTC'
+	kubeless function call get-nodejs-deps --data '{"hello": "world"}' | grep -q 'hello.*world.*date'
 
 get-nodejs-multi:
 	cd examples; zip helloFunctions.zip *js
