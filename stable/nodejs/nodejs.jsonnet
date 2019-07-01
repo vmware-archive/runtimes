@@ -29,6 +29,34 @@
         },
        }],
      },
+     { name: 'node10',
+       version: '10',
+       images: [{
+        phase: "installation",
+        image: "kubeless/nodejs@sha256:9594e9d601cfe3868b54cccf1cd8763b2430493fed3e06d7dc128a69b263dfaf",
+        command: "/kubeless-npm-install.sh"
+       }, {
+        phase: "runtime",
+        image: "kubeless/nodejs@sha256:9594e9d601cfe3868b54cccf1cd8763b2430493fed3e06d7dc128a69b263dfaf",
+        env: {
+          NODE_PATH: "$(KUBELESS_INSTALL_VOLUME)/node_modules",
+        },
+       }],
+      },
+     { name: 'node12',
+       version: '12',
+       images: [{
+        phase: "installation",
+        image: "kubeless/nodejs@sha256:1c45cda56384adc7deae9bf99e221b8e159ec25980c05b947939096bf91800e6",
+        command: "/kubeless-npm-install.sh"
+       }, {
+        phase: "runtime",
+        image: "kubeless/nodejs@sha256:1c45cda56384adc7deae9bf99e221b8e159ec25980c05b947939096bf91800e6",
+        env: {
+          NODE_PATH: "$(KUBELESS_INSTALL_VOLUME)/node_modules",
+        },
+       }],
+     },
     ],
   depName: 'package.json',
   fileNameSuffix: '.js'
