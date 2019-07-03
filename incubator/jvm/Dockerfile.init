@@ -23,6 +23,5 @@ RUN set -o errexit -o nounset \
 	&& ln -s "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
 	\
 	&& apt-get clean && apt-get purge -y ca-certificates openssl unzip && apt-get autoremove -y \
-    && gradle shadowJar && cp build/libs/myapp-0.1-all.jar /opt \
-    && rm -rf /opt/gradle && rm -rf /usr/src/myapp
-
+        && gradle shadowJar && cp build/libs/myapp-0.1-all.jar /opt \
+        && rm -rf /opt/gradle && rm -rf /usr/src/myapp
