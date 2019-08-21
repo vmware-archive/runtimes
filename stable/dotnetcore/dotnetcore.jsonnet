@@ -30,7 +30,22 @@
           DOTNETCORE_HOME: "$(KUBELESS_INSTALL_VOLUME)/packages",
         },
       }],
-    }
+    },
+    {
+      name: "dotnetcore2.2",
+      version: "2.2",
+      images: [{
+        phase: "compilation",
+        image: "",
+        command: "/app/compile-function.sh $KUBELESS_INSTALL_VOLUME"
+       }, {
+        phase: "runtime",
+        image: "",
+        env: {
+          DOTNETCORE_HOME: "$(KUBELESS_INSTALL_VOLUME)/packages",
+        },
+      }],
+    },
   ],
   depName: "project.csproj",
   fileNameSuffix: ".cs"

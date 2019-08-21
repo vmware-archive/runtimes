@@ -36,6 +36,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{CCBE67
 		Dockerfile.init = Dockerfile.init
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{061F4D26-FC00-4EDD-8395-33BE4B70C3F6}"
+ProjectSection(SolutionItems) = preProject
+	Makefile = Makefile
+	dotnetcore.jsonnet = dotnetcore.jsonnet
+	OWNERS = OWNERS
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
