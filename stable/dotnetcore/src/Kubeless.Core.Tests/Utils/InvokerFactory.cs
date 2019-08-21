@@ -1,9 +1,6 @@
 ﻿using Kubeless.Core.Interfaces;
 using Kubeless.Core.Invokers;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Kubeless.Core.Tests.Utils
 {

@@ -1,12 +1,10 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Kubeless.Core.Interfaces;
 using Kubeless.WebAPI.Utils;
 using Kubeless.Core.Invokers;
-using System.IO;
 using Kubeless.Core.Handlers;
 
 namespace Kubeless.WebAPI

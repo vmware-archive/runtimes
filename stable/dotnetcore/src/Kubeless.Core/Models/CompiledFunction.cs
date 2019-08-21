@@ -1,9 +1,5 @@
 ﻿using Kubeless.Core.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Kubeless.Core.Models
 {

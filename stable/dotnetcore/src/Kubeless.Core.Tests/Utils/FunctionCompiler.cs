@@ -36,7 +36,7 @@ namespace Kubeless.Core.Tests.Utils
 
             if (process.ExitCode != 0 || result.ToLower().Contains("error"))
                 throw new Exception("Error during dotnet publish");
-        }
+            }
 
         public string Compile(string functionPath, string packagesSubPath)
         {

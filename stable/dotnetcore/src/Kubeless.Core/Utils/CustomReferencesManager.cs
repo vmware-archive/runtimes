@@ -1,6 +1,4 @@
-﻿using Kubeless.Core.Utils;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace Kubeless.Core.Utils

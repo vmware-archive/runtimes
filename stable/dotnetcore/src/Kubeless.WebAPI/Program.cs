@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Kubeless.WebAPI.Utils;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Prometheus;
 
 namespace Kubeless.WebAPI
 {
@@ -25,6 +20,7 @@ namespace Kubeless.WebAPI
             return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseUrls($"http://*:{port}")
+                .Configure(app => app.UseMetricServer())
                 .ConfigureLogging((hostingContext, logging) =>
                 {
                     logging.AddConsole(options => options.IncludeScopes = true);
