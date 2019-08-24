@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using Kubeless.WebAPI.Utils;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;

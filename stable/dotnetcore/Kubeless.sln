@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{
 		examples\namespaced-helloget.csproj = examples\namespaced-helloget.csproj
 		examples\timeout.cs = examples\timeout.cs
 		examples\timeout.csproj = examples\timeout.csproj
+		examples\err.cs = examples\err.cs
+		examples\err.csproj = examples\err.csproj
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{CCBE6752-398A-4934-B276-9557032BF32E}"
