@@ -36,11 +36,11 @@
       version: "2.2",
       images: [{
         phase: "compilation",
-        image: "",
+        image: "lennartquerter/kubless_runtime_dotnetcore22-build:0.9",
         command: "/app/compile-function.sh $KUBELESS_INSTALL_VOLUME"
        }, {
         phase: "runtime",
-        image: "",
+        image: "lennartquerter/kubless_runtime_dotnetcore22:0.9",
         env: {
           DOTNETCORE_HOME: "$(KUBELESS_INSTALL_VOLUME)/packages",
         },

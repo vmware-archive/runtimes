@@ -1,8 +1,10 @@
+using System;
+using System.Diagnostics;
 using Kubeless.WebAPI.Utils;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Prometheus;
 
 namespace Kubeless.WebAPI
 {
@@ -10,17 +12,28 @@ namespace Kubeless.WebAPI
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            try
+            {
+                CreateWebHostBuilder(args)
+                    .Build()
+                    .Run();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(params string[] args)
+
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             var port = VariablesUtils.GetEnvVar("FUNC_PORT", "8080");
 
             return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseUrls($"http://*:{port}")
-                .Configure(app => app.UseMetricServer())
+                .ConfigureAppConfiguration((hostingContext, config) => { config.AddEnvironmentVariables(); })
                 .ConfigureLogging((hostingContext, logging) =>
                 {
                     logging.AddConsole(options => options.IncludeScopes = true);

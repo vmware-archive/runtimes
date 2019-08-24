@@ -1,15 +1,21 @@
 # Testing jobs
-deploy: get-dotnetcore get-dotnetcore-dependency post-dotnetcore get-dotnetcore-namespaced 
-# get-dotnetcore21 get-dotnetcore-dependency21 post-dotnetcore21 get-dotnetcore-namespaced21 
-# get-dotnetcore20 get-dotnetcore-dependency20
+deploy: deploy22 deploy21 deploy20
 
-test: get-dotnetcore-verify get-dotnetcore-dependency-verify post-dotnetcore-verify get-dotnetcore-namespaced-verify 
-# get-dotnetcore-verify21 get-dotnetcore-dependency-verify21 post-dotnetcore-verify21 get-dotnetcore-namespaced-verify21 
-# get-dotnetcore-verify20 get-dotnetcore-dependency-verify20
+deploy22: get-dotnetcore get-dotnetcore-dependency post-dotnetcore get-dotnetcore-namespaced 
+deploy21: get-dotnetcore21 get-dotnetcore-dependency21 post-dotnetcore21 get-dotnetcore-namespaced21  
+deploy20: get-dotnetcore20 get-dotnetcore-dependency20
 
-clean: get-dotnetcore-clean get-dotnetcore-dependency-clean post-dotnetcore-clean get-dotnetcore-namespaced-clean
-# get-dotnetcore-verify21-clean get-dotnetcore-dependency-verify21-clean post-dotnetcore-verify21-clean get-dotnetcore-namespaced-verify21-clean 
-# get-dotnetcore-verify20-clean get-dotnetcore-dependency-verify20-clean
+test: test22 test21 test20
+
+test22: get-dotnetcore-verify get-dotnetcore-dependency-verify post-dotnetcore-verify get-dotnetcore-namespaced-verify 
+test21: get-dotnetcore-verify21 get-dotnetcore-dependency-verify21 post-dotnetcore-verify21 get-dotnetcore-namespaced-verify21 
+test20: get-dotnetcore-verify20 get-dotnetcore-dependency-verify20
+
+clean: clean22 clean21 clean20
+
+clean22: get-dotnetcore-clean get-dotnetcore-dependency-clean post-dotnetcore-clean get-dotnetcore-namespaced-clean
+clean21: get-dotnetcore-clean21 get-dotnetcore-dependency-clean21 post-dotnetcore-clean21 get-dotnetcore-namespaced-clean21
+clean20: get-dotnetcore-clean20 get-dotnetcore-dependency-clean20
 
 
 # .NET Core 2.2
@@ -20,11 +26,11 @@ get-dotnetcore:
 get-dotnetcore-verify:
 	kubectl rollout status deployment/get-dotnetcore && sleep 2
 	kubeless function call get-dotnetcore |egrep hello.world
-	kubeless function top --function get-dotnetcore --out yaml |egrep "Function does not expose metrics" 
+	kubeless function top --function get-dotnetcore --out yaml |egrep "function: get-dotnetcore" 
 
 get-dotnetcore-clean:
-    kubless function delete get-dotnetcore
-    
+	kubeless function delete get-dotnetcore
+	
 get-dotnetcore-dependency:
 	kubeless function deploy get-dotnetcore-dependency --runtime dotnetcore2.2 --handler module.handler --from-file examples/dependency-yaml.cs --dependencies examples/dependency-yaml.csproj
 
@@ -33,7 +39,7 @@ get-dotnetcore-dependency-verify:
 	kubeless function call get-dotnetcore-dependency |egrep Name:\ Michael
 
 get-dotnetcore-dependency-clean:
-    kubless function delete get-dotnetcore-dependency
+	kubeless function delete get-dotnetcore-dependency
 
 post-dotnetcore:
 	kubeless function deploy post-dotnetcore --runtime dotnetcore2.2 --handler module.handler --from-file examples/hellowithdata.cs
@@ -43,7 +49,7 @@ post-dotnetcore-verify:
 	kubeless function call post-dotnetcore --data '{"it-s": "alive"}'|egrep "it.*alive"
 	
 post-dotnetcore-clean:
-    kubless function delete post-dotnetcore
+	kubeless function delete post-dotnetcore
 
 get-dotnetcore-namespaced:
 	kubeless function deploy get-dotnetcore-namespaced --runtime dotnetcore2.2 --handler module.handler --from-file examples/namespaced-helloget.cs
@@ -53,7 +59,7 @@ get-dotnetcore-namespaced-verify:
 	kubeless function call get-dotnetcore-namespaced |egrep hello.world
 
 get-dotnetcore-namespaced-clean:
-    kubless function delete get-dotnetcore-namespaced
+	kubeless function delete get-dotnetcore-namespaced
 
 # .NET Core 2.1
 
@@ -66,7 +72,7 @@ get-dotnetcore-verify21:
 	kubeless function top --function get-dotnetcore21 --out yaml |egrep "Function does not expose metrics" 
 
 get-dotnetcore-clean21:
-    kubless function delete get-dotnetcore21
+	kubeless function delete get-dotnetcore21
 
 get-dotnetcore-dependency21:
 	kubeless function deploy get-dotnetcore-dependency21 --runtime dotnetcore2.1 --handler module.handler --from-file examples/dependency-yaml.cs --dependencies examples/dependency-yaml.csproj
@@ -76,7 +82,7 @@ get-dotnetcore-dependency-verify21:
 	kubeless function call get-dotnetcore-dependency21 |egrep Name:\ Michael
 
 get-dotnetcore-dependency-clean21:
-    kubless function delete get-dotnetcore-dependency21
+	kubeless function delete get-dotnetcore-dependency21
 
 post-dotnetcore21:
 	kubeless function deploy post-dotnetcore21 --runtime dotnetcore2.1 --handler module.handler --from-file examples/hellowithdata.cs
@@ -86,7 +92,7 @@ post-dotnetcore-verify21:
 	kubeless function call post-dotnetcore21 --data '{"it-s": "alive"}'|egrep "it.*alive"
 	
 post-dotnetcore-clean21:
-    kubless function delete post-dotnetcore21
+	kubeless function delete post-dotnetcore21
 	
 get-dotnetcore-namespaced21:
 	kubeless function deploy get-dotnetcore-namespaced21 --runtime dotnetcore2.1 --handler module.handler --from-file examples/namespaced-helloget.cs
@@ -96,7 +102,7 @@ get-dotnetcore-namespaced-verify21:
 	kubeless function call get-dotnetcore-namespaced21 |egrep hello.world
 	
 get-dotnetcore-namespaced-clean21:
-    kubless function delete get-dotnetcore-namespaced21
+	kubeless function delete get-dotnetcore-namespaced21
 
 # NET Core 2.0
 

@@ -6,6 +6,8 @@ using Kubeless.Core.Interfaces;
 using Kubeless.WebAPI.Utils;
 using Kubeless.Core.Invokers;
 using Kubeless.Core.Handlers;
+using Microsoft.AspNetCore.Mvc;
+using Prometheus;
 
 namespace Kubeless.WebAPI
 {
@@ -20,26 +22,33 @@ namespace Kubeless.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             var function = FunctionFactory.GetFunction(Configuration);
             var timeout = FunctionFactory.GetFunctionTimeout(Configuration);
-            var referencesPath = FunctionFactory.GetFunctionReferencesPath(Configuration); 
+            var referencesPath = FunctionFactory.GetFunctionReferencesPath(Configuration);
 
             services.AddSingleton<IInvoker>(new CompiledFunctionInvoker(function, timeout, referencesPath));
-
             services.AddSingleton<IParameterHandler>(new DefaultParameterHandler(Configuration));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
+            }
 
             app.UseCors(builder =>
-                builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+                builder
+                    .AllowAnyHeader()
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod());
+            
+            app.UseMetricServer();
 
-            app.UseMvc();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }

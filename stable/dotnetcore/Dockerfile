@@ -1,5 +1,5 @@
 # Image used only for build process
-FROM microsoft/dotnet:2.2-sdk AS build-env
+FROM microsoft/dotnet:2.1-sdk AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -13,7 +13,7 @@ COPY ./src/ ./
 RUN dotnet publish ./Kubeless.WebAPI/ -c Release -o out
 
 # Build runtime image
-FROM microsoft/dotnet:2.2-aspnetcore-runtime
+FROM microsoft/dotnet:2.1-aspnetcore-runtime
 WORKDIR /app
 COPY --from=build-env /app/Kubeless.WebAPI/out .
 # Kubeless.Functions reference

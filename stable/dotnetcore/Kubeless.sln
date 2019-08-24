@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{CCBE67
 		compile-function.sh = compile-function.sh
 		Dockerfile = Dockerfile
 		Dockerfile.init = Dockerfile.init
+		Dockerfile.2.2 = Dockerfile.2.2
+		Dockerfile.init.2.2 = Dockerfile.init.2.2
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{061F4D26-FC00-4EDD-8395-33BE4B70C3F6}"

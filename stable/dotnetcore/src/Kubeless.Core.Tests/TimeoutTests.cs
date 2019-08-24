@@ -34,17 +34,17 @@ namespace Kubeless.Core.Tests
             Assert.Throws<OperationCanceledException>(timeoutAction);
         }
 
-        [InlineData("cs", "timeout", "module", "handler", 5, 5)]
-        [InlineData("cs", "timeout", "module", "handler", 5, 6)]
-        [InlineData("cs", "timeout", "module", "handler", 5, 7)]
-        [InlineData("cs", "timeout", "module", "handler", 5, 8)]
-        [InlineData("cs", "timeout", "module", "handler", 5, 9)]
-        [InlineData("cs", "timeout", "module", "handler", 5, 10)]
+        [InlineData("cs", "timeout", "module", "handler", 4999, 5)]
+        [InlineData("cs", "timeout", "module", "handler", 5000, 6)]
+        [InlineData("cs", "timeout", "module", "handler", 5000, 7)]
+        [InlineData("cs", "timeout", "module", "handler", 5000, 8)]
+        [InlineData("cs", "timeout", "module", "handler", 5000, 9)]
+        [InlineData("cs", "timeout", "module", "handler", 5000, 10)]
         [Theory]
         public void RunWithoutTimeout(string language, string functionFileName, string moduleName, string functionHandler, int durationTime, int timeoutSeconds)
         {
             // Arrange
-            int sleepTime = durationTime * 1000;
+            int sleepTime = durationTime;
             int timeout = timeoutSeconds * 1000;
             IInvoker invoker = InvokerFactory.GetFunctionInvoker(language, functionFileName, moduleName, functionHandler, timeout);
             Event @event = new Event(sleepTime);
