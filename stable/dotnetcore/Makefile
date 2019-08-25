@@ -126,3 +126,25 @@ get-dotnetcore-dependency-verify20:
 	
 get-dotnetcore-dependency-clean20:
 	kubeless function delete get-dotnetcore-dependency20
+	
+	
+# build docker
+
+REPOSITORY		:= lennartquerter
+RUNTIME_NAME	:= ${REPOSITORY}/kubless_runtime_dotnetcore22
+COMPILE_NAME	:= ${REPOSITORY}/kubless_compile_dotnetcore22
+TAG				:= $(shell git log -1 --pretty=%H)
+RUNTIME_IMG		:= ${RUNTIME_NAME}
+COMPILE_IMG		:= ${COMPILE_NAME}
+
+build-runtime:
+	docker build -f Dockerfile.2.2 -t ${RUNTIME_IMG}:${TAG} .
+
+push-runtime:
+	docker push ${RUNTIME_IMG}:${TAG}
+
+build-compile:
+	docker build -f Dockerfile.init.2.2 -t ${COMPILE_IMG}:$(TAG) .
+	
+push-compile:
+	docker push ${COMPILE_IMG}:${TAG}
