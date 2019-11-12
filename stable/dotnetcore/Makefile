@@ -129,11 +129,12 @@ get-dotnetcore-dependency-clean20:
 	
 	
 # build docker
+# please set TARGET_REPOSITORY and RUNTIME_TAG_MODIFIER as env variables before using the docker build commands
 
-REPOSITORY		:= lennartquerter
+REPOSITORY		:= ${TARGET_REPOSITORY}
 RUNTIME_NAME	:= ${REPOSITORY}/kubless_runtime_dotnetcore22
 COMPILE_NAME	:= ${REPOSITORY}/kubless_compile_dotnetcore22
-TAG				:= $(shell git log -1 --pretty=%H)
+TAG				:= ${RUNTIME_TAG_MODIFIER}
 RUNTIME_IMG		:= ${RUNTIME_NAME}
 COMPILE_IMG		:= ${COMPILE_NAME}
 
