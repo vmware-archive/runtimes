@@ -1,14 +1,13 @@
 using Kubeless.Core.Tests.Utils;
 using Kubeless.WebAPI.Tests.Utils;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Kubeless.WebAPI.Tests
 {
+    [Collection("health-check")]
     public class InvokeTests
     {
         [InlineData("GET", "cs", "helloget", "module", "handler")]

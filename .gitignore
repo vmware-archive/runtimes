@@ -24,3 +24,4 @@ artifacts/
 *.nuget.props
 *.nuget.targets
 .vscode/
+.idea/

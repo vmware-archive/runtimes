@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Kubeless.Functions
+﻿namespace Kubeless.Functions
 {
     public class Context
     {

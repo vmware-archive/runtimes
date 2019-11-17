@@ -7,6 +7,7 @@ using Xunit;
 
 namespace Kubeless.WebAPI.Tests
 {
+    [Collection("health-check")]
     public class HealthTests
     {
         [InlineData("cs", "helloget", "module", "handler")]

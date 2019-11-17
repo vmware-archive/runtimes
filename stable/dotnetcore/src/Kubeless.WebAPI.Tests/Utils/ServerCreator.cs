@@ -2,9 +2,6 @@
 using Kubeless.Core.Tests.Utils;
 using Microsoft.AspNetCore.TestHost;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Kubeless.WebAPI.Tests.Utils
 {
@@ -15,7 +12,7 @@ namespace Kubeless.WebAPI.Tests.Utils
 
         public static TestServer CreateServer()
         {
-            return new TestServer(Program.CreateWebHostBuilder());
+            return new TestServer(Program.CreateWebHostBuilder(null));
         }
 
         public static void CompileFunction(string language, string functionFileName, string moduleName, string functionHandler)

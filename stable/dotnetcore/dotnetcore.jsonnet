@@ -30,7 +30,22 @@
           DOTNETCORE_HOME: "$(KUBELESS_INSTALL_VOLUME)/packages",
         },
       }],
-    }
+    },
+    {
+      name: "dotnetcore2.2",
+      version: "2.2",
+      images: [{
+        phase: "compilation",
+        image: "lennartquerter/kubless_compile_dotnetcore22:4761f204190ad59807b9231e096cbcb3901226cd",
+        command: "/app/compile-function.sh $KUBELESS_INSTALL_VOLUME"
+       }, {
+        phase: "runtime",
+        image: "lennartquerter/kubless_runtime_dotnetcore22:4761f204190ad59807b9231e096cbcb3901226cd",
+        env: {
+          DOTNETCORE_HOME: "$(KUBELESS_INSTALL_VOLUME)/packages",
+        },
+      }],
+    },
   ],
   depName: "project.csproj",
   fileNameSuffix: ".cs"

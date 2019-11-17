@@ -1,9 +1,7 @@
 ﻿using Kubeless.Core.Interfaces;
 using Kubeless.Core.Models;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Kubeless.Core.Tests.Utils
 {

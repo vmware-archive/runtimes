@@ -3,10 +3,7 @@ using Kubeless.Functions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Kubeless.Core.Handlers
 {
