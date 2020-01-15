@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('fs');
 const vm = require('vm');
 const path = require('path');
 const Module = require('module');
@@ -10,6 +9,7 @@ const client = require('prom-client');
 const express = require('express');
 const helper = require('./lib/helper');
 const morgan = require('morgan');
+const GracefulShutdownManager = require('@moebius/http-graceful-shutdown').GracefulShutdownManager;
 
 const bodySizeLimit = Number(process.env.REQ_MB_LIMIT || '1');
 
@@ -168,4 +168,12 @@ app.all('*', (req, res) => {
     }
 });
 
-app.listen(funcPort);
+const server = app.listen(funcPort);
+const shutdownManager = new GracefulShutdownManager(server);
+
+const handleShutdown = () => {
+    shutdownManager.terminate();
+}
+
+process.on('SIGINT', handleShutdown);
+process.on('SIGTERM', handleShutdown);
