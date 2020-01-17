@@ -60,6 +60,7 @@ function configureGracefulShutdown(server) {
     connections[connectionId] = connection;
     connection.on('close', () => delete connections[connectionId]);
   });
+
   server.on('request', (request, response) => {
     const connection = request.connection;
     connection.$$isIdle = false;
@@ -69,7 +70,6 @@ function configureGracefulShutdown(server) {
       if (terminating) {
         connection.destroy();
       }
-
     });
   });
 
