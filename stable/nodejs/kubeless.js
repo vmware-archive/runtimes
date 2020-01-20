@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('fs');
 const vm = require('vm');
 const path = require('path');
 const Module = require('module');
@@ -168,4 +167,5 @@ app.all('*', (req, res) => {
     }
 });
 
-app.listen(funcPort);
+const server = app.listen(funcPort);
+helper.configureGracefulShutdown(server);
