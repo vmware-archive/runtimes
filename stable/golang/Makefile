@@ -1,17 +1,17 @@
 init-image:
 	git clone https://github.com/kubeless/kubeless || true
-	docker build -f Dockerfile.init -t kubeless/go-init:1.10 .
+	docker build --no-cache -f Dockerfile.init -t kubeless/go-init:1.10 .
 
 init-image-1.11:
 	git clone https://github.com/kubeless/kubeless || true
-	docker build -f Dockerfile.1.11.init -t kubeless/go-init:1.11 .
+	docker build --no-cache -f Dockerfile.1.11.init -t kubeless/go-init:1.11 .
 
 init-image-1.12:
 	git clone https://github.com/kubeless/kubeless || true
-	docker build -f Dockerfile.1.12.init -t kubeless/go-init:1.12 .
+	docker build --no-cache -f Dockerfile.1.12.init -t kubeless/go-init:1.12 .
 
 runtime-image:
-	docker build -f Dockerfile -t kubeless/go:1.10 .
+	docker build --no-cache -f Dockerfile -t kubeless/go:1.10 .
 
 push-init:
 	docker push kubeless/go-init:1.10

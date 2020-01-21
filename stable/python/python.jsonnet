@@ -10,7 +10,7 @@
         command: "pip install --prefix=$KUBELESS_INSTALL_VOLUME -r $KUBELESS_DEPS_FILE"
       }, {
         phase: "runtime",
-        image: "kubeless/python@sha256:7b3cb3c5ff9f2e1cccf22c4a8d6325f21f56fef51ce97c43444de5ff84af428d",
+        image: "kubeless/python@sha256:7630749ee027e873b24468fec066df6a7e7f3fd6a62695405189821b7114d1e1",
         env: {
           PYTHONPATH: "$(KUBELESS_INSTALL_VOLUME)/lib/python2.7/site-packages:$(KUBELESS_INSTALL_VOLUME)",
         },
@@ -25,7 +25,7 @@
         command: "pip install --prefix=$KUBELESS_INSTALL_VOLUME -r $KUBELESS_DEPS_FILE"
       }, {
         phase: "runtime",
-        image: "kubeless/python@sha256:f83b37d65825fda1dc6a2105be96e816fc26099538728c319bd6d4ee32b62564",
+        image: "kubeless/python@sha256:55e1169c69df25960dd4434566c72a4c6da8e43a7abd8e3d3f5638a6c186e9fe",
         env: {
           PYTHONPATH: "$(KUBELESS_INSTALL_VOLUME)/lib/python3.4/site-packages:$(KUBELESS_INSTALL_VOLUME)",
         },
@@ -40,7 +40,7 @@
         command: "pip install --prefix=$KUBELESS_INSTALL_VOLUME -r $KUBELESS_DEPS_FILE"
       }, {
         phase: "runtime",
-        image: "kubeless/python@sha256:0f0305d7649e622710d939fec7f01d65839131fe58214013323ad9a6db6c0d9f",
+        image: "kubeless/python@sha256:d85ce9e4d54f9db4b911c3d92f4acaef149ac7e9975823107a7118bc82d80e5c",
         env: {
           PYTHONPATH: "$(KUBELESS_INSTALL_VOLUME)/lib/python3.6/site-packages:$(KUBELESS_INSTALL_VOLUME)",
         },
@@ -55,7 +55,7 @@
         command: "pip install --prefix=$KUBELESS_INSTALL_VOLUME -r $KUBELESS_DEPS_FILE"
       }, {
         phase: "runtime",
-        image: "kubeless/python@sha256:849bc1c3968783ba15e2cbb1a532f2856c33b7b2c3fbb358ab76e724ecd54bc8",
+        image: "kubeless/python@sha256:f65ebe571a8e657049ec75408df6f8538ffe49037418e45b611d07243612b1fd",
         env: {
           PYTHONPATH: "$(KUBELESS_INSTALL_VOLUME)/lib/python3.7/site-packages:$(KUBELESS_INSTALL_VOLUME)",
         },

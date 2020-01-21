@@ -2,14 +2,14 @@
 
 build72:
 	env GOOS=linux GOARCH=amd64 go build $$GOPATH/src/github.com/kubeless/kubeless/pkg/function-proxy/proxy.go
-	docker build -t kubeless/php:7.2$$RUNTIME_TAG_MODIFIER -f Dockerfile.7.2 .
+	docker build --no-cache -t kubeless/php:7.2$$RUNTIME_TAG_MODIFIER -f Dockerfile.7.2 .
 
 push72:
 	docker push kubeless/php:7.2$$RUNTIME_TAG_MODIFIER
 
 build73:
 	env GOOS=linux GOARCH=amd64 go build $$GOPATH/src/github.com/kubeless/kubeless/pkg/function-proxy/proxy.go
-	docker build -t kubeless/php:7.3$$RUNTIME_TAG_MODIFIER -f Dockerfile.7.3 .
+	docker build --no-cache -t kubeless/php:7.3$$RUNTIME_TAG_MODIFIER -f Dockerfile.7.3 .
 
 push73:
 	docker push kubeless/php:7.3$$RUNTIME_TAG_MODIFIER

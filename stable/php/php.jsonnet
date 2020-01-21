@@ -9,7 +9,7 @@
         command: "composer install -d $KUBELESS_INSTALL_VOLUME"
        }, {
         phase: "runtime",
-        image: "kubeless/php@sha256:981e2bb6b6662176992427d55da76258ecadb0dc9ef03d1feed66250c828014e"
+        image: "kubeless/php@sha256:a22a88fc7e0f46d185224a0179451187d6ab44b89c070807bf92a305ce416e4a"
        }],
       },
       { name: 'php73',
@@ -20,7 +20,7 @@
         command: "composer install -d $KUBELESS_INSTALL_VOLUME"
        }, {
         phase: "runtime",
-        image: "kubeless/php@sha256:8f7f8aa9980a14126d9b9e8b3742258efd2591b0e152b4d65e0d7b5faf61a041"
+        image: "kubeless/php@sha256:eec60c68440ca2e09dbac63718916ffbaa68e2d123a3faaca1bca2d7646f250f"
        }],
       },
     ],
