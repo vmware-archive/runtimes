@@ -82,8 +82,18 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", handler)
-	http.HandleFunc("/healthz", health)
-	http.Handle("/metrics", promhttp.Handler())
-	proxyUtils.ListenAndServe()
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", handler)
+	mux.HandleFunc("/healthz", health)
+	mux.Handle("/metrics", promhttp.Handler())
+
+	server := proxyUtils.NewServer(mux)
+
+	go func() {
+		if err := server.ListenAndServe(); err != http.ErrServerClosed {
+			panic(err)
+		}
+	}()
+
+	proxyUtils.GracefulShutdown(server)
 }

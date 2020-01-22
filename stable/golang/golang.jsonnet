@@ -6,11 +6,11 @@
       version: "1.10",
       images: [{
         phase: "compilation",
-        image: "kubeless/go-init@sha256:30f43f2c2868d0ed8b5610390d399348946f0e4e2c442fbcdc1d0bfd3be0415b",
+        image: "kubeless/go-init@sha256:cee10536fc4dca78928f21c85462ff75ec79e3425403f9c8b233f43df074d256",
         command: "/compile-function.sh"
        }, {
         phase: "installation",
-        image: "kubeless/go-init@sha256:30f43f2c2868d0ed8b5610390d399348946f0e4e2c442fbcdc1d0bfd3be0415b",
+        image: "kubeless/go-init@sha256:cee10536fc4dca78928f21c85462ff75ec79e3425403f9c8b233f43df074d256",
         command: "cd $GOPATH/src/kubeless && dep ensure > /dev/termination-log 2>&1"
        }, {
         phase: "runtime",
@@ -22,14 +22,14 @@
       version: "1.11",
       images: [{
         phase: "compilation",
-        image: "kubeless/go-init@sha256:00dc3d221f87d6b295cdadeebf34d2df55bce6a061fc75836b4ed7ac29dee3dd",
+        image: "kubeless/go-init@sha256:b364af8edb70a0d92ef992b667f56a5df159181310ec2d5e33a07da15ca88902",
         command: "/compile-function.sh",
         env: {
           GOCACHE: "$(KUBELESS_INSTALL_VOLUME)/.cache",
         },
        }, {
         phase: "installation",
-        image: "kubeless/go-init@sha256:00dc3d221f87d6b295cdadeebf34d2df55bce6a061fc75836b4ed7ac29dee3dd",
+        image: "kubeless/go-init@sha256:b364af8edb70a0d92ef992b667f56a5df159181310ec2d5e33a07da15ca88902",
         command: "cd $GOPATH/src/kubeless && dep ensure > /dev/termination-log 2>&1",
         env: {
           GOCACHE: "$(KUBELESS_INSTALL_VOLUME)/.cache",
@@ -44,14 +44,14 @@
       version: "1.12",
       images: [{
         phase: "compilation",
-        image: "kubeless/go-init@sha256:e7ef630e301c64f29d72ce6a04073132060ff93d92b29cae29ffbaa3c7e9761d",
+        image: "kubeless/go-init@sha256:67b9d5cbd93500dfe8f15de8b7846069180a2a50d2fdb63b42330de32cfe17ab",
         command: "/compile-function.sh",
         env: {
           GOCACHE: "$(KUBELESS_INSTALL_VOLUME)/.cache",
         },
        }, {
         phase: "installation",
-        image: "kubeless/go-init@sha256:e7ef630e301c64f29d72ce6a04073132060ff93d92b29cae29ffbaa3c7e9761d",
+        image: "kubeless/go-init@sha256:67b9d5cbd93500dfe8f15de8b7846069180a2a50d2fdb63b42330de32cfe17ab",
         command: "cd $GOPATH/src/kubeless && dep ensure > /dev/termination-log 2>&1",
         env: {
           GOCACHE: "$(KUBELESS_INSTALL_VOLUME)/.cache",
