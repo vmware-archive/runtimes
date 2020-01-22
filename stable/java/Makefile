@@ -1,14 +1,14 @@
 init-image:
-	docker build -f Dockerfile.init -t kubeless/java-init:1.8 .
+	docker build --no-cache -f Dockerfile.init -t kubeless/java-init:1.8 .
 
 runtime-image:
-	docker build -f Dockerfile -t kubeless/java:1.8 .
+	docker build --no-cache -f Dockerfile -t kubeless/java:1.8 .
 
 init-image-1.11:
-	docker build -f Dockerfile.11.init -t kubeless/java-init:11 .
+	docker build --no-cache -f Dockerfile.11.init -t kubeless/java-init:11 .
 
 runtime-image-1.11:
-	docker build -f Dockerfile.11 -t kubeless/java:11 .
+	docker build --no-cache -f Dockerfile.11 -t kubeless/java:11 .
 
 push-init:
 	docker push kubeless/java-init:1.8

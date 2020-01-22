@@ -1,15 +1,15 @@
 
 build2.4:
 	env GOOS=linux GOARCH=amd64 go build $$GOPATH/src/github.com/kubeless/kubeless/pkg/function-proxy/proxy.go
-	docker build -t kubeless/ruby:2.4$$RUNTIME_TAG_MODIFIER -f Dockerfile.2.4 .
+	docker build --no-cache -t kubeless/ruby:2.4$$RUNTIME_TAG_MODIFIER -f Dockerfile.2.4 .
 
 build2.5:
 	env GOOS=linux GOARCH=amd64 go build $$GOPATH/src/github.com/kubeless/kubeless/pkg/function-proxy/proxy.go
-	docker build -t kubeless/ruby:2.5$$RUNTIME_TAG_MODIFIER -f Dockerfile.2.5 .
+	docker build --no-cache -t kubeless/ruby:2.5$$RUNTIME_TAG_MODIFIER -f Dockerfile.2.5 .
 
 build2.6:
 	env GOOS=linux GOARCH=amd64 go build $$GOPATH/src/github.com/kubeless/kubeless/pkg/function-proxy/proxy.go
-	docker build -t kubeless/ruby:2.6$$RUNTIME_TAG_MODIFIER -f Dockerfile.2.6 .
+	docker build --no-cache -t kubeless/ruby:2.6$$RUNTIME_TAG_MODIFIER -f Dockerfile.2.6 .
 
 push2.4:
 	docker push kubeless/ruby:2.4$$RUNTIME_TAG_MODIFIER

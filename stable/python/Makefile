@@ -1,15 +1,15 @@
 
 build2.7:
-	docker build -t kubeless/python:2.7$$RUNTIME_TAG_MODIFIER -f Dockerfile.2.7 .
+	docker build --no-cache -t kubeless/python:2.7$$RUNTIME_TAG_MODIFIER -f Dockerfile.2.7 .
 
 build3.4:
-	docker build -t kubeless/python:3.4$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.4 .
+	docker build --no-cache -t kubeless/python:3.4$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.4 .
 
 build3.6:
-	docker build -t kubeless/python:3.6$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.6 .
+	docker build --no-cache -t kubeless/python:3.6$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.6 .
 
 build3.7:
-	docker build -t kubeless/python:3.7$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.7 .
+	docker build --no-cache -t kubeless/python:3.7$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.7 .
 
 push2.7:
 	docker push kubeless/python:2.7$$RUNTIME_TAG_MODIFIER

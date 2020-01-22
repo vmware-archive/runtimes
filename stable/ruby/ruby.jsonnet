@@ -23,7 +23,7 @@
         command: "bundle install --gemfile=$KUBELESS_DEPS_FILE --path=$KUBELESS_INSTALL_VOLUME"
        }, {
         phase: "runtime",
-        image: "kubeless/ruby@sha256:7bb4c6adb46b31a851ee8940dbffe7619beee09e9d09ef489cebe9ba0c5d8ed2",
+        image: "kubeless/ruby@sha256:f56ec50fafee09ae0ced9c8393b6874dc5072e4786c62d52b62b3f395643b423",
         env: {
           GEM_HOME: "$(KUBELESS_INSTALL_VOLUME)/ruby/2.4.0",
         },
@@ -37,7 +37,7 @@
          command: "bundle install --gemfile=$KUBELESS_DEPS_FILE --path=$KUBELESS_INSTALL_VOLUME"
         }, {
          phase: "runtime",
-         image: "kubeless/ruby@sha256:3a0ede85a3a0735fc826889d45a67251729878b2d3816101d9530b9b655cc622",
+         image: "kubeless/ruby@sha256:9a1b51da87617024ef33fc131fe673d35fe2600f06137e40301d7a4552669c7b",
          env: {
           GEM_HOME: "$(KUBELESS_INSTALL_VOLUME)/ruby/2.5.0",
          },
@@ -51,7 +51,7 @@
          command: "bundle install --gemfile=$KUBELESS_DEPS_FILE --path=$KUBELESS_INSTALL_VOLUME"
         }, {
          phase: "runtime",
-         image: "kubeless/ruby@sha256:6a79d335bec224d820f149a6eb293e2bbab333ad63581e747ec644fd1af19c61",
+         image: "kubeless/ruby@sha256:e93ec41f43392cc1aaf6763f484aa66850b852c4a8d6841afbe8cb72aab7d810",
          env: {
           GEM_HOME: "$(KUBELESS_INSTALL_VOLUME)/ruby/2.6.0",
          },
