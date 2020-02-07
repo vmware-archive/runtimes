@@ -10,10 +10,6 @@ build3.6:
 
 build3.7:
 	docker build -t kubeless/python:3.7$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.7 .
-
-build3.7gdal:
-	docker build -t kubeless/python:3.7gdal$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.7gdal .
-
 push2.7:
 	docker push kubeless/python:2.7$$RUNTIME_TAG_MODIFIER
 

@@ -1,0 +1,10 @@
+
+build3.7gdal:
+	docker build -t eu.gcr.io/devops-sandbox-258014/kubeless/python-gdal:3.7$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.7gdal .
+
+push3.7gdal:
+	docker push eu.gcr.io/devops-sandbox-258014/kubeless/python-gdal:3.7$$RUNTIME_TAG_MODIFIER
+
+# Mandatory jobs
+build-all: build3.7gdal
+push-all: push3.7gdal
