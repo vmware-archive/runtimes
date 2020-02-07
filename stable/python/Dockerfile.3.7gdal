@@ -1,0 +1,79 @@
+FROM ubuntu:18.04
+
+LABEL maintainer="yuan@hummingbirdtech.com"
+
+######
+### Install dependencies for the build process
+######
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    apt-transport-https \
+    ca-certificates \
+    apt-utils \
+    curl \
+    wget \
+    gnupg2 \
+    build-essential \
+    bash-completion \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+######
+### Install python
+######
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    python3-pip \
+    python3-setuptools \
+    python3-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install setuptools wheel virtualenv
+
+######
+### Install and compile GDAL
+######
+WORKDIR /gdal
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgdal-dev \
+    gdal-bin \
+    libxerces-c-dev \
+    libgeos-dev \
+    libopenjp2-7-dev \
+    pkg-config \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install GDAL==$(gdal-config --version) --global-option=build_ext --global-option="-I/usr/include/gdal"
+
+# default version, see: https://trac.osgeo.org/gdal/wiki/DownloadSource
+ARG VERSION=2.3.2
+
+RUN wget http://download.osgeo.org/gdal/$VERSION/gdal-$VERSION.tar.gz && \
+    tar xvzf gdal-$VERSION.tar.gz
+
+WORKDIR /gdal/gdal-$VERSION
+
+RUN ./configure && \
+    make -j $(python3 -c 'import multiprocessing as mp; print(int(mp.cpu_count() * 1.5))') && \
+    make install
+
+RUN pip3 install pygdal==${VERSION}.*
+
+######
+### Install package-specific dependencies
+######
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libexiv2-dev \
+    libboost-python-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+######
+### Install kubeless stuff
+######
+
+RUN pip3 install bottle==0.12.13 cherrypy==8.9.1 wsgi-request-logger prometheus_client
+
+WORKDIR /
+ADD kubeless.py .
+
+USER 1000
+
+CMD ["python3", "/kubeless.py"]
