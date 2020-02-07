@@ -12,6 +12,7 @@ mod = imp.load_source('function',
                       '/kubeless/%s.py' % os.getenv('MOD_NAME'))
 func = getattr(mod, os.getenv('FUNC_HANDLER'))
 func_port = os.getenv('FUNC_PORT', 8080)
+bottle.BaseRequest.MEMFILE_MAX = os.getenv('MEMFILE_MAX', 102400)
 
 timeout = float(os.getenv('FUNC_TIMEOUT', 180))
 
