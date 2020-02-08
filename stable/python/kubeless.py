@@ -2,17 +2,23 @@
 
 import os
 import imp
+import fcntl
 import datetime
 
 from multiprocessing import Process, Queue
 import bottle
 import prometheus_client as prom
 
+# Workaround for missing constant in fcntl module
+if not hasattr(fcntl, 'F_SETPIPE_SZ'):
+    fcntl.F_SETPIPE_SZ = 1031
+
 mod = imp.load_source('function',
                       '/kubeless/%s.py' % os.getenv('MOD_NAME'))
 func = getattr(mod, os.getenv('FUNC_HANDLER'))
 func_port = os.getenv('FUNC_PORT', 8080)
 bottle.BaseRequest.MEMFILE_MAX = os.getenv('MEMFILE_MAX', 102400)
+output_bufsize = int(os.getenv('FUNC_OUTPUT_MAX', 65535))
 
 timeout = float(os.getenv('FUNC_TIMEOUT', 180))
 
@@ -73,6 +79,7 @@ def handler():
     with func_errors.labels(method).count_exceptions():
         with func_hist.labels(method).time():
             q = Queue()
+            fcntl.fcntl(q._reader.fileno(), fcntl.F_SETPIPE_SZ, output_bufsize)
             p = Process(target=funcWrap, args=(q, event, function_context))
             p.start()
             p.join(timeout)
@@ -86,8 +93,6 @@ def handler():
                 if isinstance(res, Exception):
                     raise res
                 return res
-
-
 if __name__ == '__main__':
     import logging
     import sys
