@@ -5,6 +5,7 @@ import imp
 import datetime
 
 from multiprocessing import Process, Queue
+import queue
 import bottle
 import prometheus_client as prom
 
@@ -74,14 +75,14 @@ def handler():
             q = Queue()
             p = Process(target=funcWrap, args=(q, event, function_context))
             p.start()
-            p.join(timeout)
-            # If thread is still active
-            if p.is_alive():
+
+            try:
+                res = q.get(block=True, timeout=timeout)
+            except queue.Empty:
                 p.terminate()
                 p.join()
                 return bottle.HTTPError(408, "Timeout while processing the function")
             else:
-                res = q.get()
                 if isinstance(res, Exception):
                     raise res
                 return res
