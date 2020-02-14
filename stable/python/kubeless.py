@@ -5,9 +5,13 @@ import imp
 import datetime
 
 from multiprocessing import Process, Queue
-import queue
 import bottle
 import prometheus_client as prom
+
+try:
+    import queue
+except:
+    import Queue as queue
 
 mod = imp.load_source('function',
                       '/kubeless/%s.py' % os.getenv('MOD_NAME'))
