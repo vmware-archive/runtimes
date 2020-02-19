@@ -26,7 +26,7 @@ get-dotnetcore31:
 	kubeless function deploy get-dotnetcore31 --runtime dotnetcore3.1 --handler module.handler --from-file examples/helloget/helloget.cs
 
 get-dotnetcore-verify31:
-	kubectl rollout status deployment/get-dotnetcore31 && sleep 4
+	kubectl rollout status deployment/get-dotnetcore31 && sleep 10
 	kubeless function call get-dotnetcore31 |egrep hello.world
 	kubeless function top --function get-dotnetcore31 --out yaml |egrep "function: get-dotnetcore"
 
@@ -37,7 +37,7 @@ get-dotnetcore-dependency31:
 	kubeless function deploy get-dotnetcore-dependency31 --runtime dotnetcore3.1 --handler module.handler --from-file examples/dependency-yaml/dependency-yaml.cs --dependencies examples/dependency-yaml/dependency-yaml.csproj --env ASSEMBLY_NAME=dependency-yaml
 
 get-dotnetcore-dependency-verify31:
-	kubectl rollout status deployment/get-dotnetcore-dependency31 && sleep 4
+	kubectl rollout status deployment/get-dotnetcore-dependency31 && sleep 10
 	kubeless function call get-dotnetcore-dependency31 |egrep Name:\ Michael
 
 get-dotnetcore-dependency-clean31:
@@ -47,7 +47,7 @@ post-dotnetcore31:
 	kubeless function deploy post-dotnetcore31 --runtime dotnetcore3.1 --handler module.handler --from-file examples/hellowithdata/hellowithdata.cs
 
 post-dotnetcore-verify31:
-	kubectl rollout status deployment/post-dotnetcore31 && sleep 4
+	kubectl rollout status deployment/post-dotnetcore31 && sleep 10
 	kubeless function call post-dotnetcore31 --data '{"it-s": "alive"}'|egrep "it.*alive"
 	
 post-dotnetcore-clean31:
