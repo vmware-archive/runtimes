@@ -2,57 +2,60 @@
 using Kubeless.Functions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using System.IO;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Kubeless.Core.Handlers
 {
     public class DefaultParameterHandler : IParameterHandler
     {
-        private readonly IConfiguration configuration;
+        private readonly IConfiguration _configuration;
 
         public DefaultParameterHandler(IConfiguration configuration)
         {
-            this.configuration = configuration;
+            _configuration = configuration;
         }
 
-        public (Event, Context) GetFunctionParameters(HttpRequest request)
+        public async Task<(Event, Context)> GetFunctionParameters(HttpRequest request)
         {
-            var _event = GetEvent(request);
-            var _context = GetContext();
+            var @event = await GetEvent(request);
+            var context = GetContext();
 
-            return (_event, _context);
+            return (@event, context);
         }
 
-        private Event GetEvent(HttpRequest request)
+        private async Task<Event> GetEvent(HttpRequest request)
         {
-            if (request.Body.CanSeek)
-                request.Body.Position = 0;
-
+            var eventId = request.Headers["event-id"];
+            var eventType = request.Headers["event-type"];
+            var eventTime = request.Headers["event-time"];
+            var eventNamespace = request.Headers["event-namespace"];
             var contentType = request.Headers["content-type"];
 
-            object data = new StreamReader(request.Body).ReadToEnd();
-            if (contentType == "application/json" && data.ToString().Length > 0)
-                data = JsonConvert.DeserializeObject(data.ToString());
+            if (request.Body.CanSeek) {
+                request.Body.Position = 0;
+            }
 
-            string eventId = request.Headers["event-id"];
-            string eventType = request.Headers["event-type"];
-            string eventTime = request.Headers["event-time"];
-            string eventNamespace = request.Headers["event-namespace"];
+            using var sr = new StreamReader(request.Body);
+            object data = await sr.ReadToEndAsync();
+
+            if (contentType == "application/json" && data.ToString().Length > 0) {
+                data = JsonSerializer.Deserialize<dynamic>(data.ToString());
+            }
 
             var extensions = new Extensions(request);
-
             return new Event(data, eventId, eventType, eventTime, eventNamespace, extensions);
         }
 
         private Context GetContext()
         {
-            var moduleName = configuration["MOD_NAME"];
-            var functionName = configuration["FUNC_HANDLER"];
-            var functionPort = configuration["FUNC_PORT"];
-            var timeout = configuration["FUNC_TIMEOUT"];
-            var runtime = configuration["FUNC_RUNTIME"];
-            var memoryLimit = configuration["FUNC_MEMORY_LIMIT"];
+            var moduleName = _configuration["MOD_NAME"];
+            var functionName = _configuration["FUNC_HANDLER"];
+            var functionPort = _configuration["FUNC_PORT"];
+            var timeout = _configuration["FUNC_TIMEOUT"];
+            var runtime = _configuration["FUNC_RUNTIME"];
+            var memoryLimit = _configuration["FUNC_MEMORY_LIMIT"];
 
             return new Context(moduleName, functionName, functionPort, timeout, runtime, memoryLimit);
         }

@@ -1,7 +1,5 @@
-﻿using Kubeless.Core.Interfaces;
-using Kubeless.Core.Tests.Utils;
+﻿using Kubeless.Core.Tests.Utils;
 using Kubeless.Functions;
-using System.Threading;
 using Xunit;
 
 namespace Kubeless.Core.Tests
@@ -9,37 +7,32 @@ namespace Kubeless.Core.Tests
     public class InvocationTests
     {
         [InlineData("cs", "helloget", "module", "handler")]
-        [InlineData("cs", "namespaced-helloget", "module", "handler")]
         [InlineData("cs", "dependency-yaml", "module", "handler")]
         [Theory]
-        public void InvokeRegularFunction(string language, string functionFileName, string moduleName, string functionHandler)
+        public async void InvokeRegularFunction(string language, string functionName, string moduleName, string functionHandler)
         {
             // Arrange
-            IInvoker invoker = InvokerFactory.GetFunctionInvoker(language, functionFileName, moduleName, functionHandler);
-            Event @event = new Event();
-            Context context = new Context();
-            CancellationTokenSource token = new CancellationTokenSource();
+            var invoker = InvokerFactory.GetFunctionInvoker(language, functionName, moduleName, functionHandler);
+            var @event = new Event();
+            var context = new Context();
 
             // Act
-            object result = invoker.Execute(token, @event, context);
-
-            // Assert
+            var result = await invoker.Execute(@event, context);
         }
 
         [InlineData("cs", "hellowithdata", "module", "handler")]
         [Theory]
-        public void InvokeRegularFunctionWithData(string language, string functionFileName, string moduleName, string functionHandler)
+        public async void InvokeRegularFunctionWithData(string language, string functionName, string moduleName, string functionHandler)
         {
             // Arrange
-            string inputData = "expected returned message";
+            var inputData = "expected returned message";
 
-            IInvoker invoker = InvokerFactory.GetFunctionInvoker(language, functionFileName, moduleName, functionHandler);
-            Event @event = new Event(inputData);
-            Context context = new Context();
-            CancellationTokenSource token = new CancellationTokenSource();
+            var invoker = InvokerFactory.GetFunctionInvoker(language, functionName, moduleName, functionHandler);
+            var @event = new Event(inputData);
+            var context = new Context();
 
             // Act
-            object result = invoker.Execute(token, @event, context);
+            object result = await invoker.Execute(@event, context);
 
             // Assert
             Assert.Equal(inputData, result.ToString());
