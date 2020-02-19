@@ -15,20 +15,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kubeless.WebAPI.Tests", "sr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{34726F86-409F-4426-9451-BBCF7E715292}"
 	ProjectSection(SolutionItems) = preProject
-		examples\dependency-yaml.cs = examples\dependency-yaml.cs
-		examples\dependency-yaml.csproj = examples\dependency-yaml.csproj
-		examples\fibonacci.cs = examples\fibonacci.cs
-		examples\fibonacci.csproj = examples\fibonacci.csproj
-		examples\helloget.cs = examples\helloget.cs
-		examples\helloget.csproj = examples\helloget.csproj
-		examples\hellowithdata.cs = examples\hellowithdata.cs
-		examples\hellowithdata.csproj = examples\hellowithdata.csproj
-		examples\namespaced-helloget.cs = examples\namespaced-helloget.cs
-		examples\namespaced-helloget.csproj = examples\namespaced-helloget.csproj
-		examples\timeout.cs = examples\timeout.cs
-		examples\timeout.csproj = examples\timeout.csproj
-		examples\err.cs = examples\err.cs
-		examples\err.csproj = examples\err.csproj
+		examples\dependency-yaml\dependency-yaml.cs = examples\dependency-yaml\dependency-yaml.cs
+		examples\dependency-yaml\dependency-yaml.csproj = examples\dependency-yaml\dependency-yaml.csproj
+		examples\fibonacci\fibonacci.cs = examples\fibonacci\fibonacci.cs
+		examples\fibonacci\fibonacci.csproj = examples\fibonacci\fibonacci.csproj
+		examples\helloget\helloget.cs = examples\helloget\helloget.cs
+		examples\helloget\helloget.csproj = examples\helloget\helloget.csproj
+		examples\hellowithdata\hellowithdata.cs = examples\hellowithdata\hellowithdata.cs
+		examples\hellowithdata\hellowithdata.csproj = examples\hellowithdata\hellowithdata.csproj
+		examples\timeout\timeout.cs = examples\timeout\timeout.cs
+		examples\timeout\timeout.csproj = examples\timeout\timeout.csproj
+		examples\err\err.cs = examples\err\err.cs
+		examples\err\err.csproj = examples\err\err.csproj
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{CCBE6752-398A-4934-B276-9557032BF32E}"
@@ -36,8 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{CCBE67
 		compile-function.sh = compile-function.sh
 		Dockerfile = Dockerfile
 		Dockerfile.init = Dockerfile.init
-		Dockerfile.2.2 = Dockerfile.2.2
-		Dockerfile.init.2.2 = Dockerfile.init.2.2
+		Dockerfile.3.1 = Dockerfile.3.1
+		Dockerfile.init.3.1 = Dockerfile.init.3.1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{061F4D26-FC00-4EDD-8395-33BE4B70C3F6}"
