@@ -51,11 +51,11 @@
       version: "3.1",
       images: [{
         phase: "compilation",
-        image: "lorenzoangelini3/kubeless-compile-dotnetcore31:0.1",
+        image: "lorenzoangelini3/kubeless-compile-dotnetcore31:0.4",
         command: "/app/compile-function.sh $KUBELESS_INSTALL_VOLUME"
        }, {
         phase: "runtime",
-        image: "lorenzoangelini3/kubeless-runtime-dotnetcore31:0.1",
+        image: "lorenzoangelini3/kubeless-runtime-dotnetcore31:0.4",
         env: {
           DOTNETCORE_HOME: "$(KUBELESS_INSTALL_VOLUME)/packages",
         },
