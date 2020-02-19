@@ -1,19 +1,19 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Kubeless.Core.Handlers;
+using Kubeless.Core.Interfaces;
+using Kubeless.Core.Invokers;
+using Kubeless.WebAPI.Utils;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Kubeless.Core.Interfaces;
-using Kubeless.WebAPI.Utils;
-using Kubeless.Core.Invokers;
-using Kubeless.Core.Handlers;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Prometheus;
 
 namespace Kubeless.WebAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -22,23 +22,30 @@ namespace Kubeless.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddControllers();
 
             var function = FunctionFactory.GetFunction(Configuration);
             var timeout = FunctionFactory.GetFunctionTimeout(Configuration);
-            var referencesPath = FunctionFactory.GetFunctionReferencesPath(Configuration);
 
-            services.AddSingleton<IInvoker>(new CompiledFunctionInvoker(function, timeout, referencesPath));
+            services.AddSingleton<IInvoker>(new CompiledFunctionInvoker(function, timeout, FunctionFactory.GetFunctionPublishPath()));
             services.AddSingleton<IParameterHandler>(new DefaultParameterHandler(Configuration));
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+                endpoints.MapControllers());
 
             app.UseCors(builder =>
                 builder
@@ -47,8 +54,6 @@ namespace Kubeless.WebAPI
                     .AllowAnyMethod());
             
             app.UseMetricServer();
-
-            app.UseMvcWithDefaultRoute();
         }
     }
 }

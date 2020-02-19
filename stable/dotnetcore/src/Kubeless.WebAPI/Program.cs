@@ -1,9 +1,6 @@
-using System;
 using Kubeless.WebAPI.Utils;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 
 namespace Kubeless.WebAPI
 {
@@ -11,32 +8,16 @@ namespace Kubeless.WebAPI
     {
         public static void Main(string[] args)
         {
-            try
-            {
-                CreateWebHostBuilder(args)
-                    .Build()
-                    .Run();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            CreateHostBuilder(args).Build().Run();
         }
 
-
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
         {
             var port = VariablesUtils.GetEnvVar("FUNC_PORT", "8080");
-
-            return WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseUrls($"http://*:{port}")
-                .ConfigureAppConfiguration((hostingContext, config) => { config.AddEnvironmentVariables(); })
-                .ConfigureLogging((hostingContext, logging) =>
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    logging.AddConsole(options => options.IncludeScopes = true);
-                    logging.AddDebug();
+                    webBuilder.UseStartup<Startup>().UseUrls($"http://*:{port}");
                 });
         }
     }

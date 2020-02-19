@@ -1,19 +1,20 @@
-﻿using Kubeless.Core.Interfaces;
-using Kubeless.Functions;
+﻿using System;
+using System.Threading.Tasks;
+using Kubeless.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading;
+using Kubeless.Functions;
 using Prometheus;
 
 namespace Kubeless.WebAPI.Controllers
 {
+    [ApiController]
     [Route("/")]
-    public class RuntimeController : Controller
+    public class RuntimeController : ControllerBase
     {
-        private readonly IParameterHandler parameterHandler;
-        private readonly IInvoker invoker;
-        private readonly ILogger logger;
+        private readonly ILogger<RuntimeController> _logger;
+        private readonly IInvoker _invoker;
+        private readonly IParameterHandler _parameterHandler;
 
         private static readonly Counter CallsCountTotal = Metrics
             .CreateCounter("kubeless_calls_total", "Number of calls processed.", new CounterConfiguration
@@ -21,41 +22,40 @@ namespace Kubeless.WebAPI.Controllers
                 LabelNames = new[] {"status", "handler", "function", "runtime"}
             });
 
-        public RuntimeController(IParameterHandler parameterHandler, IInvoker invoker, ILogger<RuntimeController> logger)
+        public RuntimeController(ILogger<RuntimeController> logger, IInvoker invoker, IParameterHandler parameterHandler)
         {
-            this.invoker = invoker;
-            this.parameterHandler = parameterHandler;
-            this.logger = logger;
+            _logger = logger;
+            _invoker = invoker;
+            _parameterHandler = parameterHandler;
         }
 
         [AcceptVerbs("GET", "POST", "PUT", "PATCH", "DELETE")]
-        public object Execute()
+        public async Task<object> Execute()
         {
-            logger.LogInformation("{0}: Function Started. HTTP Method: {1}, Path: {2}.", DateTime.Now.ToString(), Request.Method, Request.Path);
+            _logger.LogInformation("{0}: Function Started. HTTP Method: {1}, Path: {2}.", DateTime.Now.ToString(), Request.Method, Request.Path);
 
             Event @event = null;
             Context context = null;
             try
             {
-                (@event, context) = parameterHandler.GetFunctionParameters(Request);
-                var cancellationSource = new CancellationTokenSource();
+                (@event, context) = await _parameterHandler.GetFunctionParameters(Request);
 
-                var output = invoker.Execute(cancellationSource, @event, context);
+                var output = await _invoker.Execute(@event, context);
 
-                logger.LogInformation("{0}: Function Executed. HTTP response: {1}.", DateTime.Now.ToString(), 200);
+                _logger.LogInformation("{0}: Function Executed. HTTP response: {1}.", DateTime.Now.ToString(), 200);
 
                 LogMetrics(context, 200);
                 return output;
             }
             catch (OperationCanceledException exception)
             {
-                logger.LogError(exception, "{0}: Function Cancelled. HTTP Response: {1}. Reason: {2}.", DateTime.Now.ToString(), 408, "Timeout");
+                _logger.LogError(exception, "{0}: Function Cancelled. HTTP Response: {1}. Reason: {2}.", DateTime.Now.ToString(), 408, "Timeout");
                 LogMetrics(context, 408);
                 return new StatusCodeResult(408);
             }
             catch (Exception exception)
             {
-                logger.LogCritical(exception, "{0}: Function Corrupted. HTTP Response: {1}. Reason: {2}.", DateTime.Now.ToString(), 500, exception.Message);
+                _logger.LogCritical(exception, "{0}: Function Corrupted. HTTP Response: {1}. Reason: {2}.", DateTime.Now.ToString(), 500, exception.Message);
                 LogMetrics(context, 500);
                 return new StatusCodeResult(500);
             }
