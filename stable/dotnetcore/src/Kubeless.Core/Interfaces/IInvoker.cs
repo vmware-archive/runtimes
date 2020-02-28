@@ -1,5 +1,5 @@
 ﻿using Kubeless.Functions;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace Kubeless.Core.Interfaces
 {
@@ -7,6 +7,6 @@ namespace Kubeless.Core.Interfaces
     {
         IFunction Function { get; }
 
-        object Execute(CancellationTokenSource cancellationSource, Event kubelessEvent, Context kubelessContext);
+        Task<object> Execute(Event kubelessEvent, Context kubelessContext);
     }
 }

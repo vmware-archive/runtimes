@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>dependency-yaml</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Kubeless.Functions" Version="0.1.1" />
+    <PackageReference Include="YamlDotNet" Version="8.1.0" />
+  </ItemGroup>
+
+</Project>

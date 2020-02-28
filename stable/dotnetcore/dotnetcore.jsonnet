@@ -46,6 +46,21 @@
         },
       }],
     },
+    {
+      name: "dotnetcore3.1",
+      version: "3.1",
+      images: [{
+        phase: "compilation",
+        image: "lorenzoangelini3/kubeless-compile-dotnetcore31@sha256:4e6adfe873f7c4cd5e0d582bb5122f94c6d6ea73baa03b486dd93b8406deb8ca",
+        command: "/app/compile-function.sh $KUBELESS_INSTALL_VOLUME"
+       }, {
+        phase: "runtime",
+        image: "lorenzoangelini3/kubeless-runtime-dotnetcore31@sha256:337b964b69f86bf56add04861055aa67c2a661c0943f952ed97363b7cccdaa4b",
+        env: {
+          DOTNETCORE_HOME: "$(KUBELESS_INSTALL_VOLUME)/packages",
+        },
+      }],
+    },
   ],
   depName: "project.csproj",
   fileNameSuffix: ".cs"

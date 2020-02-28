@@ -4,9 +4,9 @@ using Kubeless.Core.Tests.Utils;
 using Kubeless.Functions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Linq;
 using System;
 using Xunit;
+using System.Text.Json;
 
 namespace Kubeless.Core.Tests
 {
@@ -18,7 +18,7 @@ namespace Kubeless.Core.Tests
         [InlineData("hello", "handler", "180", "9090", "dotnetcore2.0", "200m")]
         [InlineData("hellowithdata", "handler", "180", "9090", "dotnetcore2.0", "200m")]
         [Theory]
-        public void CheckContextFromDefaultParameterHandler(string modName, string funcHandler, string funcTimeout, string funcPort, string funcRuntime, string funcMemoryLimit)
+        public async void CheckContextFromDefaultParameterHandler(string modName, string funcHandler, string funcTimeout, string funcPort, string funcRuntime, string funcMemoryLimit)
         {
             // Arrange
             EnvironmentManager.SetVariables(modName, funcHandler, funcTimeout, funcPort, funcRuntime, funcMemoryLimit);
@@ -26,7 +26,7 @@ namespace Kubeless.Core.Tests
             HttpRequest httpRequest = EnvironmentManager.GetHttpRequest();
 
             // Act
-            (_, Context context) = parameterHandler.GetFunctionParameters(httpRequest);
+            (_, Context context) = await parameterHandler.GetFunctionParameters(httpRequest);
 
             // Assert
             Assert.NotNull(context);
@@ -44,7 +44,7 @@ namespace Kubeless.Core.Tests
         [InlineData("hello", "handler", "180", "9090", "dotnetcore2.0", "200m")]
         [InlineData("hellowithdata", "handler", "180", "9090", "dotnetcore2.0", "200m")]
         [Theory]
-        public void CheckDefaultEventFromDefaultParameterHandler(string modName, string funcHandler, string funcTimeout, string funcPort, string funcRuntime, string funcMemoryLimit)
+        public async void CheckDefaultEventFromDefaultParameterHandler(string modName, string funcHandler, string funcTimeout, string funcPort, string funcRuntime, string funcMemoryLimit)
         {
             // Arrange
             EnvironmentManager.SetVariables(modName, funcHandler, funcTimeout, funcPort, funcRuntime, funcMemoryLimit);
@@ -52,7 +52,7 @@ namespace Kubeless.Core.Tests
             HttpRequest httpRequest = EnvironmentManager.GetHttpRequest();
 
             // Act
-            (Event @event, _) = parameterHandler.GetFunctionParameters(httpRequest);
+            (Event @event, _) = await parameterHandler.GetFunctionParameters(httpRequest);
 
             // Assert
             Assert.NotNull(@event);
@@ -67,7 +67,7 @@ namespace Kubeless.Core.Tests
         [InlineData("default", "namespace2")]
         [InlineData("hellowithdata", "namespace3")]
         [Theory]
-        public void CheckEventFromDefaultParameterHandler(string eventType, string eventNamespace)
+        public async void CheckEventFromDefaultParameterHandler(string eventType, string eventNamespace)
         {
             // Arrange
             string eventId = Guid.NewGuid().ToString();
@@ -77,7 +77,7 @@ namespace Kubeless.Core.Tests
             HttpRequest httpRequest = EnvironmentManager.GetHttpRequest(eventId, eventType, eventTime, eventNamespace, data);
 
             // Act
-            (Event @event, _) = parameterHandler.GetFunctionParameters(httpRequest);
+            (Event @event, _) = await parameterHandler.GetFunctionParameters(httpRequest);
 
             // Assert
             Assert.NotNull(@event);
@@ -88,7 +88,7 @@ namespace Kubeless.Core.Tests
             Assert.Equal(eventTime, @event.EventTime);
             Assert.Equal(eventType, @event.EventType);
             Assert.NotNull(@event.Data);
-            Assert.Equal(data.id, ((JObject)@event.Data)["id"]);
+            Assert.Equal(data.id.ToString(), ((JsonElement)@event.Data).GetProperty("id").ToString());
         }
 
         private IParameterHandler GetDefaultParameterHandler()

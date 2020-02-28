@@ -1,23 +1,20 @@
 ﻿using Kubeless.Core.Interfaces;
 using Kubeless.Core.Models;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 
 namespace Kubeless.WebAPI.Utils
 {
     public class FunctionFactory
     {
-        private static readonly string BASE_PATH = VariablesUtils.GetEnvVar("BASE_PATH", "/kubeless/");
-        private static readonly string PUBLISH_PATH = VariablesUtils.GetEnvVar("PUBLISH_PATH", "publish/");
-        private static readonly string PACKAGES_PATH = VariablesUtils.GetEnvVar("PACKAGES_PATH", "packages/");
+        private static readonly string PUBLISH_PATH = VariablesUtils.GetEnvVar("PUBLISH_PATH", "/kubeless/publish/");
+        private static readonly string ASSEMBLY_NAME = VariablesUtils.GetEnvVar("ASSEMBLY_NAME", "project");
 
         public static IFunction GetFunction(IConfiguration configuration)
         {
             var moduleName = configuration.GetNotNullConfiguration("MOD_NAME");
             var functionHandler = configuration.GetNotNullConfiguration("FUNC_HANDLER");
-            var publishPath = Path.Combine(BASE_PATH, PUBLISH_PATH);
 
-            return new CompiledFunction(moduleName, functionHandler, publishPath);
+            return new CompiledFunction(moduleName, functionHandler, PUBLISH_PATH, ASSEMBLY_NAME);
         }
 
         public static int GetFunctionTimeout(IConfiguration configuration)
@@ -28,11 +25,9 @@ namespace Kubeless.WebAPI.Utils
             return int.Parse(timeoutSeconds) * milisecondsInSecond;
         }
 
-        public static string GetFunctionReferencesPath(IConfiguration configuration)
+        public static string GetFunctionPublishPath()
         {
-            var referencesPath = Path.Combine(BASE_PATH, PACKAGES_PATH);
-
-            return referencesPath;
+            return PUBLISH_PATH;
         }
     }
 }

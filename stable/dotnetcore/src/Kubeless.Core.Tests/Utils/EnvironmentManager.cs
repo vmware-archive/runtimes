@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 
 namespace Kubeless.Core.Tests.Utils
 {
     public static class EnvironmentManager
     {
-        public static void SetVariables(string modName, string funcHandler, string funcTimeout = "180", string funcPort = "8080", string funcRuntime = "dotnetcore2.0", string funcMemoryLimit = "0")
+        public static void SetVariables(string modName, string funcHandler, string funcTimeout = "180", string funcPort = "8080", string funcRuntime = "dotnetcore3.1", string funcMemoryLimit = "0")
         {
             Environment.SetEnvironmentVariable("MOD_NAME", modName);
             Environment.SetEnvironmentVariable("FUNC_HANDLER", funcHandler);
@@ -32,7 +32,7 @@ namespace Kubeless.Core.Tests.Utils
 
             if (data != null)
             {
-                var str = JsonConvert.SerializeObject(data);
+                var str = JsonSerializer.Serialize(data);
                 byte[] bytes = Encoding.UTF8.GetBytes(str);
 
                 httpRequest.Body = new MemoryStream();

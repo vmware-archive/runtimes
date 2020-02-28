@@ -7,24 +7,31 @@ namespace Kubeless.Core.Tests.Utils
     /// <summary>
     /// Simulates dependency restore executed in init container by Kubeless.
     /// </summary>
-    public class FunctionCompiler
+    public static class FunctionCompiler
     {
-        public FunctionCompiler()
+        public static void PublishTestFunction(string language, string functionName)
         {
+            var workingDirectory = Directory.GetCurrentDirectory();
+
+            var projPath = Path.Combine(workingDirectory, functionName, $"{functionName}.{language}proj");
+            var publishPath = Path.Combine(workingDirectory, functionName, $"{functionName}-publish");
+            Publish(projPath, publishPath);
+
+            Environment.SetEnvironmentVariable("PUBLISH_PATH", Path.Combine(workingDirectory, functionName, $"{functionName}-publish"));
+            Environment.SetEnvironmentVariable("ASSEMBLY_NAME", functionName);
         }
 
-        private void DotnetPublish(string functionPath, string referencesPath, string destinationPath)
+        public static void Publish(string projPath, string publishPath)
         {
             var process = new Process()
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "dotnet",
-                    Arguments = $"publish --packages {referencesPath} -c Release -o {destinationPath}",
+                    Arguments = $"publish -c Release -o {publishPath} {projPath}",
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WorkingDirectory = functionPath
+                    CreateNoWindow = true
                 }
             };
 
@@ -36,15 +43,6 @@ namespace Kubeless.Core.Tests.Utils
 
             if (process.ExitCode != 0 || result.ToLower().Contains("error"))
                 throw new Exception("Error during dotnet publish");
-        }
-
-        public string Compile(string functionPath, string packagesSubPath)
-        {
-            string outputPath = ".";
-
-            DotnetPublish(functionPath, packagesSubPath, outputPath);
-
-            return Path.Combine(functionPath, outputPath);
         }
     }
 }

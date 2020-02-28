@@ -1,6 +1,5 @@
 ﻿using Kubeless.Core.Tests.Utils;
 using Kubeless.WebAPI.Tests.Utils;
-using Microsoft.AspNetCore.TestHost;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
@@ -8,20 +7,24 @@ using Xunit;
 namespace Kubeless.WebAPI.Tests
 {
     [Collection("health-check")]
-    public class HealthTests
+    public class HealthTests : IClassFixture<KubelessWebApplicationFactory<Kubeless.WebAPI.Startup>>
     {
+        private readonly KubelessWebApplicationFactory<Kubeless.WebAPI.Startup> _factory;
+        public HealthTests(KubelessWebApplicationFactory<Kubeless.WebAPI.Startup> factory)
+        {
+            _factory = factory;
+        }
+
         [InlineData("cs", "helloget", "module", "handler")]
         [InlineData("cs", "hellowithdata", "module", "handler")]
         [InlineData("cs", "dependency-yaml", "module", "handler")]
-        [InlineData("cs", "namespaced-helloget", "module", "handler")]
         [Theory]
-        public async Task PerformHealthCheck(string language, string functionFileName, string moduleName, string functionHandler)
+        public async Task PerformHealthCheck(string language, string functionName, string moduleName, string functionHandler)
         {
             // Arrange
             EnvironmentManager.SetVariables(moduleName, functionHandler);
-            ServerCreator.CompileFunction(language, functionFileName, moduleName, functionHandler);
-            TestServer server = ServerCreator.CreateServer();
-            HttpClient client = server.CreateClient();
+            FunctionCompiler.PublishTestFunction(language, functionName);
+            HttpClient client = _factory.CreateClient();
 
             // Act
             var response = await client.GetAsync("/healthz");
