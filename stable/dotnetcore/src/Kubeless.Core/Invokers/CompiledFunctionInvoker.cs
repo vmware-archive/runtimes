@@ -44,15 +44,12 @@ namespace Kubeless.Core.Invokers
         {
             try {
                 return AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
-            } catch (FileLoadException exc) {
+            } catch (FileLoadException exc) when (exc.Message.Contains("Assembly with same name is already loaded")) {
                 // We need to check the exception message because 
                 // LoadFromAssemblyPath does not throw a specialized Exception 
                 // when an Assembly has already been loaded
-                if (exc.Message.Contains("Assembly with same name is already loaded")) {
-                    var assemblyName = AssemblyName.GetAssemblyName(path).Name;
-                    return AssemblyLoadContext.Default.Assemblies.SingleOrDefault(assembly => assembly.GetName().Name == assemblyName);
-                }
-                throw exc;
+                var assemblyName = AssemblyName.GetAssemblyName(path).Name;
+                return AssemblyLoadContext.Default.Assemblies.SingleOrDefault(assembly => assembly.GetName().Name == assemblyName);
             }
         }
 
