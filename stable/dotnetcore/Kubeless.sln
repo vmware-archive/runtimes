@@ -31,6 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{CCBE6752-398A-4934-B276-9557032BF32E}"
 	ProjectSection(SolutionItems) = preProject
+		run-webapi.sh = run-webapi.sh
 		compile-function.sh = compile-function.sh
 		Dockerfile = Dockerfile
 		Dockerfile.init = Dockerfile.init

@@ -1,8 +1,6 @@
-﻿using System;
-using Kubeless.Core.Interfaces;
+﻿using Kubeless.Core.Interfaces;
 using Kubeless.Core.Invokers;
 using Kubeless.Core.Models;
-using System.IO;
 
 namespace Kubeless.Core.Tests.Utils
 {
@@ -13,10 +11,9 @@ namespace Kubeless.Core.Tests.Utils
             int timeout = 180000)
         {
             FunctionCompiler.PublishTestFunction(language, functionName);
-            var publishPath = Environment.GetEnvironmentVariable("PUBLISH_PATH");
 
-            var function = new CompiledFunction(moduleName, functionHandler, publishPath, functionName);
-            var invoker = new CompiledFunctionInvoker(function, timeout, publishPath);
+            var function = new CompiledFunction(moduleName, functionHandler, functionName);
+            var invoker = new CompiledFunctionInvoker(function, timeout);
 
             return invoker;
         }

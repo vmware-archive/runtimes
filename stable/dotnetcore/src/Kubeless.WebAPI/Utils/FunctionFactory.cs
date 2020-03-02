@@ -6,7 +6,6 @@ namespace Kubeless.WebAPI.Utils
 {
     public class FunctionFactory
     {
-        private static readonly string PUBLISH_PATH = VariablesUtils.GetEnvVar("PUBLISH_PATH", "/kubeless/publish/");
         private static readonly string ASSEMBLY_NAME = VariablesUtils.GetEnvVar("ASSEMBLY_NAME", "project");
 
         public static IFunction GetFunction(IConfiguration configuration)
@@ -14,7 +13,7 @@ namespace Kubeless.WebAPI.Utils
             var moduleName = configuration.GetNotNullConfiguration("MOD_NAME");
             var functionHandler = configuration.GetNotNullConfiguration("FUNC_HANDLER");
 
-            return new CompiledFunction(moduleName, functionHandler, PUBLISH_PATH, ASSEMBLY_NAME);
+            return new CompiledFunction(moduleName, functionHandler, ASSEMBLY_NAME);
         }
 
         public static int GetFunctionTimeout(IConfiguration configuration)
@@ -23,11 +22,6 @@ namespace Kubeless.WebAPI.Utils
             var milisecondsInSecond = 1000;
 
             return int.Parse(timeoutSeconds) * milisecondsInSecond;
-        }
-
-        public static string GetFunctionPublishPath()
-        {
-            return PUBLISH_PATH;
         }
     }
 }

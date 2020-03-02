@@ -16,28 +16,19 @@ namespace Kubeless.Core.Invokers
         private readonly dynamic _moduleInstance;
         private readonly int _functionTimeout;
 
-        public CompiledFunctionInvoker(IFunction function, int functionTimeout, string publishPath)
+        public CompiledFunctionInvoker(IFunction function, int functionTimeout)
         {
             Function = function;
             _functionTimeout = functionTimeout;
 
-            var functionAssembly = LoadAssembly(function.FunctionFile);
-
-            LoadDependencies(publishPath);
+            var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var functionAssemblyPath = Path.Combine(assemblyFolder, $"{function.AssemblyName}.dll");
+            var functionAssembly = LoadAssembly(functionAssemblyPath);
 
             var moduleType = functionAssembly.GetType(function.ModuleName);
             _moduleInstance = Activator.CreateInstance(moduleType);
 
             _methodInfo = moduleType.GetMethod(function.FunctionHandler);
-        }
-
-        private void LoadDependencies(string publishPath)
-        {
-            var dependencies = Directory.GetFiles(publishPath, "*.dll");
-            foreach (var path in dependencies) {
-                var dllName = Path.GetFileName(path);
-                LoadAssembly(path);
-            }
         }
 
         private Assembly LoadAssembly(string path)

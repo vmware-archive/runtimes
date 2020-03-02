@@ -4,6 +4,6 @@
     {
         string ModuleName { get; }
         string FunctionHandler { get; }
-        string FunctionFile { get; }
+        string AssemblyName { get; }
     }
 }
