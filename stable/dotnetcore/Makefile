@@ -1,26 +1,36 @@
 # Testing jobs
 deploy: deploy31 deploy22 deploy21 deploy20
 
-deploy31: get-dotnetcore31 get-dotnetcore-dependency31 post-dotnetcore31
+deploy31: get-dotnetcore-native-deps31 get-dotnetcore31 get-dotnetcore-dependency31 post-dotnetcore31
 deploy22: get-dotnetcore22 get-dotnetcore-dependency22 post-dotnetcore22 get-dotnetcore-namespaced22
 deploy21: get-dotnetcore21 get-dotnetcore-dependency21 post-dotnetcore21 get-dotnetcore-namespaced21  
 deploy20: get-dotnetcore20 get-dotnetcore-dependency20
 
 test: test31 test22 test21 test20
 
-test31: get-dotnetcore-verify31 get-dotnetcore-dependency-verify31 post-dotnetcore-verify31
+test31: get-dotnetcore-native-deps-verify31 get-dotnetcore-verify31 get-dotnetcore-dependency-verify31 post-dotnetcore-verify31
 test22: get-dotnetcore-verify22 get-dotnetcore-dependency-verify22 post-dotnetcore-verify22 get-dotnetcore-namespaced-verify22
 test21: get-dotnetcore-verify21 get-dotnetcore-dependency-verify21 post-dotnetcore-verify21 get-dotnetcore-namespaced-verify21 
 test20: get-dotnetcore-verify20 get-dotnetcore-dependency-verify20
 
 clean: clean31 clean22 clean21 clean20
 
-clean31: get-dotnetcore-clean31 get-dotnetcore-dependency-clean31 post-dotnetcore-clean31
+clean31: get-dotnetcore-native-deps-clean31 get-dotnetcore-clean31 get-dotnetcore-dependency-clean31 post-dotnetcore-clean31
 clean22: get-dotnetcore-clean22 get-dotnetcore-dependency-clean22 post-dotnetcore-clean22 get-dotnetcore-namespaced-clean22
 clean21: get-dotnetcore-clean21 get-dotnetcore-dependency-clean21 post-dotnetcore-clean21 get-dotnetcore-namespaced-clean21
 clean20: get-dotnetcore-clean20 get-dotnetcore-dependency-clean20
 
 # .NET Core 3.1
+
+get-dotnetcore-native-deps31:
+	kubeless function deploy get-dotnetcore-native-deps31 --runtime dotnetcore3.1 --handler module.handler --from-file examples/native-deps/native-deps.cs --dependencies examples/native-deps/native-deps.csproj --env ASSEMBLY_NAME=native-deps
+
+get-dotnetcore-native-deps-verify31:
+	kubectl rollout status deployment/get-dotnetcore-native-deps31 && sleep 10
+	kubeless function call get-dotnetcore-native-deps31 |egrep "Okay native-deps"
+
+get-dotnetcore-native-deps-clean31:
+	kubeless function delete get-dotnetcore-native-deps31
 
 get-dotnetcore31:
 	kubeless function deploy get-dotnetcore31 --runtime dotnetcore3.1 --handler module.handler --from-file examples/helloget/helloget.cs
