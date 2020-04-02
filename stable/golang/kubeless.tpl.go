@@ -21,12 +21,10 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-
 	"kubeless"
 
 	proxyUtils "github.com/kubeless/kubeless/pkg/function-proxy/utils"
 	"github.com/kubeless/kubeless/pkg/functions"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var (
@@ -85,8 +83,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", handler)
 	mux.HandleFunc("/healthz", health)
-	mux.Handle("/metrics", promhttp.Handler())
-
+	mux.Handle("/metrics", proxyUtils.PromHTTPHandler())
 	server := proxyUtils.NewServer(mux)
 
 	go func() {
