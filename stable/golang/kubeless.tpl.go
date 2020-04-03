@@ -21,6 +21,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+
 	"kubeless"
 
 	proxyUtils "github.com/kubeless/kubeless/pkg/function-proxy/utils"
