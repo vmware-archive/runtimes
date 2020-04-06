@@ -8,6 +8,7 @@ RUN mkdir -p /go/pkg/dep
 # Prepare function environment
 RUN ln -s /kubeless $GOPATH/src/kubeless 
 ADD /compile-function.sh /
+RUN chmod +x /compile-function.sh	
 
 # Install controller
 RUN mkdir -p $GOPATH/src/github.com/kubeless/kubeless/pkg/functions
