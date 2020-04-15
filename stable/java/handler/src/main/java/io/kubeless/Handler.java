@@ -115,7 +115,7 @@ public class Handler {
                 String eventTime = getEventTime(headers);
                 String eventNamespace = getEventNamespace(headers);
 
-                Event event = new Event(requestBody, eventId, eventType, eventTime, eventNamespace,headers);
+                Event event = new Event(requestBody, eventId, eventType, eventTime, eventNamespace);
                 Context context = new Context(methodName, timeout, runtime, memoryLimit);
 
                 Object returnValue = Handler.method.invoke(Handler.obj, event, context);
