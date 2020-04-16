@@ -24,14 +24,22 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.net.URLDecoder;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.concurrent.ThreadFactory;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Histogram;
+import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.exporter.common.TextFormat;
 import io.kubeless.Event;
 import io.kubeless.Context;
 import org.apache.log4j.Logger;
@@ -65,6 +73,7 @@ public class Handler {
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
             server.createContext("/", new FunctionHandler());
             server.createContext("/healthz", new HealthHandler());
+            server.createContext("/metrics", new HTTPMetricHandler());
             server.setExecutor(java.util.concurrent.Executors.newFixedThreadPool(50));
             server.start();
 
@@ -193,4 +202,50 @@ public class Handler {
             os.close();
         }
     }
+    private static class LocalByteArray extends ThreadLocal<ByteArrayOutputStream>{
+      private LocalByteArray() {}
+      protected ByteArrayOutputStream initialValue() { return new ByteArrayOutputStream(1048576); }
+    }
+    static class HTTPMetricHandler implements HttpHandler {
+        private final Handler.LocalByteArray response = new Handler.LocalByteArray();
+        private CollectorRegistry registry = CollectorRegistry.defaultRegistry;
+        @Override
+        public void handle(HttpExchange t) throws IOException {
+            String query = t.getRequestURI().getRawQuery();
+
+            ByteArrayOutputStream response = new Handler.LocalByteArray().get();
+            response.reset();
+            OutputStreamWriter osw = new OutputStreamWriter(response);
+            TextFormat.write004(osw, this.registry
+               .filteredMetricFamilySamples(Handler.parseQuery(query)));
+            
+            osw.flush();
+            osw.close();
+            response.flush();
+            response.close();
+      
+            t.getResponseHeaders().set("Content-Type", "text/plain; version=0.0.4; charset=utf-8");
+            
+            t.getResponseHeaders().set("Content-Length", 
+                String.valueOf(response.size()));
+            t.sendResponseHeaders(200, response.size());
+            response.writeTo(t.getResponseBody());
+             
+            t.close();
+       }
+    }
+    protected static Set<String> parseQuery(String query) throws IOException {
+      Set<String> names = new HashSet<String>();
+      if (query != null) {
+        String[] pairs = query.split("&");
+        for (String pair : pairs) {
+          int idx = pair.indexOf("=");
+          if (idx != -1 && URLDecoder.decode(pair.substring(0, idx), "UTF-8").equals("name[]")) {
+            names.add(URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+          }
+        } 
+      } 
+      return names;
+    }
 }
+
