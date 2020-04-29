@@ -19,4 +19,8 @@ COPY --from=build-env /app/Kubeless.WebAPI/out .
 # Kubeless.Functions reference
 COPY --from=build-env /app/Kubeless.WebAPI/out/Kubeless.Functions.dll /usr/share/dotnet/store/x64/netcoreapp2.0/.
 
-ENTRYPOINT ["dotnet", "Kubeless.WebAPI.dll"]
+RUN chown 1000 /app
+COPY ./run-webapi.sh ./
+RUN chmod +x ./run-webapi.sh
+
+ENTRYPOINT ["/app/run-webapi.sh"]

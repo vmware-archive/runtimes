@@ -27,7 +27,7 @@ namespace Kubeless.WebAPI
             var function = FunctionFactory.GetFunction(Configuration);
             var timeout = FunctionFactory.GetFunctionTimeout(Configuration);
 
-            services.AddTransient<IInvoker>(_ => new CompiledFunctionInvoker(function, timeout, FunctionFactory.GetFunctionPublishPath()));
+            services.AddTransient<IInvoker>(_ => new CompiledFunctionInvoker(function, timeout));
             services.AddSingleton<IParameterHandler>(new DefaultParameterHandler(Configuration));
         }
 

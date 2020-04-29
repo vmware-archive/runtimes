@@ -25,9 +25,9 @@ namespace Kubeless.WebAPI.Tests.Utils
                 services.AddTransient<IInvoker>(provider => {
                     Func<string, string> config = s => Environment.GetEnvironmentVariable(s);
 
-                    var function = new CompiledFunction(config("MOD_NAME"), config("FUNC_HANDLER"), config("PUBLISH_PATH"), config("ASSEMBLY_NAME"));
+                    var function = new CompiledFunction(config("MOD_NAME"), config("FUNC_HANDLER"), config("ASSEMBLY_NAME"));
                     var timeoutMs = int.Parse(config("FUNC_TIMEOUT")) * 1000;
-                    return new CompiledFunctionInvoker(function, timeoutMs, config("PUBLISH_PATH"));
+                    return new CompiledFunctionInvoker(function, timeoutMs);
                 });
             });
         }

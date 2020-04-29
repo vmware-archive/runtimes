@@ -5,19 +5,15 @@ using System.IO;
 namespace Kubeless.Core.Tests.Utils
 {
     /// <summary>
-    /// Simulates dependency restore executed in init container by Kubeless.
+    /// Simulates function source publish executed in init container by Kubeless.
     /// </summary>
     public static class FunctionCompiler
     {
         public static void PublishTestFunction(string language, string functionName)
         {
             var workingDirectory = Directory.GetCurrentDirectory();
-
             var projPath = Path.Combine(workingDirectory, functionName, $"{functionName}.{language}proj");
-            var publishPath = Path.Combine(workingDirectory, functionName, $"{functionName}-publish");
-            Publish(projPath, publishPath);
-
-            Environment.SetEnvironmentVariable("PUBLISH_PATH", Path.Combine(workingDirectory, functionName, $"{functionName}-publish"));
+            Publish(projPath, workingDirectory);
             Environment.SetEnvironmentVariable("ASSEMBLY_NAME", functionName);
         }
 

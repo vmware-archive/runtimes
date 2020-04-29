@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kubeless.WebAPI.Tests", "sr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{34726F86-409F-4426-9451-BBCF7E715292}"
 	ProjectSection(SolutionItems) = preProject
+		examples\native-deps\native-deps.cs = examples\native-deps\native-deps.cs
+		examples\native-deps\native-deps.csproj = examples\native-deps\native-deps.csproj
 		examples\dependency-yaml\dependency-yaml.cs = examples\dependency-yaml\dependency-yaml.cs
 		examples\dependency-yaml\dependency-yaml.csproj = examples\dependency-yaml\dependency-yaml.csproj
 		examples\fibonacci\fibonacci.cs = examples\fibonacci\fibonacci.cs
@@ -31,6 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{CCBE6752-398A-4934-B276-9557032BF32E}"
 	ProjectSection(SolutionItems) = preProject
+		run-webapi.sh = run-webapi.sh
 		compile-function.sh = compile-function.sh
 		Dockerfile = Dockerfile
 		Dockerfile.init = Dockerfile.init
