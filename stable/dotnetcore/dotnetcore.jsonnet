@@ -55,7 +55,7 @@
         command: "/app/compile-function.sh $KUBELESS_INSTALL_VOLUME"
        }, {
         phase: "runtime",
-        image: "lorenzoangelini3/kubeless-runtime-dotnetcore31@sha256:ccdff9e6428f17d9f263fb49619121dde1f06f364d0815368348f9dca4a35c67",
+        image: "lorenzoangelini3/kubeless-runtime-dotnetcore31@sha256:4a2d94bd6da4aee612a2009d863beb554c43e61199d8d3fc4bf2d28b5673940b",
         env: {
           DOTNETCORE_HOME: "$(KUBELESS_INSTALL_VOLUME)/packages",
         },
