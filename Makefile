@@ -12,9 +12,9 @@ kubecfg:
 	fi
 
 kubeless: kubecfg
-	export BUILD_NUM=`curl -s https://circleci.com/api/v1.1/project/github/kubeless/kubeless/tree/master\?limit\=20\&offset\=5\&filter\=completed | jq '.[] | select(.workflows.job_name == "build") | .build_num' | head -n 1`; \
-	export KUBELESS_BIN_URL=`curl -s https://circleci.com/api/v1.1/project/github/kubeless/kubeless/$$BUILD_NUM/artifacts | jq -r '.[] | select(.path == "home/circleci/.go_workspace/bin/kubeless") | .url'`; \
-	curl -LO $$KUBELESS_BIN_URL; \
+	export LATEST_RELEASE=`curl -s https://api.github.com/repos/kubeless/kubeless/releases | jq -r '.[0].tag_name'`; \
+	curl -LO https://github.com/kubeless/kubeless/releases/download/$$LATEST_RELEASE/kubeless_linux-amd64.zip; \
+	unzip -p kubeless_linux-amd64.zip bundles/kubeless_linux-amd64/kubeless > kubeless
 	chmod +x kubeless; \
 	sudo mv kubeless /usr/local/bin; \
 	mkdir -p $$GOPATH/src/github.com/kubeless/; \
@@ -26,6 +26,6 @@ kubeless: kubecfg
 	kubecfg show -J $$HOME/project -o yaml kubeless.jsonnet > $$HOME/project/kubeless.yaml;
 
 bootstrap: kubectl kubeless
- 
+
 test:
 	./script/integration-tests

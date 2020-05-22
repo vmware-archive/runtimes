@@ -19,6 +19,8 @@ require (
 
 This breaks compatibility with Go functions that use dep as package manager.
 
+To use legacy version, replace the config map with the definition in `golang_legacy.jsonnet`
+
 ## TODO
 
 - [ ] Release official docker images and update `golang.jsonnet`
