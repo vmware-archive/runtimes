@@ -6,7 +6,7 @@
       version: "1.13",
       images: [{
         phase: "compilation",
-        image: "kubeless/go-init:1.13@sha256:7805af97525cf7f6c7a70ce40c1bf5af51346d34096fd3a8bd04849ea5022ca3",
+        image: "thiagoquintoandar/go-init:1.14@sha256:84b80f719b67d5b85c3497629390c203451bb6d21490e4f91a53d7e82913e5e7",
         command: "/compile-function.sh",
         env: {
           GOCACHE: "$(KUBELESS_INSTALL_VOLUME)/.cache",
@@ -17,11 +17,11 @@
       }],
     },
     {
-      name: "golang1.14",
+      name: "go1.14",
       version: "1.14",
       images: [{
         phase: "compilation",
-        image: "kubeless/go-init:1.14@sha256:7805af97525cf7f6c7a70ce40c1bf5af51346d34096fd3a8bd04849ea5022ca3",
+        image: "thiagoquintoandar/go-init:1.14@sha256:c8cf42ed7c4bcecafa03949415e44263899fdf609f483c6a6b833390d3fc04ac",
         command: "/compile-function.sh",
         env: {
           GOCACHE: "$(KUBELESS_INSTALL_VOLUME)/.cache",

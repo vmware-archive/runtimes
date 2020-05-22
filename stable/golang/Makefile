@@ -36,14 +36,14 @@ deploy: get-go get-go-custom-port timeout-go get-go-deps post-go
 test: get-go-verify get-go-custom-port-verify timeout-go-verify get-go-deps-verify post-go-verify
 
 get-go:
-	kubeless function deploy get-go --runtime golang1.14 --handler handler.Foo --from-file examples/helloget.go
+	kubeless function deploy get-go --runtime go1.14 --handler handler.Foo --from-file examples/helloget.go
 
 get-go-verify:
 	kubectl rollout status deployment/get-go && sleep 2
 	kubeless function call get-go | egrep Hello.world
 
 get-go-custom-port:
-	kubeless function deploy get-go-custom-port --runtime golang1.14 --handler helloget.Foo --from-file examples/helloget.go --port 8083
+	kubeless function deploy get-go-custom-port --runtime go1.14 --handler helloget.Foo --from-file examples/helloget.go --port 8083
 
 get-go-custom-port-verify:
 	kubectl rollout status deployment/get-go-custom-port && sleep 2
@@ -53,7 +53,7 @@ get-go-custom-port-verify:
 timeout-go:
 	$(eval TMPDIR := $(shell mktemp -d))
 	printf 'package kubeless\nimport "github.com/kubeless/kubeless/pkg/functions"\nfunc Foo(event functions.Event, context functions.Context) (string, error) {\nfor{\n}\nreturn "", nil\n}' > $(TMPDIR)/hello-loop.js
-	kubeless function deploy timeout-go --runtime golang1.14 --handler helloget.Foo  --from-file $(TMPDIR)/hello-loop.js --timeout 4
+	kubeless function deploy timeout-go --runtime go1.14 --handler helloget.Foo  --from-file $(TMPDIR)/hello-loop.js --timeout 4
 	rm -rf $(TMPDIR)
 
 timeout-go-verify:
@@ -62,7 +62,7 @@ timeout-go-verify:
 	echo $(MSG) | egrep Request.timeout.exceeded
 
 get-go-deps:
-	kubeless function deploy get-go-deps --runtime golang1.14 --handler helloget.Hello --from-file examples/hellowithdeps.go --dependencies examples/go.mod
+	kubeless function deploy get-go-deps --runtime go1.14 --handler helloget.Hello --from-file examples/hellowithdeps.go --dependencies examples/go.mod
 
 get-go-deps-verify:
 	kubectl rollout status deployment/get-go-deps && sleep 2
@@ -70,7 +70,7 @@ get-go-deps-verify:
 	kubectl logs --tail=1000 -l function=get-go-deps | grep -q 'level=info msg=.*hello.*world'
 
 post-go:
-	kubeless function deploy post-go --runtime golang1.14 --handler hellowithdata.Handler --from-file examples/hellowithdata.go
+	kubeless function deploy post-go --runtime go1.14 --handler hellowithdata.Handler --from-file examples/hellowithdata.go
 
 post-go-verify:
 	kubectl rollout status deployment/post-go && sleep 2
