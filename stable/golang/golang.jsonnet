@@ -13,7 +13,7 @@
         },
        }, {
         phase: "runtime",
-        image: "kubeless/go@sha256:78b3789b48614034d20dbd26a66e0247d38c21cff78f86b6e4f560a827839b7f"
+        image: "kubeless/go@sha256:d2c5cfd3b7b31276d02ca22ddc7961aebe6050add4482b695ae3a686c76bad35"
       }],
     },
     {
@@ -28,7 +28,7 @@
         },
        }, {
         phase: "runtime",
-        image: "kubeless/go@sha256:78b3789b48614034d20dbd26a66e0247d38c21cff78f86b6e4f560a827839b7f"
+        image: "kubeless/go@sha256:d2c5cfd3b7b31276d02ca22ddc7961aebe6050add4482b695ae3a686c76bad35"
       }],
     },
   ],
