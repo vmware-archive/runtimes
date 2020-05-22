@@ -1,10 +1,16 @@
 #!/bin/bash
+GO_VERSION="1.14"
 
 set -e
 
+# Copy function
+if [ ! -s "/kubeless/go.mod" ]; then
+  rm /kubeless/go.mod
+fi
+cp /kubeless/* /server/function/
+
 # Replace FUNCTION placeholder
-sed "s/<<FUNCTION>>/${KUBELESS_FUNC_NAME}/g" $GOPATH/src/controller/kubeless.tpl.go > $GOPATH/src/controller/kubeless.go 
-# Remove vendored version of kubeless if exists
-rm -rf $GOPATH/src/kubeless/vendor/github.com/kubeless/kubeless
+sed "s/<<FUNCTION>>/${KUBELESS_FUNC_NAME}/g" /server/kubeless.go.tpl > /server/kubeless.go
 # Build command
-go build -o $KUBELESS_INSTALL_VOLUME/server $GOPATH/src/controller/kubeless.go > /dev/termination-log 2>&1
+cd /server
+GOOS=linux GOARCH=amd64 go build -o $KUBELESS_INSTALL_VOLUME/server .

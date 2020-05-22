@@ -15,13 +15,10 @@ require (
 	...
 )
 ```
+## Braking change notice
+
+This breaks compatibility with Go functions that use dep as package manager.
 
 ## TODO
 
-- [x] Auto add go.mod when not provided
-- [] Official docker images
-
-## Questions
-
-* Should we create a new runtime for go due to breaking changes?
-* I used golang as name for the run time, but not sure it`s the best name.
+- [ ] Release official docker images and update `golang.jsonnet`
