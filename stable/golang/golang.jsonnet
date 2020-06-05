@@ -21,7 +21,7 @@
       version: "1.14",
       images: [{
         phase: "compilation",
-        image: "thiagoquintoandar/go-init:1.14@sha256:403164254efabf735e98e73b7f6f65f14333ed792798c7c3d3d9a33ca91acf7a",
+        image: "kubeless/go-init:1.14@sha256:403164254efabf735e98e73b7f6f65f14333ed792798c7c3d3d9a33ca91acf7a",
         command: "/compile-function.sh",
         env: {
           GOCACHE: "$(KUBELESS_INSTALL_VOLUME)/.cache",
