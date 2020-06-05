@@ -17,7 +17,7 @@ limitations under the License.
 package main
 
 import (
-	"golang.org/x/net/context"
+	"context"
 	"io/ioutil"
 	"net/http"
 	"os"
