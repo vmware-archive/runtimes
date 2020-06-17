@@ -6,7 +6,7 @@
       version: "1.13",
       images: [{
         phase: "compilation",
-        image: "kubeless/go-init:1.14@sha256:6dddf087c51c723511261ecc854efcf187ca395e499075a221f0459e79b6337d",
+        image: "kubeless/go-init:1.13@sha256:7cdebecd772639c2238e6414101195cb8634c8eee73a6b473b7e39f3e094eb7c",
         command: "/compile-function.sh",
         env: {
           GOCACHE: "$(KUBELESS_INSTALL_VOLUME)/.cache",
