@@ -1,6 +1,6 @@
 # Init images
 init-image-1.13:
-	docker build --no-cache -f Dockerfile.1.14.init -t kubeless/go-init:1.13 .
+	docker build --no-cache -f Dockerfile.1.13.init -t kubeless/go-init:1.13 .
 
 init-image-1.14:
 	docker build --no-cache -f Dockerfile.1.14.init -t kubeless/go-init:1.14 .
