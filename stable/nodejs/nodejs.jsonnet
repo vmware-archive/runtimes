@@ -57,6 +57,20 @@
         },
        }],
      },
+     { name: 'node14',
+       version: '14',
+       images: [{
+        phase: "installation",
+        image: "kubeless/nodejs@sha256:111091307c2370817bb9dfc3470dd857d383fe9402574aca1d8dab2790ebc601",
+        command: "/kubeless-npm-install.sh"
+       }, {
+        phase: "runtime",
+        image: "kubeless/nodejs@sha256:111091307c2370817bb9dfc3470dd857d383fe9402574aca1d8dab2790ebc601",
+        env: {
+          NODE_PATH: "$(KUBELESS_INSTALL_VOLUME)/node_modules",
+        },
+       }],
+     },
     ],
   depName: 'package.json',
   fileNameSuffix: '.js'
