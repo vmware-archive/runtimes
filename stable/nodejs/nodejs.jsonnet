@@ -1,43 +1,15 @@
 {
   ID: 'nodejs',
   versions:
-    [ { name: 'node6',
-       version: '6',
-       images: [{
-        phase: "installation",
-        image: "kubeless/nodejs@sha256:d36e13e876d0d92cbf4b9a62e181b27bfdaed5b9ec0b7c46759f9e11fce68c6e",
-        command: "/kubeless-npm-install.sh"
-       }, {
-        phase: "runtime",
-        image: "kubeless/nodejs@sha256:d36e13e876d0d92cbf4b9a62e181b27bfdaed5b9ec0b7c46759f9e11fce68c6e",
-        env: {
-          NODE_PATH: "$(KUBELESS_INSTALL_VOLUME)/node_modules",
-        },
-       }],
-      },
-     { name: 'node8',
-       version: '8',
-       images: [{
-        phase: "installation",
-        image: "kubeless/nodejs@sha256:40df41562637802e34129f31e66f6e0ab388da6d8a33c9849bb9ea652d44dc3d",
-        command: "/kubeless-npm-install.sh"
-       }, {
-        phase: "runtime",
-        image: "kubeless/nodejs@sha256:40df41562637802e34129f31e66f6e0ab388da6d8a33c9849bb9ea652d44dc3d",
-        env: {
-          NODE_PATH: "$(KUBELESS_INSTALL_VOLUME)/node_modules",
-        },
-       }],
-     },
-     { name: 'node10',
+    [ { name: 'node10',
        version: '10',
        images: [{
         phase: "installation",
-        image: "kubeless/nodejs@sha256:74f8428ba9e98b6849ab34d2d1b5c38381b1de471090f7cc3dc9f72322f8c921",
+        image: "kubeless/nodejs@sha256:48818c97a0d44e9a3fbf3508645eb9cdb5b5abc173d58bb93e555b5a396c7775",
         command: "/kubeless-npm-install.sh"
        }, {
         phase: "runtime",
-        image: "kubeless/nodejs@sha256:74f8428ba9e98b6849ab34d2d1b5c38381b1de471090f7cc3dc9f72322f8c921",
+        image: "kubeless/nodejs@sha256:48818c97a0d44e9a3fbf3508645eb9cdb5b5abc173d58bb93e555b5a396c7775",
         env: {
           NODE_PATH: "$(KUBELESS_INSTALL_VOLUME)/node_modules",
         },
@@ -47,11 +19,11 @@
        version: '12',
        images: [{
         phase: "installation",
-        image: "kubeless/nodejs@sha256:2a0824cba4486dcc0508b6424b29878ccf57057023c391c1a30ddb09fa9b8503",
+        image: "kubeless/nodejs@sha256:6ec17ba0ce3fd706085b2fc81c1ba3dd6a1cffdc4484df483376a1a9c10e50f8",
         command: "/kubeless-npm-install.sh"
        }, {
         phase: "runtime",
-        image: "kubeless/nodejs@sha256:2a0824cba4486dcc0508b6424b29878ccf57057023c391c1a30ddb09fa9b8503",
+        image: "kubeless/nodejs@sha256:6ec17ba0ce3fd706085b2fc81c1ba3dd6a1cffdc4484df483376a1a9c10e50f8",
         env: {
           NODE_PATH: "$(KUBELESS_INSTALL_VOLUME)/node_modules",
         },
@@ -61,11 +33,11 @@
        version: '14',
        images: [{
         phase: "installation",
-        image: "kubeless/nodejs@sha256:111091307c2370817bb9dfc3470dd857d383fe9402574aca1d8dab2790ebc601",
+        image: "kubeless/nodejs@sha256:12e077fbb4b4dbb38752be37204d782d1a33e6db0c88d52082d87e0cd59e2b4e",
         command: "/kubeless-npm-install.sh"
        }, {
         phase: "runtime",
-        image: "kubeless/nodejs@sha256:111091307c2370817bb9dfc3470dd857d383fe9402574aca1d8dab2790ebc601",
+        image: "kubeless/nodejs@sha256:12e077fbb4b4dbb38752be37204d782d1a33e6db0c88d52082d87e0cd59e2b4e",
         env: {
           NODE_PATH: "$(KUBELESS_INSTALL_VOLUME)/node_modules",
         },

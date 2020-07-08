@@ -1,10 +1,4 @@
 
-build6:
-	docker build --no-cache -t kubeless/nodejs:6$$RUNTIME_TAG_MODIFIER -f Dockerfile.6 .
-
-build8:
-	docker build --no-cache -t kubeless/nodejs:8$$RUNTIME_TAG_MODIFIER -f Dockerfile.8 .
-
 build10:
 	docker build --no-cache -t kubeless/nodejs:10$$RUNTIME_TAG_MODIFIER -f Dockerfile.10 .
 
@@ -30,8 +24,8 @@ push14:
 	docker push kubeless/nodejs:14$$RUNTIME_TAG_MODIFIER
 
 # Mandatory jobs
-build-all: build6 build8 build10 build12 build14
-push-all: push6 push8 push10 push12 push14
+build-all: build10 build12 build14
+push-all: push10 push12 push14
 
 # Testing jobs
 deploy: get-nodejs get-nodejs14 get-node-url-zip get-nodejs-custom-port get-nodejs-stream timeout-nodejs get-nodejs-deps get-nodejs-multi post-nodejs get-nodejs-extra-conf nodejs-multipart
