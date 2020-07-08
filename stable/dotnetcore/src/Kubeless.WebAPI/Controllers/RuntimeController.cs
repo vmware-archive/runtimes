@@ -17,10 +17,18 @@ namespace Kubeless.WebAPI.Controllers
         private readonly IParameterHandler _parameterHandler;
 
         private static readonly Counter CallsCountTotal = Metrics
-            .CreateCounter("kubeless_calls_total", "Number of calls processed.", new CounterConfiguration
-            {
-                LabelNames = new[] {"status", "handler", "function", "runtime"}
-            });
+            .CreateCounter("kubeless_calls_total", "Number of calls processed.",
+                new CounterConfiguration
+                {
+                    LabelNames = new[] {"status", "handler", "function", "runtime"}
+                });
+
+        private static readonly Histogram DurationSeconds = Metrics
+            .CreateHistogram("kubeless_function_duration_seconds", "Duration of user function in seconds",
+                new HistogramConfiguration
+                {
+                    LabelNames = new[] {"handler", "function", "runtime"}
+                });
 
         public RuntimeController(ILogger<RuntimeController> logger, IInvoker invoker, IParameterHandler parameterHandler)
         {
@@ -32,7 +40,7 @@ namespace Kubeless.WebAPI.Controllers
         [AcceptVerbs("GET", "POST", "PUT", "PATCH", "DELETE")]
         public async Task<object> Execute()
         {
-            _logger.LogInformation("{0}: Function Started. HTTP Method: {1}, Path: {2}.", DateTime.Now.ToString(), Request.Method, Request.Path);
+            _logger.LogInformation($"{DateTime.Now}: Function Started. HTTP Method: {Request.Method}, Path: {Request.Path}.");
 
             Event @event = null;
             Context context = null;
@@ -40,22 +48,26 @@ namespace Kubeless.WebAPI.Controllers
             {
                 (@event, context) = await _parameterHandler.GetFunctionParameters(Request);
 
-                var output = await _invoker.Execute(@event, context);
+                object output;
+                var durationMetrics = DurationSeconds.WithLabels(context.ModuleName, context.FunctionName, context.Runtime);
+                using (durationMetrics.NewTimer()) {
+                    output = await _invoker.Execute(@event, context);
+                }
 
-                _logger.LogInformation("{0}: Function Executed. HTTP response: {1}.", DateTime.Now.ToString(), 200);
+                _logger.LogInformation($"{DateTime.Now}: Function Executed. HTTP response: 200.");
 
                 LogMetrics(context, 200);
                 return output;
             }
             catch (OperationCanceledException exception)
             {
-                _logger.LogError(exception, "{0}: Function Cancelled. HTTP Response: {1}. Reason: {2}.", DateTime.Now.ToString(), 408, "Timeout");
+                _logger.LogError(exception, $"{DateTime.Now}: Function Cancelled. HTTP Response: 408. Reason: Timeout.");
                 LogMetrics(context, 408);
                 return new StatusCodeResult(408);
             }
             catch (Exception exception)
             {
-                _logger.LogCritical(exception, "{0}: Function Corrupted. HTTP Response: {1}. Reason: {2}.", DateTime.Now.ToString(), 500, exception.Message);
+                _logger.LogCritical(exception, $"{DateTime.Now}: Function Corrupted. HTTP Response: 500. Reason: {exception.Message}.");
                 LogMetrics(context, 500);
                 return new StatusCodeResult(500);
             }
