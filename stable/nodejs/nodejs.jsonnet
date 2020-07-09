@@ -5,11 +5,11 @@
        version: '10',
        images: [{
         phase: "installation",
-        image: "kubeless/nodejs@sha256:48818c97a0d44e9a3fbf3508645eb9cdb5b5abc173d58bb93e555b5a396c7775",
+        image: "kubeless/nodejs@sha256:09dcc6a644a2e28fa13988ff6e3755627cb83ac0e65f9a89c8c2a13c3560493b",
         command: "/kubeless-npm-install.sh"
        }, {
         phase: "runtime",
-        image: "kubeless/nodejs@sha256:48818c97a0d44e9a3fbf3508645eb9cdb5b5abc173d58bb93e555b5a396c7775",
+        image: "kubeless/nodejs@sha256:09dcc6a644a2e28fa13988ff6e3755627cb83ac0e65f9a89c8c2a13c3560493b",
         env: {
           NODE_PATH: "$(KUBELESS_INSTALL_VOLUME)/node_modules",
         },
@@ -19,11 +19,11 @@
        version: '12',
        images: [{
         phase: "installation",
-        image: "kubeless/nodejs@sha256:6ec17ba0ce3fd706085b2fc81c1ba3dd6a1cffdc4484df483376a1a9c10e50f8",
+        image: "kubeless/nodejs@sha256:90fd5aed17af289489b7ae32233d268dd5cc4c9ebc6b934910fd5f1bbdb7cdd1",
         command: "/kubeless-npm-install.sh"
        }, {
         phase: "runtime",
-        image: "kubeless/nodejs@sha256:6ec17ba0ce3fd706085b2fc81c1ba3dd6a1cffdc4484df483376a1a9c10e50f8",
+        image: "kubeless/nodejs@sha256:90fd5aed17af289489b7ae32233d268dd5cc4c9ebc6b934910fd5f1bbdb7cdd1",
         env: {
           NODE_PATH: "$(KUBELESS_INSTALL_VOLUME)/node_modules",
         },
@@ -33,11 +33,11 @@
        version: '14',
        images: [{
         phase: "installation",
-        image: "kubeless/nodejs@sha256:12e077fbb4b4dbb38752be37204d782d1a33e6db0c88d52082d87e0cd59e2b4e",
+        image: "kubeless/nodejs@sha256:f3645b5e8417e5bcc905446e1fac8a7d565be74eeba4fd80c2487c5d43a32a7b",
         command: "/kubeless-npm-install.sh"
        }, {
         phase: "runtime",
-        image: "kubeless/nodejs@sha256:12e077fbb4b4dbb38752be37204d782d1a33e6db0c88d52082d87e0cd59e2b4e",
+        image: "kubeless/nodejs@sha256:f3645b5e8417e5bcc905446e1fac8a7d565be74eeba4fd80c2487c5d43a32a7b",
         env: {
           NODE_PATH: "$(KUBELESS_INSTALL_VOLUME)/node_modules",
         },

@@ -1,12 +1,12 @@
 
 build10:
-	docker build --no-cache -t kubeless/nodejs:10$$RUNTIME_TAG_MODIFIER -f Dockerfile.10 .
+	docker build --pull --no-cache -t kubeless/nodejs:10$$RUNTIME_TAG_MODIFIER -f Dockerfile.10 .
 
 build12:
-	docker build --no-cache -t kubeless/nodejs:12$$RUNTIME_TAG_MODIFIER -f Dockerfile.12 .
+	docker build --pull --no-cache -t kubeless/nodejs:12$$RUNTIME_TAG_MODIFIER -f Dockerfile.12 .
 
 build14:
-	docker build --no-cache -t kubeless/nodejs:14$$RUNTIME_TAG_MODIFIER -f Dockerfile.14 .
+	docker build --pull --no-cache -t kubeless/nodejs:14$$RUNTIME_TAG_MODIFIER -f Dockerfile.14 .
 
 push6:
 	docker push kubeless/nodejs:6$$RUNTIME_TAG_MODIFIER
