@@ -44,7 +44,7 @@ The HTTP server should satisfy the following requirements:
 - The file to load can be specified using an environment variable `MOD_NAME`.
 - The function to load can be specified using an environment variable `FUNC_HANDLER`.
 - The server should return `200 - OK` to requests at `/healthz`.
-- Functions should receive two parameters: `event` and `context` and should return the value that will be used as HTTP response. See [the functions standard signature](/docs/runtimes#runtimes-interface) for more information. The information that will be available in `event` parameter will be received as HTTP headers.
+- Functions should receive two parameters: `event` and `context` and should return the value that will be used as HTTP response. See [the functions standard signature](https://kubeless.io/docs/kubeless-functions/#functions-interface) for more information. The information that will be available in `event` parameter will be received as HTTP headers.
 - Requests should be served in parallel.
 - Exceptions in the function should be caught. The server should not exit due to a function error.
 
