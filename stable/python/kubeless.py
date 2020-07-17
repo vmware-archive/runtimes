@@ -22,6 +22,9 @@ func_port = os.getenv('FUNC_PORT', 8080)
 
 timeout = float(os.getenv('FUNC_TIMEOUT', 180))
 
+memfile_max = int(os.getenv('FUNC_MEMFILE_MAX', 100*1024*1024))
+bottle.BaseRequest.MEMFILE_MAX = memfile_max
+
 app = application = bottle.app()
 
 func_hist = prom.Histogram('function_duration_seconds',
