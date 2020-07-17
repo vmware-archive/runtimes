@@ -2,6 +2,8 @@
 
 import os
 import imp
+import json
+import logging
 import datetime
 
 from multiprocessing import Process, Queue
@@ -87,13 +89,13 @@ def handler():
                 p.join()
                 return bottle.HTTPError(408, "Timeout while processing the function")
             else:
-                if isinstance(res, Exception):
+                if isinstance(res, Exception) and not isinstance(res, bottle.HTTPResponse):
+                    logging.error("Function returned an exception: %s", res)
                     raise res
                 return res
 
 
 if __name__ == '__main__':
-    import logging
     import sys
     import requestlogger
     loggedapp = requestlogger.WSGILogger(
