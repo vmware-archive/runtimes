@@ -1,21 +1,15 @@
 
 build2.7:
-	docker build --no-cache -t kubeless/python:2.7$$RUNTIME_TAG_MODIFIER -f Dockerfile.2.7 .
-
-build3.4:
-	docker build --no-cache -t kubeless/python:3.4$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.4 .
+	docker build --pull --no-cache -t kubeless/python:2.7$$RUNTIME_TAG_MODIFIER -f Dockerfile.2.7 .
 
 build3.6:
-	docker build --no-cache -t kubeless/python:3.6$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.6 .
+	docker build --pull --no-cache -t kubeless/python:3.6$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.6 .
 
 build3.7:
-	docker build --no-cache -t kubeless/python:3.7$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.7 .
+	docker build --pull --no-cache -t kubeless/python:3.7$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.7 .
 
 push2.7:
 	docker push kubeless/python:2.7$$RUNTIME_TAG_MODIFIER
-
-push3.4:
-	docker push kubeless/python:3.4$$RUNTIME_TAG_MODIFIER
 
 push3.6:
 	docker push kubeless/python:3.6$$RUNTIME_TAG_MODIFIER
@@ -24,12 +18,12 @@ push3.7:
 	docker push kubeless/python:3.7$$RUNTIME_TAG_MODIFIER
 
 # Mandatory jobs
-build-all: build2.7 build3.4 build3.6 build3.7
-push-all: push2.7 push3.4 push3.6 push3.7
+build-all: build2.7 build3.6 build3.7
+push-all: push2.7 push3.6 push3.7
 
 # Testing jobs
-deploy: get-python get-python-deps get-python-custom-port get-python-34 get-python-36 get-python-37 get-python-url-deps scheduled-get-python timeout-python get-python-secrets post-python post-python-custom-port custom-get-python
-test: get-python-verify get-python-deps-verify get-python-custom-port-verify get-python-34-verify get-python-36-verify get-python-37-verify get-python-url-deps-verify scheduled-get-python-verify timeout-python-verify get-python-secrets-verify custom-get-python-verify post-python-verify post-python-custom-port-verify
+deploy: get-python get-python-deps get-python-custom-port get-python-36 get-python-37 get-python-url-deps scheduled-get-python timeout-python get-python-secrets post-python post-python-custom-port custom-get-python
+test: get-python-verify get-python-deps-verify get-python-custom-port-verify get-python-36-verify get-python-37-verify get-python-url-deps-verify scheduled-get-python-verify timeout-python-verify get-python-secrets-verify custom-get-python-verify post-python-verify post-python-custom-port-verify
 
 get-python:
 	kubeless function deploy get-python --runtime python2.7 --handler helloget.foo --from-file examples/helloget.py
@@ -54,13 +48,6 @@ get-python-custom-port-verify:
 	kubectl rollout status deployment/get-python-custom-port && sleep 2
 	kubectl get svc get-python-custom-port -o yaml | grep 'targetPort: 8081'
 	kubeless function call get-python-custom-port |egrep hello.world
-
-get-python-34:
-	kubeless function deploy get-python-34 --runtime python3.4 --handler helloget.foo --from-file examples/helloget.py
-
-get-python-34-verify:
-	kubectl rollout status deployment/get-python-34 && sleep 2
-	kubeless function call get-python-34 |egrep hello.world
 
 get-python-36:
 	kubeless function deploy get-python-36 --runtime python3.6 --handler helloget.foo --from-file examples/helloget.py

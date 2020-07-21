@@ -2,6 +2,8 @@
 
 import os
 import imp
+import json
+import logging
 import datetime
 
 from multiprocessing import Process, Queue
@@ -19,6 +21,9 @@ func = getattr(mod, os.getenv('FUNC_HANDLER'))
 func_port = os.getenv('FUNC_PORT', 8080)
 
 timeout = float(os.getenv('FUNC_TIMEOUT', 180))
+
+memfile_max = int(os.getenv('FUNC_MEMFILE_MAX', 100*1024*1024))
+bottle.BaseRequest.MEMFILE_MAX = memfile_max
 
 app = application = bottle.app()
 
@@ -87,13 +92,13 @@ def handler():
                 p.join()
                 return bottle.HTTPError(408, "Timeout while processing the function")
             else:
-                if isinstance(res, Exception):
+                if isinstance(res, Exception) and not isinstance(res, bottle.HTTPResponse):
+                    logging.error("Function returned an exception: %s", res)
                     raise res
                 return res
 
 
 if __name__ == '__main__':
-    import logging
     import sys
     import requestlogger
     loggedapp = requestlogger.WSGILogger(
