@@ -92,6 +92,7 @@ def handler():
                 p.join()
                 return bottle.HTTPError(408, "Timeout while processing the function")
             else:
+                p.join()
                 if isinstance(res, Exception) and not isinstance(res, bottle.HTTPResponse):
                     logging.error("Function returned an exception: %s", res)
                     raise res
