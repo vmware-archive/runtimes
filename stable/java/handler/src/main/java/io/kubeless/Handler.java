@@ -121,8 +121,8 @@ public class Handler {
                 Object returnValue = Handler.method.invoke(Handler.obj, event, context);
                 String response = (String)returnValue;
                 logger.info("Response: " + response);
-                he.sendResponseHeaders(200, response.length());
-                OutputStream os = he.getResponseBody();
+                he.sendResponseHeaders(200, response.getBytes().length);
+		OutputStream os = he.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
             } catch (Exception e) {
