@@ -4,7 +4,8 @@ GO_VERSION="1.14"
 set -e
 
 # Copy function
-if [ ! -s "/kubeless/go.mod" ]; then
+if [[ -e "/kubeless/go.mod" && ! -s "/kubeless/go.mod" ]]; then
+  # Remove empty go.mod
   rm /kubeless/go.mod
 fi
 cp /kubeless/* /server/function/
