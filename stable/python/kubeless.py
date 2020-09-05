@@ -59,8 +59,22 @@ def metrics():
     bottle.response.content_type = prom.CONTENT_TYPE_LATEST
     return prom.generate_latest(prom.REGISTRY)
 
+def enable_cors(fn):
+    def _enable_cors(*args, **kwargs):
+        # set CORS headers
+        bottle.response.headers['Access-Control-Allow-Origin'] = '*'
+        bottle.response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        bottle.response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 
-@app.route('/<:re:.*>', method=['GET', 'POST', 'PATCH', 'DELETE'])
+        if bottle.request.method != 'OPTIONS':
+            # actual request; reply with the actual response
+            return fn(*args, **kwargs)
+
+    return _enable_cors
+
+
+@app.route('/<:re:.*>', method=['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'])
+@enable_cors
 def handler():
     req = bottle.request
     content_type = req.get_header('content-type')
@@ -69,6 +83,7 @@ def handler():
         data = req.json
     event = {
         'data': data,
+        'files': req.files, # allow file uploads
         'event-id': req.get_header('event-id'),
         'event-type': req.get_header('event-type'),
         'event-time': req.get_header('event-time'),
