@@ -2,11 +2,9 @@
 
 import os
 import imp
-import json
 import logging
-import datetime
-
 from multiprocessing import Process, Queue
+
 import bottle
 import prometheus_client as prom
 
@@ -15,13 +13,10 @@ try:
 except:
     import Queue as queue
 
-mod = imp.load_source('function',
-                      '/kubeless/%s.py' % os.getenv('MOD_NAME'))
+mod = imp.load_source('function', '/kubeless/%s.py' % os.getenv('MOD_NAME'))
 func = getattr(mod, os.getenv('FUNC_HANDLER'))
 func_port = os.getenv('FUNC_PORT', 8080)
-
 timeout = float(os.getenv('FUNC_TIMEOUT', 180))
-
 memfile_max = int(os.getenv('FUNC_MEMFILE_MAX', 100*1024*1024))
 bottle.BaseRequest.MEMFILE_MAX = memfile_max
 
@@ -31,7 +26,7 @@ func_hist = prom.Histogram('function_duration_seconds',
                            'Duration of user function in seconds',
                            ['method'])
 func_calls = prom.Counter('function_calls_total',
-                           'Number of calls to user function',
+                          'Number of calls to user function',
                           ['method'])
 func_errors = prom.Counter('function_failures_total',
                            'Number of exceptions in user function',
@@ -44,15 +39,18 @@ function_context = {
     'memory-limit': os.getenv('FUNC_MEMORY_LIMIT'),
 }
 
+
 def funcWrap(q, event, c):
     try:
         q.put(func(event, c))
     except Exception as inst:
         q.put(inst)
 
+
 @app.get('/healthz')
 def healthz():
     return 'OK'
+
 
 @app.get('/metrics')
 def metrics():
@@ -105,5 +103,12 @@ if __name__ == '__main__':
     loggedapp = requestlogger.WSGILogger(
         app,
         [logging.StreamHandler(stream=sys.stdout)],
-        requestlogger.ApacheFormatter())
-    bottle.run(loggedapp, server='cherrypy', host='0.0.0.0', port=func_port)
+        requestlogger.ApacheFormatter(),
+    )
+    bottle.run(
+        loggedapp,
+        server='cherrypy',
+        host='0.0.0.0',
+        port=func_port,
+        numthreads=os.getenv('CHERRYPY_NUMTHREADS', 10),
+    )
