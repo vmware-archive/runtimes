@@ -2,21 +2,6 @@
   ID: "python",
   versions: [
     {
-      name: "python27",
-      version: "2.7",
-      images: [{
-        phase: "installation",
-        image: "python:2.7",
-        command: "pip install --prefix=$KUBELESS_INSTALL_VOLUME -r $KUBELESS_DEPS_FILE"
-      }, {
-        phase: "runtime",
-        image: "kubeless/python@sha256:e4414e5e04dc3e8ad240107e3539de5a7b34d9f974db6c64e9bc94fa8690b88e",
-        env: {
-          PYTHONPATH: "$(KUBELESS_INSTALL_VOLUME)/lib/python2.7/site-packages:$(KUBELESS_INSTALL_VOLUME)",
-        },
-      }],
-    },
-    {
       name: "python36",
       version: "3.6",
       images: [{

@@ -10,6 +10,7 @@ defaults: &defaults
 run_test: &run_test
   steps:
     - checkout
+    - run: echo "export GIT_SHA1=${CIRCLE_SHA1}" >> $BASH_ENV
     - run: |
         # Determine if running the tests are necessary
         if [[ -n "$CIRCLE_PULL_REQUEST" ]]; then
