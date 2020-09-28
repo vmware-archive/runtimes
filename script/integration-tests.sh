@@ -36,3 +36,20 @@ kubectl rollout status -n kubeless deployment/kubeless-controller-manager
 
 make -C ${ROOT_DIR}/${target} deploy
 make -C ${ROOT_DIR}/${target} test
+
+exit_code=$?
+
+# Just showing remaining k8s objects
+kubectl get all --all-namespaces
+
+if [ ${exit_code} -ne 0 -o -n "${TRAVIS_DUMP_LOGS}" ]; then
+    echo "INFO: Build ERRORed, dumping logs: ##"
+    for ns in kubeless default; do
+        echo "### LOGs: namespace: ${ns} ###"
+        kubectl get pod -n ${ns} -oname|xargs -I@ sh -xc "kubectl logs -n ${ns} @|sed 's|^|@: |'"
+    done
+    echo "INFO: Description"
+    kubectl describe pod -l created-by=kubeless
+fi
+[ ${exit_code} -eq 0 ] && echo "INFO: $0: SUCCESS" || echo "ERROR: $0: FAILED"
+exit ${exit_code}

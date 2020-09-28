@@ -17,9 +17,9 @@ RUN python ./get-pip.py
 RUN pip install bottle==0.12.13 cherrypy==8.9.1 wsgi-request-logger prometheus_client
 
 WORKDIR /
-ADD kubeless.py .
+ADD _kubeless.py .
 
 USER 1000
 
 ENV PYTHONUNBUFFERED 1
-CMD ["python", "/kubeless.py"]
+CMD ["python", "/_kubeless.py"]
