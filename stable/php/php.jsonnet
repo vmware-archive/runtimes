@@ -1,4 +1,4 @@
-{ 
+{
   ID: 'php',
   versions:
     [ { name: 'php72',
@@ -9,7 +9,7 @@
         command: "composer install -d $KUBELESS_INSTALL_VOLUME"
        }, {
         phase: "runtime",
-        image: "kubeless/php@sha256:a22a88fc7e0f46d185224a0179451187d6ab44b89c070807bf92a305ce416e4a"
+        image: "kubeless/php@sha256:b7319492ad1f84de4b1b2c8b522b12e7807f14ddb05fa8ad59f648617b8396f9"
        }],
       },
       { name: 'php73',
@@ -20,7 +20,19 @@
         command: "composer install -d $KUBELESS_INSTALL_VOLUME"
        }, {
         phase: "runtime",
-        image: "kubeless/php@sha256:eec60c68440ca2e09dbac63718916ffbaa68e2d123a3faaca1bca2d7646f250f"
+        image: "kubeless/php@sha256:ed77d3c00748bf7b9a4586ca59aa151ec27019fe33537c7d10a84d68fb45fbf5"
+       }],
+      },
+      {
+       name: 'php74',
+       version: '7.4',
+       images: [{
+        phase: "installation",
+        image: "composer:1.6",
+        command: "composer install -d $KUBELESS_INSTALL_VOLUME"
+       }, {
+        phase: "runtime",
+        image: "kubeless/php@sha256:497403402a9337969c9e24862894ac32422bf2231ac717f7e32705d36138f5a6"
        }],
       },
     ],
