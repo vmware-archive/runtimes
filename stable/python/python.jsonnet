@@ -31,6 +31,21 @@
         },
       }],
     },
+    {
+      name: "python38",
+      version: "3.8",
+      images: [{
+        phase: "installation",
+        image: "python:3.8",
+        command: "pip install --prefix=$KUBELESS_INSTALL_VOLUME -r $KUBELESS_DEPS_FILE"
+      }, {
+        phase: "runtime",
+        image: "kubeless/python@sha256:fe86df85e5ee0e1f739ceb88feb6673ac146b7329dfbb7675408068bca634b5a",
+        env: {
+          PYTHONPATH: "$(KUBELESS_INSTALL_VOLUME)/lib/python3.8/site-packages:$(KUBELESS_INSTALL_VOLUME)",
+        },
+      }],
+    },
   ],
   depName: "requirements.txt",
   fileNameSuffix: ".py",

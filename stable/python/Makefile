@@ -14,19 +14,25 @@ build3.6:
 build3.7:
 	docker build --pull --no-cache -t kubeless/python:3.7$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.7 .
 
+build3.8:
+	docker build --pull --no-cache -t kubeless/python:3.8$$RUNTIME_TAG_MODIFIER -f Dockerfile.3.8 .
+
 push3.6:
 	docker push kubeless/python:3.6$$RUNTIME_TAG_MODIFIER
 
 push3.7:
 	docker push kubeless/python:3.7$$RUNTIME_TAG_MODIFIER
 
+push3.8:
+	docker push kubeless/python:3.8$$RUNTIME_TAG_MODIFIER
+
 # Mandatory jobs
-build-all: build3.6 build3.7
-push-all: push3.6 push3.7
+build-all: build3.6 build3.7 build3.8
+push-all: push3.6 push3.7 push3.8
 
 # Testing jobs
-deploy: get-python-deps get-python-custom-port get-python-36 get-python-37 get-python-url-deps scheduled-get-python timeout-python get-python-secrets post-python post-python-custom-port custom-get-python python-preload
-test: get-python-deps-verify get-python-custom-port-verify get-python-36-verify get-python-37-verify get-python-url-deps-verify scheduled-get-python-verify timeout-python-verify get-python-secrets-verify custom-get-python-verify post-python-verify post-python-custom-port-verify python-preload-verify
+deploy: get-python-deps get-python-custom-port get-python-36 get-python-37 get-python-38 get-python-url-deps scheduled-get-python timeout-python get-python-secrets post-python post-python-custom-port custom-get-python python-preload
+test: get-python-deps-verify get-python-custom-port-verify get-python-36-verify get-python-37-verify get-python-38-verify get-python-url-deps-verify scheduled-get-python-verify timeout-python-verify get-python-secrets-verify custom-get-python-verify post-python-verify post-python-custom-port-verify python-preload-verify
 
 get-python-deps:
 	cd examples && zip hellowithdeps.zip hellowithdeps.py hellowithdepshelper.py
@@ -57,6 +63,13 @@ get-python-37:
 get-python-37-verify:
 	$(call rollout-status,$@)
 	kubeless function call get-python-37 |egrep hello.world
+
+get-python-38:
+	kubeless function deploy get-python-38 --runtime python3.8 --handler helloget.foo --from-file examples/helloget.py
+
+get-python-38-verify:
+	$(call rollout-status,$@)
+	kubeless function call get-python-38 |egrep hello.world
 
 get-python-url-deps:
 	cd examples && zip hellowithdeps.zip hellowithdeps.py hellowithdepshelper.py
