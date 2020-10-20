@@ -40,7 +40,7 @@
         command: "pip install --prefix=$KUBELESS_INSTALL_VOLUME -r $KUBELESS_DEPS_FILE"
       }, {
         phase: "runtime",
-        image: "joshes/kubeless-python3.8@sha256:04233ae98959feca1fa831b701c33488bceebc8bde04cb776e0ff94e665ae69e",
+        image: "kubeless/python@sha256:efe867b7d1375e557d72487b068722211c4d8e08f9d0482f347c09046cc87872",
         env: {
           PYTHONPATH: "$(KUBELESS_INSTALL_VOLUME)/lib/python3.8/site-packages:$(KUBELESS_INSTALL_VOLUME)",
         },
