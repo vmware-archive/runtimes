@@ -8,7 +8,7 @@ if [[ -e "/kubeless/go.mod" && ! -s "/kubeless/go.mod" ]]; then
   # Remove empty go.mod
   rm /kubeless/go.mod
 fi
-cp /kubeless/* /server/function/
+cp -r /kubeless/* /server/function/
 
 # Replace FUNCTION placeholder
 sed "s/<<FUNCTION>>/${KUBELESS_FUNC_NAME}/g" /server/kubeless.go.tpl > /server/kubeless.go
