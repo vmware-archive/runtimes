@@ -6,14 +6,14 @@
       version: "1.13",
       images: [{
         phase: "compilation",
-        image: "kubeless/go-init:1.13@sha256:9161934a6333ff5932ec48933efe30fc988bbbff6e13e1c4eb6f3626e70390c7",
+        image: "kubeless/go-init:1.13@sha256:1619c58b52e9e767a83dd4269206b4554eb008352af15ca00b25db8127520b8c",
         command: "/compile-function.sh",
         env: {
           GOCACHE: "$(KUBELESS_INSTALL_VOLUME)/.cache",
         },
        }, {
         phase: "runtime",
-        image: "kubeless/go@sha256:4048280138205d5ef2aa0dc4d169dca701e4df02d7feb42537cfd76ddef9c2b5"
+        image: "kubeless/go@sha256:ee496259f1bef2c338d074bfb5c14a08bb097f793a683d208a50df9f24d0d850"
       }],
     },
     {
@@ -21,14 +21,14 @@
       version: "1.14",
       images: [{
         phase: "compilation",
-        image: "kubeless/go-init:1.14@sha256:1aeaf270961b0e5cdb9e5119bc1c1222b75d46d9d1311854ec37b4a842241219",
+        image: "kubeless/go-init:1.14@sha256:b4b98c2848845447a43b50d61a386bcaa5bb34d5034a969aa404a41d71f1c439",
         command: "/compile-function.sh",
         env: {
           GOCACHE: "$(KUBELESS_INSTALL_VOLUME)/.cache",
         },
        }, {
         phase: "runtime",
-        image: "kubeless/go@sha256:4048280138205d5ef2aa0dc4d169dca701e4df02d7feb42537cfd76ddef9c2b5"
+        image: "kubeless/go@sha256:ee496259f1bef2c338d074bfb5c14a08bb097f793a683d208a50df9f24d0d850"
       }],
     },
   ],
