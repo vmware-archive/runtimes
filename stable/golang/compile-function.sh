@@ -14,4 +14,6 @@ cp -r /kubeless/* /server/function/
 sed "s/<<FUNCTION>>/${KUBELESS_FUNC_NAME}/g" /server/kubeless.go.tpl > /server/kubeless.go
 # Build command
 cd /server
-GOOS=linux GOARCH=amd64 go build -o $KUBELESS_INSTALL_VOLUME/server .
+
+# Build the function and redirect stdout & stderr from the compilation step to the k8s output log
+GOOS=linux GOARCH=amd64 go build -o $KUBELESS_INSTALL_VOLUME/server . > /dev/termination-log 2>&1
