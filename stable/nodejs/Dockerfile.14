@@ -1,15 +1,17 @@
-FROM bitnami/node:14
+FROM node:14
 
-RUN apt-get update &&  apt-get install git
-
-ADD lib/helper.js /kubeless_rt/lib/
+ADD helper.js /kubeless_rt/lib/
 ADD kubeless.js /kubeless_rt/
-ADD package.json /kubeless_rt/
 ADD kubeless-npm-install.sh /
 
 WORKDIR /kubeless_rt/
 
-RUN npm install
+RUN npm install \
+        body-parser@"^1.17.2" \
+        express@"^4.15.3" \
+        morgan@"^1.8.2" \
+        prom-client@"^10.0.2" && \
+    npm cache clean --force
 
 USER 1000
 
