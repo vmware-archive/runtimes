@@ -190,5 +190,5 @@ if __name__ == '__main__':
         host='0.0.0.0',
         port=func_port,
         # Number of requests that can be handled in parallel (default = 10).
-        numthreads=os.getenv('CHERRYPY_NUMTHREADS', 10),
+        numthreads=int(os.getenv('CHERRYPY_NUMTHREADS', '10')),
     )
