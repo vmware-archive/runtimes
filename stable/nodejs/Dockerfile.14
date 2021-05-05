@@ -9,7 +9,8 @@ ADD kubeless-npm-install.sh /
 
 WORKDIR /kubeless_rt/
 
-RUN npm install
+RUN npm install -g pnpm \
+  && pnpm install
 
 USER 1000
 
