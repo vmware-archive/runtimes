@@ -5,7 +5,7 @@ import io
 import os
 import queue
 import sys
-
+import threading
 import bottle
 import prometheus_client as prom
 
@@ -67,13 +67,6 @@ class PicklableBottleRequest(bottle.BaseRequest):
         setattr(self, 'environ', env)
 
 
-def funcWrap(q, event, c):
-    try:
-        q.put(func(event, c))
-    except Exception as inst:
-        q.put(inst)
-
-
 @app.get('/healthz')
 def healthz():
     return 'OK'
@@ -83,6 +76,11 @@ def healthz():
 def metrics():
     bottle.response.content_type = prom.CONTENT_TYPE_LATEST
     return prom.generate_latest(prom.REGISTRY)
+
+
+@app.error(500)
+def exception_handler():
+    return 'Internal server error'
 
 
 @app.route('/<:re:.*>', method=['GET', 'POST', 'PATCH', 'DELETE'])
@@ -104,21 +102,15 @@ def handler():
     func_calls.labels(method).inc()
     with func_errors.labels(method).count_exceptions():
         with func_hist.labels(method).time():
-            q = ctx.Queue()
-            p = ctx.Process(target=funcWrap, args=(q, event, function_context))
-            p.start()
-
+            que = queue.Queue()
+            t = threading.Thread(target=lambda q, e: q.put(func(e,function_context)), args=(que,event))
+            t.start()
             try:
-                res = q.get(block=True, timeout=timeout)
+                res = que.get(block=True, timeout=timeout)
             except queue.Empty:
-                p.terminate()
-                p.join()
                 return bottle.HTTPError(408, "Timeout while processing the function")
             else:
-                p.join()
-                if isinstance(res, Exception) and not isinstance(res, bottle.HTTPResponse):
-                    logging.error("Function returned an exception: %s", res)
-                    raise res
+                t.join()
                 return res
 
 
