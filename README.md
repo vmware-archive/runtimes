@@ -1,3 +1,9 @@
+## WARNING: Kubeless is no longer actively maintained by VMware.
+
+VMware has made the difficult decision to stop driving this project and therefore we will no longer actively respond to issues or pull requests. If you would like to take over maintaining this project independently from VMware, please let us know so we can add a link to your forked project here.
+
+Thank You.
+
 # Kubeless Runtimes
 
 Use this repository to submit official Runtimes for Kubeless. Runtimes are the different languages that can be used to run Kubeless functions. For more information about installing and using Kubeless, see its [documentation](https://kubeless.io/docs/). To get a quick introduction to the available runtimes see this [document](https://kubeless.io/docs/runtimes).
