@@ -51,7 +51,7 @@
       version: "3.1",
       images: [{
         phase: "compilation",
-        image: "lorenzoangelini3/kubeless-compile-dotnetcore31@sha256:12a85136102b9df6b09138dadd3bf77af111dc992286a0fd8ab4b03fd897fcc5",
+        image: "lorenzoangelini3/kubeless-compile-dotnetcore31@sha256:c930e3c575af881d2ca537322ee7149e91c868b18b4036dae3f3624c3683ebc2",
         command: "/app/compile-function.sh $KUBELESS_INSTALL_VOLUME"
        }, {
         phase: "runtime",
